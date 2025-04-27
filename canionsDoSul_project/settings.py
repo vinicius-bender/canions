@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,7 +123,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# settings.py
+
+# URL para acessar os arquivos estáticos
+STATIC_URL = '/static/'
+
+# Para arquivos estáticos em desenvolvimento
+STATICFILES_DIRS = [
+    BASE_DIR / "canionsDoSul_app" / "static",  # Ajuste conforme o nome do seu app
+]
+
+# Para produção, se você precisar coletar os arquivos estáticos em um único diretório:
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

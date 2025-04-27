@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Minha Aplicação{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container"> 
+            <nav class="navbar">
+                <img class="nav-branding" src="{% static 'assets/logo.png' %}" alt="Logo">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+   </header>
+
+   <section class="main-content">
+        {% block content %}
+        <!-- O conteúdo de cada página será inserido aqui -->
+        {% endblock %}
+    </section>
+
+    <script src="{% static 'scripts/script.js' %}"></script>
+</body>
+</html>
