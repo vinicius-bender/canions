@@ -1,0 +1,10 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% block content %}
+  <h2>Confirmar exclusão</h2>
+  <p>Tem certeza que deseja excluir a observação de <strong>{{ observation.species.popular_name }}</strong>?</p>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+    <a href="{% url 'minhas_observacoes' %}">Cancelar</a>
+  </form>
+{% endblock %}

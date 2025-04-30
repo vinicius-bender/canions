@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     User,
     Specialist,
@@ -13,6 +12,27 @@ from .models import (
     Observation,
     ObservationMedia
 )
+
+#Register your models here.
+class UserAdmin(BaseUserAdmin):
+    model = User
+    list_display = ('username', 'email', 'role', 'is_staff', 'is_active')
+    list_filter = ('role', 'is_staff', 'is_superuser', 'is_active')
+    search_fields = ('email', 'username')
+    ordering = ('email',)
+
+    fieldsets = (
+        (None, {'fields': ('email', 'username', 'password', 'role')}),
+        ('Permissions', {'fields': ('is_staff', 'is_superuser', 'is_active', 'groups', 'user_permissions')}),
+        ('Dates', {'fields': ('last_login',)}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'username', 'password1', 'password2', 'role', 'is_staff', 'is_superuser', 'is_active')}
+        ),
+    )
 
 admin.site.register(User)
 admin.site.register(Specialist)
