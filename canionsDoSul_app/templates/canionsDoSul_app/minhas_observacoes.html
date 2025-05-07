@@ -20,7 +20,7 @@
         <td>{{ obs.status }}</td>
         <td>{{ obs.created_at|date:"d/m/Y H:i" }}</td>
         <td>
-          <a href="{% url 'editar_observacoes' obs.id %}">Editar</a> |
+          <a href="{% url 'editar_observacoes' obs.id %}">Editar</a>
           <a href="{% url 'deletar_observacoes' obs.id %}">Excluir</a>
         </td>
       </tr>
@@ -31,4 +31,5 @@
       {% endfor %}
     </tbody>
   </table>
+  <a href="{% url 'home' %}">Voltar</a>
 {% endblock %}

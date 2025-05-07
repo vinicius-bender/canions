@@ -1,12 +1,31 @@
 #imports
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Family, Genus, Species, Observation, Localization
-from .forms import FamilyForm, GenusForm, SpeciesForm, ObservationForm, LocalizationForm
+from .forms import FamilyForm, GenusForm, SpeciesForm, ObservationForm, LocalizationForm, CustomLoginForm, CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
 #views
 def home(request):
     return render(request, 'canionsDoSul_app/home.html')
+
+@login_required
+def cadastrar(request):
+    return render(request, 'canionsDoSul_app/cadastrar.html')
+
+class CustomLoginView(LoginView):
+    authentication_form = CustomLoginForm
+    template_name = 'canionsDoSul_app/login.html'
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redireciona após cadastro
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'canionsDoSul_app/registrar.html', {'form': form})
 
 @login_required
 def create_family(request):
@@ -41,7 +60,7 @@ def create_species(request):
         form = SpeciesForm()
     return render(request, 'canionsDoSul_app/criar_especie.html', {'form': form})
 
-@login_required
+# @login_required
 def create_observation(request):
     if request.method == 'POST':
         form = ObservationForm(request.POST)
