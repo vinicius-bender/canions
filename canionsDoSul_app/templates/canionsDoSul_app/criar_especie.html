@@ -1,0 +1,13 @@
+{% extends "canionsDoSul_app/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Cadastrar Espécie</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar</a>
+{% endblock %}

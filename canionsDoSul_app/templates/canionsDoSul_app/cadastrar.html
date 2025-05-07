@@ -1,0 +1,14 @@
+{% extends "canionsDoSul_app/base.html" %}
+
+{% block title %}Cadastrar{% endblock %}
+
+{% block content %}
+<h1>Cadastrar</h1>
+    <ul>
+        <li><a href="{% url 'criar_familia' %}">Cadastrar Família</a></li>
+        <li><a href="{% url 'criar_genero' %}">Cadastrar Gênero</a></li>
+        <li><a href="{% url 'criar_especie' %}">Cadastrar Espécie</a></li>
+        <li><a href="{% url 'criar_localizacao' %}">Cadastrar Localizacao</a></li>
+    </ul>
+    <a href="{% url 'home' %}">Voltar</a>
+{% endblock %}

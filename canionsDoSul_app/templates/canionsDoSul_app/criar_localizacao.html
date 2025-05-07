@@ -1,0 +1,23 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% block content %}
+  <h2>Minhas Localizações</h2>
+
+  <h3>Nova Localização</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+  </form>
+
+  <hr>
+
+  <h3>Localizações Cadastradas</h3>
+  <ul>
+    {% for loc in localizations %}
+      <li>{{ loc.city_name }} - {{ loc.state_name }} ({{ loc.created_at|date:"d/m/Y" }})</li>
+    {% empty %}
+      <li>Nenhuma localização cadastrada ainda.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'home' %}">Voltar</a>
+{% endblock %}
