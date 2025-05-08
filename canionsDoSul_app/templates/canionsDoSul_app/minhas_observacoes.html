@@ -5,6 +5,8 @@
   <table>
     <thead>
       <tr>
+        <th>Familia</th>
+        <th>Genero</th>
         <th>Espécie</th>
         <th>Nome popular</th>
         <th>Localização</th>
@@ -16,6 +18,8 @@
     <tbody>
       {% for obs in observations %}
       <tr>
+        <td>{{ obs.species.genus.family.name }}</td>
+        <td>{{ obs.species.genus.name }}</td>
         <td>{{ obs.species.scientific_name }}</td>
         <td>{{ obs.species.popular_name }}</td> 
         <td>{{ obs.localization.city_name }}, {{ obs.localization.state_name }}</td>
