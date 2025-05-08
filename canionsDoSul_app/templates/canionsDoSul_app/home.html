@@ -3,12 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Bem-vindo à Plataforma</h1>
-<ul>
-    <li><a href="{% url 'registrar' %}">Registrar-se</a></li>
-    <li><a href="{% url 'login' %}">Login</a></li>
-    <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
-    <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
-    <li><a href="{% url 'minhas_observacoes' %}">Minhas observações</a></li>
-</ul>
+    <h1>Bem-vindo à Plataforma</h1>
+    <ul>
+        <li><a href="{% url 'registrar' %}">Registrar-se</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+        {% if user.is_superuser %}
+        <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
+        {% endif %}
+        <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
+        <li><a href="{% url 'minhas_observacoes' %}">Minhas observações</a></li>
+    </ul>
+    {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
 {% endblock %}

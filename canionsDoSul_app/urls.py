@@ -1,12 +1,15 @@
 # canionsDoSul_app/urls.py
 
 from django.urls import path
+from django.contrib.auth.views import LogoutView
 from . import views
 from .views import CustomLoginView
+
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('registrar/', views.register, name='registrar'),
     path('cadastrar/', views.cadastrar, name='cadastrar'),
     path('cadastrar/familia/', views.create_family, name='criar_familia'),
