@@ -6,6 +6,7 @@
     <thead>
       <tr>
         <th>Espécie</th>
+        <th>Nome popular</th>
         <th>Localização</th>
         <th>Status</th>
         <th>Data</th>
@@ -15,7 +16,8 @@
     <tbody>
       {% for obs in observations %}
       <tr>
-        <td>{{ obs.species.popular_name }}</td>
+        <td>{{ obs.species.scientific_name }}</td>
+        <td>{{ obs.species.popular_name }}</td> 
         <td>{{ obs.localization.city_name }}, {{ obs.localization.state_name }}</td>
         <td>{{ obs.status }}</td>
         <td>{{ obs.created_at|date:"d/m/Y H:i" }}</td>
