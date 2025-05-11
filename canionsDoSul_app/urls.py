@@ -20,4 +20,5 @@ urlpatterns = [
     path('minhas_observacoes/deletar/<int:observation_id>/', views.delete_observation, name='deletar_observacoes'),
     path('minhas_observacoes/', views.observations_list, name='minhas_observacoes'),
     path('criar_localizacao/', views.localization_list_create, name='criar_localizacao'),
+    path('observacoes/', views.all_observations_list, name='observacoes'),
 ]
