@@ -1,6 +1,8 @@
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
   }
   
 body{
@@ -71,6 +73,26 @@ body{
     background-color: #3b7457;
   }
   
+.breadcrumb {
+  /* margin: 15px; */
+  padding: 0px 10px 10px 10px;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #3B7A57;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #999;
+}
+
   @media(max-width:1024px){
     .hamburger{
       display: block;

@@ -1,13 +1,13 @@
 {% extends 'canionsDoSul_app/base.html' %}
 {% load static %}
 
-{% block title %}Minhas observações{% endblock %}
+{% block title %}Últimas observações{% endblock %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/cards.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h1 class="my-observation-page-title">Minhas Observações | 5 Registros encontrados</h1>
+  <h1 class="my-observation-page-title">Últimas Observações | 5 Registros encontrados</h1>
 
   <!-- <div class="card-section">
     {% for obs in observations %}
@@ -27,8 +27,7 @@
       </div>
     </div>
     {% endfor %}
-  </div>
-  <a href="{% url 'home' %}" class="back-btn">Voltar</a> -->
+  </div> -->
   <div class="card-section">
   {% for obs in page_obj %}
     <div class="observation-card">

@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'canionsDoSul_app.context_processors.breadcrumbs',
             ],
         },
     },
@@ -130,7 +131,8 @@ USE_TZ = True
 
 # URL para acessar os arquivos estáticos
 STATIC_URL = '/static/'
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Para arquivos estáticos em desenvolvimento
 STATICFILES_DIRS = [
     BASE_DIR / "canionsDoSul_app" / "static",  # Ajuste conforme o nome do seu app
