@@ -1,9 +1,26 @@
 from django import forms
-from .models import Family, Genus, Species, Observation, Localization
+# from django.forms.widgets import ClearableFileInput
+from django.forms.widgets import Widget, Input
+from django.utils.html import format_html
+from .models import Family, Genus, Species, Observation, Localization, Media, ObservationMedia
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, ReadOnlyPasswordHashField
 
 User = get_user_model()
+
+# Widget personalizado para upload de múltiplos arquivos
+class MultipleFileInput(Input):
+    input_type = 'file'
+    needs_multipart_form = True
+    
+    def __init__(self, attrs=None):
+        super().__init__(attrs)
+        self.attrs['multiple'] = True
+    
+    def value_from_datadict(self, data, files, name):
+        if hasattr(files, 'getlist'):
+            return files.getlist(name)
+        return files.get(name)
 
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -71,10 +88,35 @@ class SpeciesForm(forms.ModelForm):
         model = Species
         fields = ['scientific_name', 'popular_name', 'habitat', 'genus', 'user']
 
+# class ObservationForm(forms.ModelForm):
+#     class Meta:
+#         model = Observation
+#         fields = ['longitude', 'latitude', 'species', 'localization']
+
 class ObservationForm(forms.ModelForm):
     class Meta:
         model = Observation
+        # fields = ['longitude', 'latitude', 'species', 'localization', 'status']
         fields = ['longitude', 'latitude', 'species', 'localization']
+        widgets = {
+            'longitude': forms.NumberInput(attrs={'step': '0.00000001'}),
+            'latitude': forms.NumberInput(attrs={'step': '0.00000001'}),
+        }
+
+# Formulário para upload de múltiplas imagens
+class MediaForm(forms.Form):
+    images = forms.FileField(
+        widget=MultipleFileInput(),
+        label='Selecione as imagens',
+        required=False,
+    )
+
+# class MediaForm(forms.Form):
+#     images = forms.FileField(
+#         widget=MultipleImageInput(),
+#         label='Selecione as imagens',
+#         required=False,
+#     )
 
 class LocalizationForm(forms.ModelForm):
     class Meta:
