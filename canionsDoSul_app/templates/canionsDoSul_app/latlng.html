@@ -1,0 +1,41 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+
+{% block title %}Cadastrar por Latitude/Longitude{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/form.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+  <link rel="stylesheet" href="{% static 'css/map.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2>Cadastro com Mapa</h2>
+
+<div id="map"></div>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ observation_form.as_p }}
+  <label for="id_city_name">Cidade:</label>
+  <input type="text" name="city_name" id="id_city_name" class="form-control">
+
+  <label for="id_state_name">Estado:</label>
+  <input type="text" name="state_name" id="id_state_name" class="form-control">
+
+  <label for="id_country_name">País:</label>
+  <input type="text" name="country_name" id="id_country_name" class="form-control">
+
+  {{ media_form.as_p }}
+
+  <button type="button" id="btn_buscar_localizacao">Buscar Localização</button>
+  <button type="submit">Cadastrar</button>
+</form>
+
+<a href="{% url 'criar_observacao' %}">Voltar</a>
+{% endblock %}
+
+{% block script %}
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'scripts/map.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+
+{% block title %}Cadastrar por Cidade{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2>Cadastro por Cidade</h2>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ observation_form.as_p }}
+  {{ localization_form.as_p }}
+  {{ media_form.as_p }}
+  <button type="submit">Cadastrar</button>
+</form>
+
+<a href="{% url 'criar_observacao' %}">Voltar</a>
+{% endblock %}

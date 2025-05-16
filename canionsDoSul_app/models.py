@@ -110,6 +110,7 @@ class Species(models.Model):
 class Localization(models.Model):
     city_name = models.CharField(max_length=255)
     state_name = models.CharField(max_length=255)
+    country_name = models.CharField(max_length=255, default='Brasil')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -179,7 +180,7 @@ class Observation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     species = models.ForeignKey(Species, on_delete=models.CASCADE)
-    localization = models.ForeignKey(Localization, on_delete=models.CASCADE)
+    localization = models.ForeignKey(Localization, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
     

@@ -88,20 +88,70 @@ class SpeciesForm(forms.ModelForm):
         model = Species
         fields = ['scientific_name', 'popular_name', 'habitat', 'genus', 'user']
 
+class LocalizationForm(forms.ModelForm):
+    class Meta:
+        model = Localization
+        fields = ['city_name', 'state_name', 'country_name']
+        widgets = {
+            'city_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'state_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'country_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 # class ObservationForm(forms.ModelForm):
 #     class Meta:
 #         model = Observation
+#         # fields = ['longitude', 'latitude', 'species', 'localization', 'status']
 #         fields = ['longitude', 'latitude', 'species', 'localization']
+#         widgets = {
+#             'longitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -51.23456789',
+#                 'class': 'form-control custom-input'
+#             }),
+#             'latitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -29.12345678',
+#                 'class': 'form-control custom-input'
+#             }),
+#             'species': forms.Select(attrs={
+#                 'placeholder': 'Selecione uma espécie',
+#                 'class': 'form-control custom-select'
+#             }),
+#             'localization': forms.Select(attrs={
+#                 'placeholder': 'Selecione uma localização',
+#                 'class': 'form-control custom-select'
+#             }),
+#         }
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['species'].empty_label = 'Selecione uma espécie'
+#         self.fields['localization'].empty_label = 'Selecione uma localização'
 
-class ObservationForm(forms.ModelForm):
+class ObservationLatLngForm(forms.ModelForm):
     class Meta:
         model = Observation
-        # fields = ['longitude', 'latitude', 'species', 'localization', 'status']
-        fields = ['longitude', 'latitude', 'species', 'localization']
+        # fields = ['latitude', 'longitude', 'species']
+        fields = ['latitude', 'longitude']
         widgets = {
-            'longitude': forms.NumberInput(attrs={'step': '0.00000001'}),
-            'latitude': forms.NumberInput(attrs={'step': '0.00000001'}),
+            'latitude': forms.NumberInput(attrs={
+                'step': '0.00000001',
+                'placeholder': 'Ex: -29.12345678',
+                'id': 'id_latitude',
+            }),
+            'longitude': forms.NumberInput(attrs={
+                'step': '0.00000001',
+                'placeholder': 'Ex: -51.23456789',
+                'id': 'id_longitude'
+            }),
         }
+
+class ObservationCityForm(forms.ModelForm):
+    class Meta:
+        model = Observation
+        fields = ['species']
+
+ObservationCityForm.localization = LocalizationForm()
 
 # Formulário para upload de múltiplas imagens
 class MediaForm(forms.Form):
@@ -110,19 +160,3 @@ class MediaForm(forms.Form):
         label='Selecione as imagens',
         required=False,
     )
-
-# class MediaForm(forms.Form):
-#     images = forms.FileField(
-#         widget=MultipleImageInput(),
-#         label='Selecione as imagens',
-#         required=False,
-#     )
-
-class LocalizationForm(forms.ModelForm):
-    class Meta:
-        model = Localization
-        fields = ['city_name', 'state_name']
-        widgets = {
-            'city_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'state_name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
