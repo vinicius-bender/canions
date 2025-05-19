@@ -28,3 +28,10 @@ def breadcrumbs(request):
         })
     
     return {'breadcrumbs': breadcrumbs}
+
+def user_roles(request):
+    user = request.user
+    return {
+        'is_specialist': hasattr(user, 'specialist'),
+        'is_scientist': hasattr(user, 'scientist'),
+    }

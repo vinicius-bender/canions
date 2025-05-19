@@ -1,0 +1,23 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% block content %}
+<h2>Aprovar Observação</h2>
+
+<p><strong>Local:</strong> {{ observacao.localization.city_name }}, {{ observacao.localization.state_name }}</p>
+
+<div>
+  <h4>Imagens:</h4>
+  {% for media in observacao.media_set.all %}
+    <img src="{{ media.file.url }}" width="200px"/>
+  {% empty %}
+    <p>Sem imagens</p>
+  {% endfor %}
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Aprovar</button>
+</form>
+
+<a href="{% url 'lista_observacoes_pendentes' %}">Voltar</a>
+{% endblock %}

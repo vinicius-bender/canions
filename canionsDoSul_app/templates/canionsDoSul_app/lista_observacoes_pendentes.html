@@ -1,0 +1,14 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% block content %}
+<h2>Observações Pendentes</h2>
+<ul>
+  {% for obs in observacoes %}
+    <li>
+      {{ obs.localization.city_name }}, {{ obs.localization.state_name }} —
+      <a href="{% url 'aprovar_observacao_detalhes' obs.id %}">Avaliar</a>
+    </li>
+  {% empty %}
+    <li>Nenhuma observação pendente</li>
+  {% endfor %}
+</ul>
+{% endblock %}

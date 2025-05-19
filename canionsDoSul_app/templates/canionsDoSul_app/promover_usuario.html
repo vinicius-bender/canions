@@ -1,0 +1,24 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% block title %}Promover Usuário{% endblock %}
+
+{% block content %}
+<h2>Promover Usuário</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="user">Usuário:</label>
+    <select name="user_id" id="user">
+        {% for user in usuarios %}
+            <option value="{{ user.id }}">{{ user.username }} ({{ user.role }})</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="role">Promover para:</label>
+    <select name="role" id="role">
+        <option value="specialist">Especialista</option>
+        <option value="scientist">Cientista</option>
+    </select><br><br>
+
+    <button type="submit">Promover</button>
+</form>
+{% endblock %}
