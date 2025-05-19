@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None, role=None):
+    def create_user(self, username, email, password=None, role="default"):
         if not email:
             raise ValueError("O email é obrigatório")
         if not username:
@@ -174,24 +174,41 @@ class Media(models.Model):
     def __str__(self):
         return self.name
 
+# class Observation(models.Model):
+#     longitude = models.DecimalField(max_digits=10, decimal_places=8)
+#     latitude = models.DecimalField(max_digits=10, decimal_places=8)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     species = models.ForeignKey(Species, on_delete=models.CASCADE)
+#     localization = models.ForeignKey(Localization, on_delete=models.CASCADE, null=True, blank=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     status = models.CharField(max_length=100)
+    
+#     # Relação muitos-para-muitos com Media através de ObservationMedia
+#     medias = models.ManyToManyField(Media, through='ObservationMedia')
+    
+#     class Meta:
+#         db_table = 'observation'
+    
+#     def __str__(self):
+#         return f"Observation {self.id} - {self.species.popular_name}"
+
 class Observation(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=8)
     latitude = models.DecimalField(max_digits=10, decimal_places=8)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    species = models.ForeignKey(Species, on_delete=models.CASCADE)
+    species = models.ForeignKey(Species, on_delete=models.CASCADE, null=True, blank=True)  # <- permite null
     localization = models.ForeignKey(Localization, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=100)
-    
-    # Relação muitos-para-muitos com Media através de ObservationMedia
+    status = models.CharField(max_length=100, default="pendente")  # <- default
     medias = models.ManyToManyField(Media, through='ObservationMedia')
-    
+
     class Meta:
         db_table = 'observation'
-    
+
     def __str__(self):
-        return f"Observation {self.id} - {self.species.popular_name}"
+        return f"Observation {self.id} - {self.species.popular_name if self.species else 'Sem espécie'}"
 
 class ObservationMedia(models.Model):
     observation = models.ForeignKey(Observation, on_delete=models.CASCADE)

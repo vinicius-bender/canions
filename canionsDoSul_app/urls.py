@@ -23,4 +23,7 @@ urlpatterns = [
     path('minhas_observacoes/', views.observations_list, name='minhas_observacoes'),
     path('criar_localizacao/', views.localization_list_create, name='criar_localizacao'),
     path('observacoes/', views.all_observations_list, name='observacoes'),
+    path('observacoes/pendentes/', views.lista_observacoes_pendentes, name='lista_observacoes_pendentes'),
+    path('observacoes/avaliar/<int:observacao_id>/', views.aprovar_observacao, name='aprovar_observacao_detalhes'),
+    path("promover_usuario/", views.promover_usuario, name="promover_usuario"),
 ]

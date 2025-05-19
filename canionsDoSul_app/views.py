@@ -1,13 +1,22 @@
 #imports
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Family, Genus, Species, Observation, Localization, Media, ObservationMedia
-from .forms import FamilyForm, GenusForm, SpeciesForm, LocalizationForm, CustomLoginForm, CustomUserCreationForm, MediaForm, MultipleFileInput, ObservationLatLngForm, ObservationCityForm
-from django.contrib.auth.decorators import login_required
+from .models import User, Specialist, Scientist, Family, Genus, Species, Observation, Localization, Media, ObservationMedia
+from .forms import FamilyForm, GenusForm, SpeciesForm, LocalizationForm, CustomLoginForm, CustomUserCreationForm, MediaForm, MultipleFileInput, ObservationLatLngForm, ObservationCityForm, AprovarObservacaoForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.core.paginator import Paginator
 
 #views
+def is_scientist(user):
+    return hasattr(user, 'scientist')
+
+def is_specialist(user):
+    return hasattr(user, 'specialist')
+
+def is_admin(user):
+    return user.is_authenticated and user.role == "admin"
+
 def home(request):
     return render(request, 'canionsDoSul_app/home.html')
 
@@ -190,8 +199,8 @@ def observation_by_latlng(request):
                 for image in request.FILES.getlist('images'):
                     # Certifique-se de que o modelo Media tem o campo correto
                     media = Media.objects.create(
-                        name=f"Imagem de {observation.species.popular_name}",
-                        image=image  # Certifique-se de que este é o nome correto do campo
+                        image=image,  # Certifique-se de que este é o nome correto do campo
+                        name=image.name[:255],
                     )
                     
                     # Se você estiver usando uma tabela de relacionamento
@@ -214,21 +223,131 @@ def observation_by_latlng(request):
         'media_form': media_form
     })
 
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         if observation_form.is_valid() and localization_form.is_valid() and media_form.is_valid():
+#             localization = localization_form.save()
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.save()
+
+#             for file in request.FILES.getlist('images'):
+#                 Media.objects.create(observation=observation, file=file)
+
+#             return redirect('home')
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
+
+
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         # Verificar apenas o observation_form como na primeira view
+#         if observation_form.is_valid():
+#             # Salvar localização
+#             try:
+#                 localization = localization_form.save(commit=False)
+#                 localization.user = request.user
+#                 localization.save()
+#             except Exception as e:
+#                 print(f"Erro ao salvar localização: {e}")
+#                 # Fallback para criar localização diretamente como na primeira view
+#                 city = request.POST.get('city_name')
+#                 state = request.POST.get('state_name')
+#                 country = request.POST.get('country_name', 'Brasil')
+                
+#                 localization, created = Localization.objects.get_or_create(
+#                     city_name=city,
+#                     state_name=state,
+#                     country_name=country,
+#                     defaults={'user': request.user if request.user.is_authenticated else None}
+#                 )
+
+#             # Salvar observação
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = request.user
+#             observation.status = "pendente"
+#             observation.save()
+
+#             # Processar imagens (independentemente da validação do media_form)
+#             if 'images' in request.FILES:
+#                 for image in request.FILES.getlist('images'):
+#                     media = Media.objects.create(
+#                         image=image,
+#                         name=image.name[:255]
+#                     )
+                    
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+                    
+#             return redirect('home')
+#         else:
+#             # Imprimir erros como na primeira view
+#             print("Erros no observation_form:", observation_form.errors)
+            
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
+
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
         localization_form = LocalizationForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
 
-        if observation_form.is_valid() and localization_form.is_valid() and media_form.is_valid():
-            localization = localization_form.save()
+        if observation_form.is_valid() and localization_form.is_valid():
+            localization = localization_form.save(commit=False)
+            localization.user = request.user
+            localization.save()
+
             observation = observation_form.save(commit=False)
             observation.localization = localization
+            observation.user = request.user
+            observation.status = "pendente"  # ou "", ou None se preferir
             observation.save()
 
-            for file in request.FILES.getlist('images'):
-                Media.objects.create(observation=observation, file=file)
-
+            # for file in request.FILES.getlist('images'):
+            #     Media.objects.create(observation=observation, file=file)
+            
+            # Processa as imagens
+            if 'images' in request.FILES:
+                for image in request.FILES.getlist('images'):
+                    # Certifique-se de que o modelo Media tem o campo correto
+                    media = Media.objects.create(
+                        image=image,  # Certifique-se de que este é o nome correto do campo
+                        name=image.name[:255]
+                    )
+                    
+                    # Se você estiver usando uma tabela de relacionamento
+                    ObservationMedia.objects.create(
+                        observation=observation,
+                        media=media
+                    )
             return redirect('home')
     else:
         observation_form = ObservationCityForm()
@@ -308,3 +427,53 @@ def localization_list_create(request):
         'form': form,
         'localizations': localizations
     })
+
+@login_required
+@user_passes_test(is_specialist)
+def lista_observacoes_pendentes(request):
+    observacoes = Observation.objects.filter(species__isnull=True)
+    return render(request, 'canionsDoSul_app/lista_observacoes_pendentes.html', {
+        'observacoes': observacoes
+    })
+
+@login_required
+@user_passes_test(is_specialist)
+def aprovar_observacao(request, observacao_id):
+    observacao = get_object_or_404(Observation, id=observacao_id)
+
+    if request.method == 'POST':
+        form = AprovarObservacaoForm(request.POST, instance=observacao)
+        if form.is_valid():
+            observacao = form.save(commit=False)
+            observacao.status = 'aprovado'  # se tiver esse campo
+            observacao.save()
+            return redirect('lista_observacoes_pendentes')
+    else:
+        form = AprovarObservacaoForm(instance=observacao)
+
+    return render(request, 'canionsDoSul_app/aprovar_observacao_detalhes.html', {
+        'form': form,
+        'observacao': observacao
+    })
+
+@user_passes_test(is_admin)
+def promover_usuario(request):
+    if request.method == "POST":
+        user_id = request.POST.get("user_id")
+        role = request.POST.get("role")  # specialist ou scientist
+        user = get_object_or_404(User, id=user_id)
+
+        # Verifica se já não é do tipo
+        if role == "specialist" and not hasattr(user, 'specialist'):
+            Specialist.objects.create(user=user)
+            user.role = "specialist"
+            user.save()
+        elif role == "scientist" and not hasattr(user, 'scientist'):
+            Scientist.objects.create(user=user)
+            user.role = "scientist"
+            user.save()
+
+        return redirect("promover_usuario")
+
+    usuarios = User.objects.exclude(role="admin")  # Exclui admin da lista
+    return render(request, "canionsDoSul_app/promover_usuario.html", {"usuarios": usuarios})

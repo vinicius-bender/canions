@@ -93,9 +93,16 @@ class LocalizationForm(forms.ModelForm):
         model = Localization
         fields = ['city_name', 'state_name', 'country_name']
         widgets = {
-            'city_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'state_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'country_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'city_name': forms.TextInput(attrs={'class': 'form-control',
+            'id': 'id_city_name',
+            }),
+            'state_name': forms.TextInput(attrs={'class': 'form-control',
+            'id': 'id_state_name',
+            }),
+            'country_name': forms.HiddenInput(attrs={'class': 'form-control', 
+            'id': 'id_country_name',
+            }),
+            # 'country_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 # class ObservationForm(forms.ModelForm):
@@ -149,7 +156,15 @@ class ObservationLatLngForm(forms.ModelForm):
 class ObservationCityForm(forms.ModelForm):
     class Meta:
         model = Observation
-        fields = ['species']
+        exclude = ['species', 'status', 'user', 'medias']
+        widgets = {
+            'latitude': forms.HiddenInput(attrs={
+                'id': 'id_latitude',
+            }),
+            'longitude': forms.HiddenInput(attrs={
+                'id': 'id_longitude',
+            }),
+        }
 
 ObservationCityForm.localization = LocalizationForm()
 
@@ -160,3 +175,8 @@ class MediaForm(forms.Form):
         label='Selecione as imagens',
         required=False,
     )
+
+class AprovarObservacaoForm(forms.ModelForm):
+    class Meta:
+        model = Observation
+        fields = ['species']  # ou outros campos editáveis
