@@ -1,12 +1,12 @@
 {% extends 'canionsDoSul_app/base.html' %}
 {% load static %}
+
+{% block title %}Escolher Tipo de Cadastro{% endblock %}
+
 {% block content %}
-  <h2>Cadastrar Observação</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ observation_form.as_p }}
-    {{ media_form.as_p }}
-    <button type="submit">Cadastrar</button>
-  </form>
-  <a href="{% url 'home' %}">Voltar</a>
+  <h2>Como deseja cadastrar a observação?</h2>
+  <div style="display: flex; flex-direction: column; gap: 1em;">
+    <a href="{% url 'latlng' %}" class="btn">Cadastrar por Latitude/Longitude (Mapa)</a>
+    <a href="{% url 'cidade' %}" class="btn">Cadastrar por Cidade</a>
+  </div>
 {% endblock %}
