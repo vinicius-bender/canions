@@ -25,11 +25,15 @@ class MultipleFileInput(Input):
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Senha',
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Digite sua senha',
+        }),
     )
     password2 = forms.CharField(
         label='Confirme a Senha',
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Digite novamente sua senha',
+        }),
     )
 
     class Meta:
@@ -37,8 +41,12 @@ class CustomUserCreationForm(forms.ModelForm):
         # fields = ['username', 'email', 'role']
         fields = ['username', 'email']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={
+            'placeholder': 'Digite o seu nome de usuário',
+        }),
+            'email': forms.EmailInput(attrs={
+            'placeholder': 'Exemplo@gmail.com',
+        }),
             #'role': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -59,18 +67,16 @@ class CustomUserCreationForm(forms.ModelForm):
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(
-        label='Usuário',
+        label='Digite seu e-mail',
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Digite seu usuário'
-        })
+            'placeholder': 'Exemplo@gmail.com',
+        }),
     )
     password = forms.CharField(
         label='Senha',
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Digite sua senha'
-        })
+            'placeholder': 'Digite sua senha',
+        }),
     )
 
 class FamilyForm(forms.ModelForm):
