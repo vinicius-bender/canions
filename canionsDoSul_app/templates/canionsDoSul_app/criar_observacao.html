@@ -1,12 +1,24 @@
 {% extends 'canionsDoSul_app/base.html' %}
 {% load static %}
 
-{% block title %}Escolher Tipo de Cadastro{% endblock %}
+{% load static %}
+
+{% block title %}Criar observação{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/create_observation.css' %}">
+{% endblock %}
 
 {% block content %}
-  <h2>Como deseja cadastrar a observação?</h2>
-  <div style="display: flex; flex-direction: column; gap: 1em;">
-    <a href="{% url 'latlng' %}" class="btn">Cadastrar por Latitude/Longitude (Mapa)</a>
-    <a href="{% url 'cidade' %}" class="btn">Cadastrar por Cidade</a>
+  <h1>Cadastrar observação</h1>
+  <div class="observation-choice">
+    <p>Identifique o local onde você fez suas observações.</p>
+    <div class="observation">
+      <a href="{% url 'latlng' %}" class="btn">Latitude/Longitude (Mapa interativo)</a>
+      <p>Crie uma nova observação usando latitude e longitude.</p>
+    </div>
+    <div class="observation">
+      <a href="{% url 'cidade' %}" class="btn">Cidade/Estado</a>
+      <p>Se você estava observando em uma área muito grande (por exemplo, um estado ou município inteiro), selecione esta opção. Por favor, considere usar localizações mais precisas ao reportar na plataforma, para que suas observações sejam mais valiosas para a análise</p>
+    </div>
   </div>
 {% endblock %}
