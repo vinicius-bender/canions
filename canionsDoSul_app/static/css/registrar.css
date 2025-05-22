@@ -1,0 +1,91 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+body{
+  background-color: #F8FFFA;
+}
+
+h2 {
+  text-align: center;
+}
+
+
+.main-content{
+    margin: 0.5rem auto 0.5rem auto; /* Centraliza horizontalmente */
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* gap: 2rem; */
+    background-color: #3B7A57;
+    color: white;
+    border-style: none;
+    border-radius: 10px; /* Apenas parte de cima */
+    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    padding: 2rem 1rem;
+    text-transform: uppercase;
+}
+
+.form-control{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    /* align-items: center; */
+}
+
+label, .submit-btn{
+    margin-top: 1.4rem;
+}
+
+input{
+    border-style: none;
+    border-radius: 0.2rem; /* Apenas parte de cima */
+    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    padding: 0.5rem;
+}
+
+input:focus {
+    outline: none;
+    border: none;
+}
+
+.div-btn{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.submit-btn{
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-style: none;
+    border-radius: 10px; /* Apenas parte de cima */
+    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    color: #3B7A57;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.register-link{
+    text-align: center;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.register-link a{
+    color: white;
+    text-decoration-color: white;
+}

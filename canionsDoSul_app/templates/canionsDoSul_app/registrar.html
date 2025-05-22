@@ -1,11 +1,37 @@
 {% extends 'canionsDoSul_app/base.html' %}
 
+{% load static %}
+
+{% block title %}Login{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/registrar.css' %}">
+{% endblock %}
+
 {% block content %}
-  <h2>Cadastro</h2>
-  <form method="post">
+  <h2>Registrar usuário</h2>
+  <form method="post" class="form-control">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Cadastrar</button>
+    
+    {{ form.non_field_errors }}
+    {{ form.username.label_tag }}
+    {{ form.username }}
+    {{ form.username.errors }}
+
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    {{ form.email.errors }}
+
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+    {{ form.password1.errors }}
+
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+    {{ form.password2.errors }}
+
+    <div class="div-btn">
+      <button type="submit" class="submit-btn">Registrar</button>
+    </div>
   </form>
-  <a href="{% url 'home' %}">Voltar</a>
+  <p class="register-link">Não possui uma conta? <a href="{% url 'login' %}"> Logue aqui!</a></p>
 {% endblock %}
