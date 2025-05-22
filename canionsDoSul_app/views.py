@@ -8,11 +8,14 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 
 #views
-def is_scientist(user):
-    return hasattr(user, 'scientist')
+# def is_scientist(user):
+#     return hasattr(user, 'scientist')
 
-def is_specialist(user):
-    return hasattr(user, 'specialist')
+# def is_specialist(user):
+#     return hasattr(user, 'specialist')
+
+def is_specialist_or_scientist(user):
+    return user.role in ['specialist', 'scientist']
 
 def is_admin(user):
     return user.is_authenticated and user.role == "admin"
@@ -27,6 +30,11 @@ def cadastrar(request):
 class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
     template_name = 'canionsDoSul_app/login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home')  # Redireciona para a home se já estiver autenticado
+        return super().dispatch(request, *args, **kwargs)
 
 def register(request):
     if request.method == 'POST':
@@ -429,7 +437,7 @@ def localization_list_create(request):
     })
 
 @login_required
-@user_passes_test(is_specialist)
+@user_passes_test(is_specialist_or_scientist, login_url='erro_permissao')
 def lista_observacoes_pendentes(request):
     observacoes = Observation.objects.filter(species__isnull=True)
     return render(request, 'canionsDoSul_app/lista_observacoes_pendentes.html', {
@@ -437,7 +445,7 @@ def lista_observacoes_pendentes(request):
     })
 
 @login_required
-@user_passes_test(is_specialist)
+@user_passes_test(is_specialist_or_scientist, login_url='erro_permissao')
 def aprovar_observacao(request, observacao_id):
     observacao = get_object_or_404(Observation, id=observacao_id)
 
@@ -456,7 +464,8 @@ def aprovar_observacao(request, observacao_id):
         'observacao': observacao
     })
 
-@user_passes_test(is_admin)
+@login_required
+@user_passes_test(is_admin, login_url='erro_permissao')
 def promover_usuario(request):
     if request.method == "POST":
         user_id = request.POST.get("user_id")
@@ -477,3 +486,6 @@ def promover_usuario(request):
 
     usuarios = User.objects.exclude(role="admin")  # Exclui admin da lista
     return render(request, "canionsDoSul_app/promover_usuario.html", {"usuarios": usuarios})
+
+def permission_error(request):
+    return render(request, 'canionsDoSul_app/erro_permissaoome.html')

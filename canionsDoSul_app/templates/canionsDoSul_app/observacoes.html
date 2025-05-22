@@ -7,27 +7,8 @@
 {% endblock %}
 
 {% block content %}
-  <h1 class="my-observation-page-title">Últimas Observações | 5 Registros encontrados</h1>
+  <h1 class="my-observation-page-title">Últimas Observações | {{ page_obj.paginator.count }} Registros encontrados</h1>
 
-  <!-- <div class="card-section">
-    {% for obs in observations %}
-    <div class="observation-card">
-      {% with obs.medias.all|first as media %}
-        {% if media and media.image %}
-          <img src="{{ media.image.url }}" alt="{{ media.name }}" class="observation-image">
-        {% endif %}
-      {% endwith %}
-      <div class="observation-info">
-        <div class="observation-info-titles">
-          <h3 class="observation-info-title">{{ obs.species.popular_name }}</h3>
-          <p class="observation-info-title-small">{{ obs.species.scientific_name }}</p>
-        </div>
-        <p>Data: {{ obs.created_at|date:"d/m/Y" }}</p>
-        <p>Foto por: {{ obs.user.username }}</p>
-      </div>
-    </div>
-    {% endfor %}
-  </div> -->
   <div class="card-section">
   {% for obs in page_obj %}
     <div class="observation-card">
