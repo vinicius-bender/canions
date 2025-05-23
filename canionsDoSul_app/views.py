@@ -488,4 +488,4 @@ def promover_usuario(request):
     return render(request, "canionsDoSul_app/promover_usuario.html", {"usuarios": usuarios})
 
 def permission_error(request):
-    return render(request, 'canionsDoSul_app/erro_permissaoome.html')
+    return render(request, 'canionsDoSul_app/erro_permissao.html')

@@ -1,24 +1,47 @@
 {% extends 'canionsDoSul_app/base.html' %}
+
+{% load static %}
+
+{% load user_tags %}
+
 {% block title %}Promover Usuário{% endblock %}
 
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/user_promotion.css' %}">
+{% endblock %}
+
 {% block content %}
-<h2>Promover Usuário</h2>
+<h1>Promover Usuário</h1>
 
-<form method="post">
+<form method="post" class="form-control">
     {% csrf_token %}
-    <label for="user">Usuário:</label>
-    <select name="user_id" id="user">
+
+    <!-- Campo de busca para filtrar o select -->
+    <label for="user-search">Buscar usuário:</label>
+    <input type="text" id="user-search" placeholder="Digite o nome do usuário ou papel...">
+
+    <!-- Select com todos os usuários -->
+    <select name="user_id" id="user" size="6">
         {% for user in usuarios %}
-            <option value="{{ user.id }}">{{ user.username }} ({{ user.role }})</option>
+             <option value="{{ user.id }}">{{ user.username }} ({{ user.role|translate_role }})</option>
         {% endfor %}
-    </select><br><br>
+    </select>
 
-    <label for="role">Promover para:</label>
-    <select name="role" id="role">
-        <option value="specialist">Especialista</option>
-        <option value="scientist">Cientista</option>
-    </select><br><br>
+    <!-- Cargo para promoção -->
+    <div class="role-label-div">
+        <label id="role-label" for="role">Promover usuário para:</label>
+        <select name="role" id="role">
+            <option value="specialist">Especialista</option>
+            <option value="scientist">Cientista</option>
+            <option value="default">Padrão</option>
+        </select>
+    </div>
 
-    <button type="submit">Promover</button>
+    <div class="submit-btn-div">
+        <button type="submit" class="submit-btn">Promover</button>
+    </div>
+    
 </form>
+
+<script src="{% static 'scripts/user_promotion.js' %}"></script>
 {% endblock %}

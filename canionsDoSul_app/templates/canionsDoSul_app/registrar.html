@@ -2,13 +2,14 @@
 
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Registrar usuário{% endblock %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'css/register.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Registrar usuário</h2>
+  <h1>Registrar usuário</h1>
+  
   <form method="post" class="form-control">
     {% csrf_token %}
     
@@ -33,5 +34,5 @@
       <button type="submit" class="submit-btn">Registrar</button>
     </div>
   </form>
-  <p class="register-link">Não possui uma conta? <a href="{% url 'login' %}"> Logue aqui!</a></p>
+  <p class="register-link">Já possui uma conta? <a href="{% url 'login' %}"> Logue aqui!</a></p>
 {% endblock %}
