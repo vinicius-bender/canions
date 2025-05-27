@@ -32,7 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
         input.value = username;
 
         // Atualiza o label do cargo
-        roleLabel.textContent = `Promover ${username} para:`;
+        // roleLabel.textContent = `Promover ${username} para:`;
+        const usernameInBold = `<strong>${username}</strong>`;
+        
+        // Atualiza o label do cargo com o nome em negrito
+        roleLabel.innerHTML = `Promover ${usernameInBold} para:`;
 
         // Oculta o select
         select.style.display = "none";
