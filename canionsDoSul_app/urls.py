@@ -24,7 +24,9 @@ urlpatterns = [
     path('criar_localizacao/', views.localization_list_create, name='criar_localizacao'),
     path('observacoes/', views.all_observations_list, name='observacoes'),
     path('observacoes/pendentes/', views.lista_observacoes_pendentes, name='lista_observacoes_pendentes'),
-    path('observacoes/avaliar/<int:observacao_id>/', views.aprovar_observacao, name='aprovar_observacao_detalhes'),
+    # path('observacoes/avaliar/<int:observacao_id>/', views.aprovar_observacao, name='aprovar_observacao_detalhes'),
+    path('observacoes/pendentes/avaliar-observacao/<int:observacao_id>/modal/', views.avaliar_observacao_modal, name='avaliar_observacao_modal'),
+    path('observacoes/pendentes/rejeitar-observacao/<int:observacao_id>/', views.rejeitar_observacao, name='rejeitar_observacao'),
     path("promover_usuario/", views.promover_usuario, name="promover_usuario"),
     path("erro_permissao/", views.permission_error, name="erro_permissao"),
 ]
