@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h5 class="modal-title">Avaliar Observação</h5>
+  <button type="button" class="btn-fechar-modal">&times;</button>
+</div>
+
+<div class="modal-body">
+  <p><strong>Local:</strong> {{ observacao.localization.city_name }}, {{ observacao.localization.state_name }}</p>
+
+  <h4>Imagens:</h4>
+  {% for media in observacao.media_set.all %}
+    <img src="{{ media.file.url }}" width="200px"/>
+  {% empty %}
+    <p>Sem imagens</p>
+  {% endfor %}
+
+  <form id="avaliar-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" name="aprovar">Aprovar</button>
+    <button type="button" name="rejeitar" class="btn-rejeitar" data-id="{{ observacao.id }}">Rejeitar</button>
+    <button type="button" class="btn-fechar-modal">Fechar</button>
+  </form>
+</div>

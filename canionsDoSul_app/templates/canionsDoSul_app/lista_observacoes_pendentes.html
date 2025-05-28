@@ -1,14 +1,31 @@
 {% extends 'canionsDoSul_app/base.html' %}
+
+{% load static %}
+
+{% load user_tags %}
+
+{% block title %}Observações pendentes{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/aproval_modal.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Observações Pendentes</h2>
 <ul>
   {% for obs in observacoes %}
     <li>
       {{ obs.localization.city_name }}, {{ obs.localization.state_name }} —
-      <a href="{% url 'aprovar_observacao_detalhes' obs.id %}">Avaliar</a>
+      <button class="btn-avaliar" data-id="{{ obs.id }}">Avaliar</button>
     </li>
-  {% empty %}
-    <li>Nenhuma observação pendente</li>
   {% endfor %}
 </ul>
+
+  <!-- Modal container -->
+  <div id="modal-container" style="display: none; position: fixed; top: 0; left: 0; right:0; bottom:0; background: rgba(0,0,0,0.7); justify-content: center; align-items: center;">
+    <div id="modal-content" style="background: white; padding: 20px; max-height: 90%; overflow: auto;"></div>
+  </div>
+</div>
+
+<script src="{% static 'scripts/aproval_modal.js' %}"></script>
 {% endblock %}

@@ -1,7 +1,3 @@
-{% extends 'canionsDoSul_app/base.html' %}
-{% block content %}
-<h2>Aprovar Observação</h2>
-
 <p><strong>Local:</strong> {{ observacao.localization.city_name }}, {{ observacao.localization.state_name }}</p>
 
 <div>
@@ -13,11 +9,9 @@
   {% endfor %}
 </div>
 
-<form method="post">
+<form id="form-avaliacao" method="post" action="{% url 'avaliar_observacao_modal' observacao.id %}">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Aprovar</button>
+  <button type="submit" name="aprovar">Aprovar</button>
+  <button type="submit" name="rejeitar">Rejeitar</button>
 </form>
-
-<a href="{% url 'lista_observacoes_pendentes' %}">Voltar</a>
-{% endblock %}

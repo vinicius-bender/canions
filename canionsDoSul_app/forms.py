@@ -171,8 +171,22 @@ class ObservationCityForm(forms.ModelForm):
                 'id': 'id_longitude',
             }),
         }
-
 ObservationCityForm.localization = LocalizationForm()
+
+class ObservationReviewForm(forms.ModelForm):
+    class Meta:
+        model = Observation
+        fields = ['localization', 'species', 'latitude', 'longitude']
+        widgets = {
+            'latitude': forms.NumberInput(attrs={
+                'step': '0.00000001',
+                'placeholder': 'Ex: -29.12345678',
+            }),
+            'longitude': forms.NumberInput(attrs={
+                'step': '0.00000001',
+                'placeholder': 'Ex: -51.23456789',
+            }),
+        }
 
 # Formulário para upload de múltiplas imagens
 class MediaForm(forms.Form):
