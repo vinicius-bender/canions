@@ -11,3 +11,7 @@ def translate_role(role):
         'admin': 'Administrador',
         'default': 'Padrão'
     }.get(role, role)
+
+@register.filter
+def not_in(value, args):
+    return value not in args.split(',')

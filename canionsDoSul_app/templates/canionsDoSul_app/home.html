@@ -1,6 +1,7 @@
 {% extends "canionsDoSul_app/base.html" %}
 {% load static %}
 
+{% load user_tags %}
 
 {% block title %}Home{% endblock %}
 
@@ -12,6 +13,7 @@
         <li><a href="{% url 'login' %}">Login</a></li>
         {% endif %}
         {% if user.is_authenticated and user.role == "admin" %}
+        <li><a href="{% url 'promover_usuario' %}">Promover Usuário</a></li>
         <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
         {% endif %}
         <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
@@ -19,12 +21,9 @@
         {% if user.is_authenticated %}
         <li><a href="{% url 'minhas_observacoes' %}">Minhas observações</a></li>
         {% endif %}
-        {% if user.is_authenticated and is_specialist %}
-        <li><a href="{% url 'lista_observacoes_pendentes' %}">Aprovar Observações</a></li>
+        {% if user.is_authenticated and user.role|not_in:"default" %}
+        <li><a href="{% url 'lista_observacoes_pendentes' %}">Observações pendentes</a></li>
         {% endif %}
-        {% if user.is_authenticated and user.role == "admin" %}
-    <li><a href="{% url 'promover_usuario' %}">Promover Usuário</a></li>
-{% endif %}
     </ul>
     {% if user.is_authenticated %}
         <form action="{% url 'logout' %}" method="post" style="display:inline;">
