@@ -156,7 +156,7 @@ def observation_by_city(request):
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = request.user
-            observation.status = "pendente"  # ou "", ou None se preferir
+            observation.status = "Pendente"  # ou "", ou None se preferir
             observation.save()
 
             # for file in request.FILES.getlist('images'):
@@ -203,10 +203,23 @@ def observations_list(request):
     
     # return render(request, 'canionsDoSul_app/minhas_observacoes.html', {'observations': observations})
 
-def all_observations_list(request):
-    observations_list = Observation.objects.all().select_related('species', 'localization').order_by('-created_at')
-    paginator = Paginator(observations_list, 10)
+# def all_observations_list(request):
+#     observations_list = Observation.objects.all().select_related('species', 'localization').order_by('-created_at')
+#     paginator = Paginator(observations_list, 10)
 
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'canionsDoSul_app/observacoes.html', {
+#         'observations': page_obj,
+#         'page_obj': page_obj
+#     })
+def all_observations_list(request):
+    observations_list = Observation.objects.filter(status='Aprovada') \
+        .select_related('species', 'localization') \
+        .order_by('-created_at')
+
+    paginator = Paginator(observations_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -274,7 +287,7 @@ def avaliar_observacao_modal(request, observacao_id):
             form = ObservationReviewForm(request.POST, instance=observacao)
             if form.is_valid():
                 observacao = form.save(commit=False)
-                observacao.status = 'aprovada'
+                observacao.status = 'Aprovada'
                 observacao.save()
                 return JsonResponse({'success': True, 'status': 'aprovada'})
             else:
@@ -293,8 +306,8 @@ def avaliar_observacao_modal(request, observacao_id):
 def rejeitar_observacao(request, observacao_id):
     observacao = get_object_or_404(Observation, id=observacao_id)
     if request.method == 'POST':
-        observacao.status = 'rejeitada'
-        observacao.delete()
+        observacao.status = 'Rejeitada'
+        # observacao.delete()
         return JsonResponse({'success': True, 'status': 'rejeitada'})
     return JsonResponse({'success': False, 'error': 'Rejeição inválida'}, status=400)
 

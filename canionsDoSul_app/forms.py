@@ -176,7 +176,7 @@ ObservationCityForm.localization = LocalizationForm()
 class ObservationReviewForm(forms.ModelForm):
     class Meta:
         model = Observation
-        fields = ['localization', 'species', 'latitude', 'longitude']
+        fields = ['species', 'localization', 'latitude', 'longitude']
         widgets = {
             'latitude': forms.NumberInput(attrs={
                 'step': '0.00000001',
@@ -187,6 +187,11 @@ class ObservationReviewForm(forms.ModelForm):
                 'placeholder': 'Ex: -51.23456789',
             }),
         }
+    def clean_species(self):
+        species = self.cleaned_data.get('species')
+        if not species:
+            raise forms.ValidationError('A espécie é obrigatória na avaliação.')
+        return species
 
 # Formulário para upload de múltiplas imagens
 class MediaForm(forms.Form):
