@@ -226,27 +226,27 @@ def all_observations_list(request):
         'page_obj': page_obj
     })
 
-@login_required
-def edit_observation(request, observation_id):
-    observation = get_object_or_404(Observation, id=observation_id, user=request.user)
-    if request.method == 'POST':
-        form = ObservationForm(request.POST, instance=observation)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Observação atualizada com sucesso!")
-            return redirect('minhas_observacoes')
-    else:
-        form = ObservationForm(instance=observation)
-    return render(request, 'canionsDoSul_app/editar_observacoes.html', {'form': form})
+# @login_required
+# def edit_observation(request, observation_id):
+#     observation = get_object_or_404(Observation, id=observation_id, user=request.user)
+#     if request.method == 'POST':
+#         form = ObservationForm(request.POST, instance=observation)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Observação atualizada com sucesso!")
+#             return redirect('minhas_observacoes')
+#     else:
+#         form = ObservationForm(instance=observation)
+#     return render(request, 'canionsDoSul_app/editar_observacoes.html', {'form': form})
 
-@login_required
-def delete_observation(request, observation_id):
-    observation = get_object_or_404(Observation, id=observation_id, user=request.user)
-    if request.method == 'POST':
-        observation.delete()
-        messages.success(request, "Observação excluída com sucesso!")
-        return redirect('minhas_observacoes')
-    return render(request, 'canionsDoSul_app/deletar_observacoes.html', {'observation': observation})
+# @login_required
+# def delete_observation(request, observation_id):
+#     observation = get_object_or_404(Observation, id=observation_id, user=request.user)
+#     if request.method == 'POST':
+#         observation.delete()
+#         messages.success(request, "Observação excluída com sucesso!")
+#         return redirect('minhas_observacoes')
+#     return render(request, 'canionsDoSul_app/deletar_observacoes.html', {'observation': observation})
 
 @login_required
 def localization_list_create(request):
