@@ -13,15 +13,6 @@
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
 
-  <!-- Apenas cidade e estado visíveis -->
-  <!-- {{ localization_form.city_name.label_tag }}
-  {{ localization_form.city_name }}
-
-  {{ localization_form.state_name.label_tag }}
-  {{ localization_form.state_name }}
-
-  {{ localization_form.country_name }} -->
-
   <label for="id_city_name">Cidade:</label>
   <input type="text" name="city_name" id="id_city_name" class="form-control">
 
