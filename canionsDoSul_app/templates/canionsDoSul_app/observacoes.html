@@ -13,8 +13,8 @@
   {% for obs in page_obj %}
     <div class="observation-card">
       {% with obs.medias.all|first as media %}
-        {% if media and media.image %}
-          <img src="{{ media.image.url }}" alt="{{ media.name }}" class="observation-image">
+        {% if media and media.files %}
+          <img src="{{ media.files.url }}" alt="{{ media.name }}" class="observation-image">
         {% endif %}
       {% endwith %}
       <div class="observation-info">
