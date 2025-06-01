@@ -114,15 +114,12 @@ def observation_by_latlng(request):
             observation.save()
 
             # Processa as imagens
-            if 'images' in request.FILES:
-                for image in request.FILES.getlist('images'):
-                    # Certifique-se de que o modelo Media tem o campo correto
+            if 'files' in request.FILES:
+                for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
-                        image=image,  # Certifique-se de que este é o nome correto do campo
-                        name=image.name[:255],
+                        files=file,
+                        name=file.name[:255],
                     )
-                    
-                    # Se você estiver usando uma tabela de relacionamento
                     ObservationMedia.objects.create(
                         observation=observation,
                         media=media
@@ -214,6 +211,7 @@ def observations_list(request):
 #         'observations': page_obj,
 #         'page_obj': page_obj
 #     })
+
 def all_observations_list(request):
     observations_list = Observation.objects.filter(status='Aprovada') \
         .select_related('species', 'localization') \
@@ -302,12 +300,14 @@ def avaliar_observacao_modal(request, observacao_id):
             'form': form
         })
 
+@login_required
+@user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
 @csrf_exempt
 def rejeitar_observacao(request, observacao_id):
     observacao = get_object_or_404(Observation, id=observacao_id)
     if request.method == 'POST':
         observacao.status = 'Rejeitada'
-        # observacao.delete()
+        observacao.delete()
         return JsonResponse({'success': True, 'status': 'rejeitada'})
     return JsonResponse({'success': False, 'error': 'Rejeição inválida'}, status=400)
 

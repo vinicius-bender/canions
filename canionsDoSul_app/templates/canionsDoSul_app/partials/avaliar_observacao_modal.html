@@ -7,13 +7,22 @@
   <p><strong>Local:</strong> {{ observacao.localization.city_name }}, {{ observacao.localization.state_name }}</p>
 
   <h4>Imagens:</h4>
-  {% for media in observacao.media_set.all %}
-    <img src="{{ media.file.url }}" width="200px"/>
+  {% for media in observacao.medias.all %}
+    {% if media.is_image %}
+      <img src="{{ media.files.url }}" width="200px" height="200px">
+    {% elif media.is_video %}
+      <video width="320" height="240" controls>
+        <source src="{{ media.files.url }}" type="video/mp4">
+        Seu navegador não suporta vídeos.
+      </video>
+    {% else %}
+      <p>Tipo de mídia não suportado.</p>
+    {% endif %}
   {% empty %}
-    <p>Sem imagens</p>
+    <p>Sem mídias.</p>
   {% endfor %}
 
-  <form id="avaliar-form" method="post">
+  <form id="avaliar-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 

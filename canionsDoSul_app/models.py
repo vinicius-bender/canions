@@ -164,9 +164,16 @@ class Localization(models.Model):
 
 class Media(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='observations/')  # Usar ImageField para imagens
+    # image = models.ImageField(upload_to='observations/')  # Usar ImageField para imagens
+    files = models.FileField(upload_to='observations/', default='default.jpg')  # Suporta imagens e vídeos
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def is_image(self):
+        return self.files.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.jfif', '.webp'))
+
+    def is_video(self):
+        return self.files.name.lower().endswith(('.mp4', '.mov', '.webm', '.mkv'))
     
     class Meta:
         db_table = 'media'

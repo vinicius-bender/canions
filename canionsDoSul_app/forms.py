@@ -195,9 +195,9 @@ class ObservationReviewForm(forms.ModelForm):
 
 # Formulário para upload de múltiplas imagens
 class MediaForm(forms.Form):
-    images = forms.FileField(
+    files = forms.FileField(
         widget=MultipleFileInput(),
-        label='Selecione as imagens',
+        label='Selecione arquivos de imagem ou vídeo',
         required=False,
     )
 
