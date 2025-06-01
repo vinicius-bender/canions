@@ -14,7 +14,7 @@
         {% endif %}
         {% if user.is_authenticated and user.role == "admin" %}
         <li><a href="{% url 'promover_usuario' %}">Promover Usuário</a></li>
-        <li><a href="{% url 'cadastrar' %}">Cadastrar</a></li>
+        <li><a href="{% url 'cadastrar' %}">Cadastrar taxonomia</a></li>
         {% endif %}
         <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
         <li><a href="{% url 'observacoes' %}">Últimas observações</a></li>
