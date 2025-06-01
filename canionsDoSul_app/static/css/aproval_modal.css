@@ -1,29 +1,25 @@
-/* .modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
+#modal-container {
   display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
 }
 
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
+#modal-content {
   width: 90%;
-  max-width: 600px;
-  position: relative;
+  background: white;
+  padding: 20px;
+  max-height: 90%;
+  overflow: auto;
 }
 
-.fechar-modal {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 20px;
-  cursor: pointer;
-} */
+.modal-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

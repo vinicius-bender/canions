@@ -9,7 +9,7 @@
   <h4>Imagens:</h4>
   {% for media in observacao.medias.all %}
     {% if media.is_image %}
-      <img src="{{ media.files.url }}" width="200px" height="200px">
+      <img src="{{ media.files.url }}" width="100px" height="100px">
     {% elif media.is_video %}
       <video width="320" height="240" controls>
         <source src="{{ media.files.url }}" type="video/mp4">

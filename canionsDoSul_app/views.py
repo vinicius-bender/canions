@@ -10,12 +10,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 #views
-# def is_scientist(user):
-#     return hasattr(user, 'scientist')
-
-# def is_specialist(user):
-#     return hasattr(user, 'specialist')
-
 def is_specialist_or_scientist(user):
     return user.role in ['specialist', 'scientist']
 
@@ -26,7 +20,6 @@ def is_admin(user):
     return user.is_authenticated and user.role == "admin"
 
 def home(request):
-    # return render(request, 'canionsDoSul_app/home.html')
     return render(request, 'canionsDoSul_app/home.html', {'user': request.user})
 
 @login_required
@@ -39,7 +32,7 @@ class CustomLoginView(LoginView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('home')  # Redireciona para a home se já estiver autenticado
+            return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
 def register(request):
@@ -47,7 +40,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redireciona após cadastro
+            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'canionsDoSul_app/registrar.html', {'form': form})
@@ -127,7 +120,6 @@ def observation_by_latlng(request):
 
             return redirect('home')
         else:
-            # Se o formulário for inválido, adicione mensagens de erro
             print(observation_form.errors)
 
     else:
@@ -153,22 +145,21 @@ def observation_by_city(request):
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = request.user
-            observation.status = "Pendente"  # ou "", ou None se preferir
+            observation.status = "Pendente"
             observation.save()
 
             # for file in request.FILES.getlist('images'):
             #     Media.objects.create(observation=observation, file=file)
             
             # Processa as imagens
-            if 'images' in request.FILES:
-                for image in request.FILES.getlist('images'):
-                    # Certifique-se de que o modelo Media tem o campo correto
+            if 'files' in request.FILES:
+                for file in request.FILES.getlist('files'):
+
                     media = Media.objects.create(
-                        image=image,  # Certifique-se de que este é o nome correto do campo
-                        name=image.name[:255]
+                        files=file,
+                        name=file.name[:255]
                     )
                     
-                    # Se você estiver usando uma tabela de relacionamento
                     ObservationMedia.objects.create(
                         observation=observation,
                         media=media
@@ -187,9 +178,11 @@ def observation_by_city(request):
 
 @login_required
 def observations_list(request):
-    observations = Observation.objects.filter(user=request.user).select_related('species', 'localization')
+    observations = Observation.objects.filter(user=request.user, status='Aprovada') \
+        .select_related('species', 'localization') \
+        .order_by('-created_at')
+    
     paginator = Paginator(observations, 10)
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
