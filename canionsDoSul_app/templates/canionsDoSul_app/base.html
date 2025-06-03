@@ -1,32 +1,70 @@
 {% load static %}
 
+{% load user_tags %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Plataforma Cânions do Sul{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block head %}{% endblock %}
 </head>
+
 <body>
     <header>
-        <div class="container"> 
+        <div class="container">
             <nav class="navbar">
                 <img class="nav-branding" src="{% static 'assets/logo.png' %}" alt="Logo">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                    <a href="#" class="nav-link">Home</a>
+                        <a href="#" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                    <a href="#" class="nav-link">About</a>
+                        <a href="#" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                    <a href="#" class="nav-link">Contact</a>
+                        <a href="#" class="nav-link">Contact</a>
+                    </li class="nav-item">
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'registrar' %}" class="nav-link">Registrar-se</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.role == "admin" %}
+                    <li class="nav-item">
+                        <a href="{% url 'promover_usuario' %}" class="nav-link">Promover Usuário</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'cadastrar' %}" class="nav-link">Cadastrar taxonomia</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'criar_observacao' %}" class="nav-link">Cadastrar Observação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'observacoes' %}" class="nav-link">Últimas observações</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas observações</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.role|not_in:"default" %}
+                    <li class="nav-item">
+                        <a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações pendentes</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -35,21 +73,21 @@
                 </div>
             </nav>
         </div>
-   </header>
+    </header>
 
     <nav class="breadcrumb">
         <a href="{% url 'home' %}">Home</a>
         {% for crumb in breadcrumbs %}
-            &gt;
-            {% if not forloop.last %}
-            <a href="{{ crumb.url }}">{{ crumb.name }}</a>
-            {% else %}
-            <span>{{ crumb.name }}</span>
-            {% endif %}
+        &gt;
+        {% if not forloop.last %}
+        <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+        {% else %}
+        <span>{{ crumb.name }}</span>
+        {% endif %}
         {% endfor %}
     </nav>
 
-   <section class="main-content">
+    <section class="main-content">
         {% block content %}
         <!-- O conteúdo de cada página será inserido aqui -->
         {% endblock %}
@@ -57,4 +95,5 @@
     <script src="{% static 'scripts/script.js' %}"></script>
     {% block script %}{% endblock %}
 </body>
+
 </html>

@@ -5,6 +5,28 @@
     font-family: "Poppins", sans-serif;
   }
 
+a{
+    text-decoration: none;
+    width: 100%;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+.observation-video-placeholder {
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.observation-video-icon {
+  width: 64px;
+  opacity: 0.7;
+}
+
 .my-observation-page-title{
     font-size: 1.2rem;
     padding: 0px 10px;
