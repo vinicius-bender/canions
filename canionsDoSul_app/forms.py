@@ -174,9 +174,13 @@ class ObservationCityForm(forms.ModelForm):
 ObservationCityForm.localization = LocalizationForm()
 
 class ObservationReviewForm(forms.ModelForm):
+    family = forms.ModelChoiceField(queryset=Family.objects.all(), required=False, label="Família")
+    genus = forms.ModelChoiceField(queryset=Genus.objects.none(), required=False, label="Gênero")
+    species = forms.ModelChoiceField(queryset=Species.objects.none(), required=False, label="Espécie")
+
     class Meta:
         model = Observation
-        fields = ['species', 'localization', 'latitude', 'longitude']
+        fields = ['species', 'latitude', 'longitude']
         widgets = {
             'latitude': forms.NumberInput(attrs={
                 'step': '0.00000001',
@@ -187,10 +191,52 @@ class ObservationReviewForm(forms.ModelForm):
                 'placeholder': 'Ex: -51.23456789',
             }),
         }
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+
+    #     if self.instance and self.instance.species:
+    #         genus = self.instance.species.genus
+    #         family = genus.family
+    #         self.fields['genus'].queryset = Genus.objects.filter(family=family)
+    #         self.fields['species'].queryset = Species.objects.filter(genus=genus)
+    #         self.initial['genus'] = genus
+    #         self.initial['family'] = family
+    #     else:
+    #         self.fields['genus'].queryset = Genus.objects.none()
+    #         self.fields['species'].queryset = Species.objects.none()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Caso esteja editando uma instância já salva
+        if self.instance and self.instance.species:
+            genus = self.instance.species.genus
+            family = genus.family if genus else None
+
+            if family:
+                self.fields['genus'].queryset = Genus.objects.filter(family=family)
+            if genus:
+                self.fields['species'].queryset = Species.objects.filter(genus=genus)
+
+        # Se os dados foram enviados no POST
+        if 'family' in self.data:
+            try:
+                family_id = int(self.data.get('family'))
+                self.fields['genus'].queryset = Genus.objects.filter(family_id=family_id)
+            except (ValueError, TypeError):
+                pass
+
+        if 'genus' in self.data:
+            try:
+                genus_id = int(self.data.get('genus'))
+                self.fields['species'].queryset = Species.objects.filter(genus_id=genus_id)
+            except (ValueError, TypeError):
+                pass
+
     def clean_species(self):
         species = self.cleaned_data.get('species')
         if not species:
-            raise forms.ValidationError('A espécie é obrigatória na avaliação.')
+            raise forms.ValidationError("É necessário selecionar uma espécie.")
         return species
 
 # Formulário para upload de múltiplas imagens
