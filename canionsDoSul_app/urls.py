@@ -27,4 +27,6 @@ urlpatterns = [
     path('observacoes/pendentes/rejeitar-observacao/<int:observacao_id>/', views.rejeitar_observacao, name='rejeitar_observacao'),
     path("promover_usuario/", views.promover_usuario, name="promover_usuario"),
     path("erro_permissao/", views.permission_error, name="erro_permissao"),
+    path('buscar-generos/<int:family_id>/', views.buscar_generos_por_familia, name='buscar_generos'),
+    path('buscar-especies/<int:genus_id>/', views.buscar_especies_por_genero, name='buscar_especies'),
 ]

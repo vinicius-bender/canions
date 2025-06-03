@@ -278,14 +278,15 @@ def avaliar_observacao_modal(request, observacao_id):
             form = ObservationReviewForm(request.POST, instance=observacao)
             if form.is_valid():
                 observacao = form.save(commit=False)
+                localization_id = request.POST.get('localization')
+                if localization_id:
+                    observacao.localization_id = localization_id
                 observacao.status = 'Aprovada'
                 observacao.save()
                 return JsonResponse({'success': True, 'status': 'aprovada'})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
-    
         return JsonResponse({'success': False, 'error': 'Ação inválida'})
-
     else:
         form = ObservationReviewForm(instance=observacao)
         return render(request, 'canionsDoSul_app/partials/avaliar_observacao_modal.html', {
@@ -329,3 +330,13 @@ def promover_usuario(request):
 
 def permission_error(request):
     return render(request, 'canionsDoSul_app/erro_permissao.html')
+
+@login_required
+def buscar_generos_por_familia(request, family_id):
+    generos = Genus.objects.filter(family_id=family_id).values('id', 'name')
+    return JsonResponse({'generos': list(generos)})
+
+@login_required
+def buscar_especies_por_genero(request, genus_id):
+    especies = Species.objects.filter(genus_id=genus_id).values('id', 'scientific_name')
+    return JsonResponse({'especies': list(especies)})

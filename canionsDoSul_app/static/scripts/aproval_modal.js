@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Fecha o modal
   document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('btn-fechar-modal')) {
+    if (e.target.classList.contains('btn-fechar-modal') ||
+      e.target.classList.contains('fechar-button')) {
       fecharModal();
     }
   });
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(html => {
         document.getElementById('modal-content').innerHTML = html;
         document.getElementById('modal-container').style.display = 'flex';
+
+        inicializarSelects(); // <-- AQUI: chama a função após carregar o conteúdo
 
         // Botão Rejeitar
         const btnRejeitar = document.querySelector('.btn-rejeitar');
@@ -35,8 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
           form.addEventListener('submit', function (e) {
             e.preventDefault();
             const formData = new FormData(form);
-
-            // Adiciona manualmente o campo "aprovar"
             formData.append('aprovar', '1');
 
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -68,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
               });
           });
-
         }
       });
   }
