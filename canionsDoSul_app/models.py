@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+import os
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, role="default"):
@@ -170,10 +171,14 @@ class Media(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def is_image(self):
-        return self.files.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.jfif', '.webp'))
+        ext = os.path.splitext(self.files.name)[1].lower()
+        # return self.files.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.jfif', '.webp'))
+        return ext in  ['.png', '.jpg', '.jpeg', '.gif', '.jfif', '.webp']
 
     def is_video(self):
-        return self.files.name.lower().endswith(('.mp4', '.mov', '.webm', '.mkv'))
+        ext = os.path.splitext(self.files.name)[1].lower()
+        # return self.files.name.lower().endswith(('.mp4', '.mov', '.webm', '.mkv'))
+        return ext in ['.mp4', '.mov', '.webm', '.mkv']
     
     class Meta:
         db_table = 'media'

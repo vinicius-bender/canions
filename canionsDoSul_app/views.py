@@ -190,20 +190,6 @@ def observations_list(request):
         'observations': page_obj,
         'page_obj': page_obj
     })
-    
-    # return render(request, 'canionsDoSul_app/minhas_observacoes.html', {'observations': observations})
-
-# def all_observations_list(request):
-#     observations_list = Observation.objects.all().select_related('species', 'localization').order_by('-created_at')
-#     paginator = Paginator(observations_list, 10)
-
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-
-#     return render(request, 'canionsDoSul_app/observacoes.html', {
-#         'observations': page_obj,
-#         'page_obj': page_obj
-#     })
 
 def all_observations_list(request):
     observations_list = Observation.objects.filter(status='Aprovada') \
@@ -219,27 +205,9 @@ def all_observations_list(request):
         'page_obj': page_obj
     })
 
-# @login_required
-# def edit_observation(request, observation_id):
-#     observation = get_object_or_404(Observation, id=observation_id, user=request.user)
-#     if request.method == 'POST':
-#         form = ObservationForm(request.POST, instance=observation)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Observação atualizada com sucesso!")
-#             return redirect('minhas_observacoes')
-#     else:
-#         form = ObservationForm(instance=observation)
-#     return render(request, 'canionsDoSul_app/editar_observacoes.html', {'form': form})
-
-# @login_required
-# def delete_observation(request, observation_id):
-#     observation = get_object_or_404(Observation, id=observation_id, user=request.user)
-#     if request.method == 'POST':
-#         observation.delete()
-#         messages.success(request, "Observação excluída com sucesso!")
-#         return redirect('minhas_observacoes')
-#     return render(request, 'canionsDoSul_app/deletar_observacoes.html', {'observation': observation})
+def observation_detail(request, pk):
+    observation = get_object_or_404(Observation, pk=pk)
+    return render(request, 'canionsDoSul_app/detalhes_observacao.html', {'observation': observation})
 
 @login_required
 def localization_list_create(request):
@@ -263,7 +231,7 @@ def localization_list_create(request):
 @login_required
 @user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
 def lista_observacoes_pendentes(request):
-    observacoes = Observation.objects.filter(species__isnull=True)
+    observacoes = Observation.objects.filter(species__isnull=True).order_by('created_at')
     return render(request, 'canionsDoSul_app/lista_observacoes_pendentes.html', {
         'observacoes': observacoes
     })
