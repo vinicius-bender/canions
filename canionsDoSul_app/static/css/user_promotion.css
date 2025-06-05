@@ -26,19 +26,79 @@ body {
     /* padding: 0.75rem; */
 }
 
-#user-search {
+/* #user-search {
     width: 100%;
     padding: 8px;
+} */
+
+/* label, p{
+    font-weight: 600;
+    color: #333;
+} */
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-select#user {
+input[type="text"]:focus {
+    border-color: #3b82f6; /* azul suave */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.autocomplete-suggestions {
+    /* position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000; */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    /* appearance: none; */
+}
+
+.autocomplete-suggestions option {
+    padding: 0.625rem 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 0.063rem solid #ccc;
+}
+
+.autocomplete-suggestions option:hover {
+    background-color: #f3f4f6;
+}
+
+/* select#user {
+    display: none;
+    width: 100%;
+    margin-top: 0.5rem;
+} */
+
+/* select#user {
     width: 100%;
     padding: 8px;
     display: none;
-}
+} */
+
 
 .role-label-div{
+    width: 100%;
     padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.313rem;
 }
 
 /* #role-label{
@@ -47,7 +107,24 @@ select#user {
 
 #role{
     width: fit-content;
-    display: inline-block;
+    flex: 1;
+    /* display: inline-block; */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+}
+
+#role option {
+    padding: 0.625rem 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 0.063rem solid #ccc;
+}
+
+#role option:hover {
+    background-color: #f3f4f6;
 }
 
 .submit-btn-div{

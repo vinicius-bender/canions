@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Atualiza o label do cargo
         // roleLabel.textContent = `Promover ${username} para:`;
         const usernameInBold = `<strong>${username}</strong>`;
-        
+
         // Atualiza o label do cargo com o nome em negrito
         roleLabel.innerHTML = `Promover ${usernameInBold} para:`;
 

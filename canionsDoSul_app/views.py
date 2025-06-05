@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 #views
 def is_specialist_or_scientist(user):
@@ -22,9 +23,9 @@ def is_admin(user):
 def home(request):
     return render(request, 'canionsDoSul_app/home.html', {'user': request.user})
 
-@login_required
-def cadastrar(request):
-    return render(request, 'canionsDoSul_app/cadastrar.html')
+# @login_required
+# def cadastrar(request):
+#     return render(request, 'canionsDoSul_app/cadastrar.html')
 
 class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
@@ -308,3 +309,67 @@ def buscar_generos_por_familia(request, family_id):
 def buscar_especies_por_genero(request, genus_id):
     especies = Species.objects.filter(genus_id=genus_id).values('id', 'scientific_name')
     return JsonResponse({'especies': list(especies)})
+
+@login_required
+@user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
+def cadastrar_taxonomia(request):
+    if request.method == 'POST':
+        family_name = request.POST.get('family', '').strip()
+        genus_name = request.POST.get('genus', '').strip()
+        species_name = request.POST.get('species', '').strip()
+        popular_name = request.POST.get('popular_name', '').strip()
+        habitat = request.POST.get('habitat', '').strip()
+
+        # 1. Verificar e/ou criar Família
+        family_obj, _ = Family.objects.get_or_create(name__iexact=family_name, defaults={'name': family_name})
+
+        # 2. Verificar se já existe um gênero com esse nome para essa família
+        genus_obj, _ = Genus.objects.get_or_create(name__iexact=genus_name, family=family_obj, defaults={'name': genus_name, 'family': family_obj})
+
+        # 3. Verificar se a espécie já está cadastrada com esse nome científico e gênero
+        species_exists = Species.objects.filter(
+            scientific_name__iexact=species_name,
+            genus=genus_obj
+        ).exists()
+
+        if species_exists:
+            messages.warning(request, 'Espécie já cadastrada para esse gênero.')
+        else:
+            Species.objects.create(
+                scientific_name=species_name,
+                popular_name=popular_name,
+                habitat=habitat,
+                genus=genus_obj,
+                user=request.user
+            )
+            messages.success(request, 'Cadeia taxonômica cadastrada com sucesso.')
+
+        return redirect('cadastrar')
+
+    context = {
+        'familias': Family.objects.all(),
+        'generos': Genus.objects.all(),
+        'especies': Species.objects.all()
+    }
+    return render(request, 'canionsDoSul_app/cadastrar.html', context)
+
+@login_required
+@csrf_exempt
+def autocomplete_family(request):
+    term = request.GET.get('term', '')
+    families = Family.objects.filter(name__icontains=term).values_list('name', flat=True)
+    return JsonResponse(list(families), safe=False)
+
+@login_required
+@csrf_exempt
+def autocomplete_genus(request):
+    term = request.GET.get('term', '')
+    genera = Genus.objects.filter(name__icontains=term).values_list('name', flat=True)
+    return JsonResponse(list(genera), safe=False)
+
+@login_required
+@csrf_exempt
+def autocomplete_species(request):
+    term = request.GET.get('term', '')
+    especies = Species.objects.filter(scientific_name__icontains=term).values('scientific_name', 'popular_name')
+    return JsonResponse(list(especies), safe=False)

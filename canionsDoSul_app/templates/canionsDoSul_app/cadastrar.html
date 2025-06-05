@@ -1,14 +1,71 @@
 {% extends "canionsDoSul_app/base.html" %}
 
-{% block title %}Cadastrar{% endblock %}
+{% load static %}
+
+{% load user_tags %}
+
+{% block title %}Cadastrar Cadeia Taxonômica{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/taxonomia.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>Cadastrar</h1>
-    <ul>
-        <li><a href="{% url 'criar_familia' %}">Cadastrar Família</a></li>
-        <li><a href="{% url 'criar_genero' %}">Cadastrar Gênero</a></li>
-        <li><a href="{% url 'criar_especie' %}">Cadastrar Espécie</a></li>
-        <li><a href="{% url 'criar_localizacao' %}">Cadastrar Localizacao</a></li>
-    </ul>
-    <a href="{% url 'home' %}">Voltar</a>
+<h1>Cadastrar Cadeia Taxonômica</h1>
+<form method="POST" class="form-container">
+    {% csrf_token %}
+
+    <div class="form-div">
+        <label for="family">Família</label>
+        <input type="text" name="family" id="family" required placeholder="Digite ou selecione uma família"
+            autocomplete="off">
+        <div class="autocomplete-suggestions" id="family-suggestions"></div>
+    </div>
+
+    <div class="form-div">
+        <label for="genus">Gênero</label>
+        <input type="text" name="genus" id="genus" required placeholder="Digite ou selecione um gênero"
+            autocomplete="off">
+        <div class="autocomplete-suggestions" id="genus-suggestions"></div>
+    </div>
+
+    <div class="form-div">
+        <label for="species">Espécie (Nome Científico)</label>
+        <input type="text" name="species" id="species" required placeholder="Digite ou selecione a espécie"
+            autocomplete="off">
+        <div class="autocomplete-suggestions" id="species-suggestions"></div>
+    </div>
+
+    <div class="form-div">
+        <label for="popular_name">Nome Popular</label>
+        <input type="text" name="popular_name" id="popular_name" required placeholder="Nome popular da espécie">
+    </div>
+
+    <div class="form-div">
+        <p>Cadeia Taxonômica</p>
+        <div class="cadeia-preview" id="cadeia-preview"><span id="family-color">Família</span> - <span id="genus-color">Gênero</span> - <span id="species-color">Espécie</span></div>
+    </div>
+
+    <div class="form-div">
+        <label for="habitat">Informações adicionais (opcional)</label>
+        <textarea name="habitat" id="habitat" placeholder="Descreva o habitat do animal..."></textarea>
+        <div id="char-count" class="char-count">0 / 2000</div>
+    </div>
+
+    <div class="form-buttons">
+        <button type="submit">Cadastrar</button>
+        <a href="{% url 'home' %}">Voltar</a>
+    </div>
+</form>
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script src="{% static 'scripts/taxonomia.js' %}"></script>
+
 {% endblock %}

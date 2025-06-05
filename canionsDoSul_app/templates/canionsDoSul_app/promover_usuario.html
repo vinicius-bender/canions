@@ -18,10 +18,10 @@
 
     <!-- Campo de busca para filtrar o select -->
     <label for="user-search">Buscar usuário:</label>
-    <input type="text" id="user-search" placeholder="Digite o nome do usuário ou papel...">
+    <input type="text" id="user-search" placeholder="Digite o nome do usuário ou papel..." autocomplete="off">
 
     <!-- Select com todos os usuários -->
-    <select name="user_id" id="user" size="6">
+    <select name="user_id" id="user" size="5" class="autocomplete-suggestions">
         {% for user in usuarios %}
              <option value="{{ user.id }}">{{ user.username }} ({{ user.role|translate_role }})</option>
         {% endfor %}
