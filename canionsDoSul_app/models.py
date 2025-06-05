@@ -95,7 +95,7 @@ class Genus(models.Model):
 class Species(models.Model):
     scientific_name = models.CharField(max_length=255)
     popular_name = models.CharField(max_length=255)
-    habitat = models.CharField(max_length=255)
+    habitat = models.CharField(max_length=2000)
     genus = models.ForeignKey(Genus, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
