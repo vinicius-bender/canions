@@ -1,29 +1,173 @@
-/* .modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 1000;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-.modal.hidden {
-  display: none;
+body {
+    background-color: #F8FFFA;
 }
 
-.modal-content {
-  background: #fff;
-  padding: 20px;
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  margin-TOP: 1rem;
+}
+
+/* Lista de observações */
+.observation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.observation-list-item {
+  background-color: #fff;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
   border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.fechar-modal {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 20px;
+/* Botão de avaliação */
+.btn-avaliar {
+  background-color: #3B7A57;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-avaliar:hover {
+  background-color: #266d46;
+}
+
+/*MODAL*/
+#modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+#modal-content {
+  width: 90%;
+  background: white;
+  /* padding: 20px; */
+  max-height: 90%;
+  overflow: auto;
+}
+
+.modal-header{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.btn-fechar-modal-div{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-fechar-modal{
+  font-size: 2rem;
+  color: black;
+  border-style: none;
+  background-color: white;
+  padding: 0px 0.8rem 0px 0px;
+}
+
+.modal-title{
+  padding: 0px 0px 0px 0.625rem;
+  
+}
+
+.modal-body{
+  padding: 0.625rem;
+}
+
+.avaliar-form p{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+}
+
+.avaliar-form > p > label{
+  font-weight: 700;
+}
+
+.medias{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center; /* ou space-between, se preferir */
+  margin-bottom: 1.125rem;
+}
+
+.medias img, .medias video{
+  width: calc(50% - 0.625rem); /* 2 por linha com espaço entre */
+  /* height: 9.375rem; */
+  height: auto; /* opcional com aspect-ratio */
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+
+.buttons-div{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.125rem;;
+}
+
+.avaliar-form button{
+  padding: 0.75rem 1.75rem;
+  border-style: none;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.aprove-btn{
+  background-color: #3B7A57;
+}
+
+.reject-btn{
+  background-color: red;
+}
+
+.close-btn{
+  background-color: #6c757d;
+}
+
+/* Responsividade extra */
+/* @media (max-width: 480px) {
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-avaliar {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 } */

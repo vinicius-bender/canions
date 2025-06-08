@@ -3,19 +3,28 @@
 
 {% block title %}Últimas observações{% endblock %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/cards.css' %}">
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h1 class="my-observation-page-title">Últimas Observações | {{ page_obj.paginator.count }} Registros encontrados</h1>
+<h1 class="my-observation-page-title">Últimas Observações | {{ page_obj.paginator.count }} Registros encontrados</h1>
 
-  <div class="card-section">
+<div class="card-section">
   {% for obs in page_obj %}
+  <a href="{% url 'detalhes_observacoes' obs.id %}" class="observation-card-link">
     <div class="observation-card">
       {% with obs.medias.all|first as media %}
-        {% if media and media.image %}
-          <img src="{{ media.image.url }}" alt="{{ media.name }}" class="observation-image">
-        {% endif %}
+      {% if media %}
+      {% if media.is_image %}
+      <img src="{{ media.files.url }}" alt="{{ media.name }}" class="observation-image">
+      {% elif media.is_video %}
+      <div class="observation-video-placeholder">
+        <img src="{% static 'assets/video-placeholder.png' %}" alt="Vídeo" class="observation-video-icon">
+      </div>
+      {% endif %}
+      {% else %}
+      <img src="{% static 'assets/no-image.png' %}" alt="Sem mídia" class="observation-image">
+      {% endif %}
       {% endwith %}
       <div class="observation-info">
         <div class="observation-info-titles">
@@ -26,24 +35,25 @@
         <p>Foto por: {{ obs.user.username }}</p>
       </div>
     </div>
+  </a>
   {% empty %}
-    <p>Nenhuma observação encontrada.</p>
+  <p>Nenhuma observação encontrada.</p>
   {% endfor %}
 </div>
 
 <!-- Paginação -->
 <div class="pagination">
   {% if page_obj.has_previous %}
-    <a href="?page=1">&laquo; Primeira</a>
-    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+  <a href="?page=1">&laquo; Primeira</a>
+  <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
   {% endif %}
 
   <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
-    <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+  <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+  <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
   {% endif %}
 </div>
-  <a href="{% url 'home' %}" class="back-btn">Voltar</a>
+<a href="{% url 'home' %}" class="back-btn">Voltar</a>
 {% endblock %}
