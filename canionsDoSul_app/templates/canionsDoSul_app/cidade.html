@@ -4,35 +4,47 @@
 {% block title %}Cadastrar por Cidade{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/form.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/form.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/city.css' %}">
 {% endblock %}
 
 {% block content %}
-<h2>Cadastro por Cidade</h2>
+<h1>Cadastro por Cidade</h1>
+
+<div class="instructions-div">
+  <p>Preencha os campos com os dados correspondentes</p>
+</div>
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
 
   <label for="id_city_name">Cidade:</label>
-  <input type="text" name="city_name" id="id_city_name" class="form-control">
+  <input type="text" name="city_name" id="id_city_name" class="form-control" placeholder="Torres">
 
   <label for="id_state_name">Estado:</label>
-  <input type="text" name="state_name" id="id_state_name" class="form-control">
+  <input type="text" name="state_name" id="id_state_name" class="form-control" placeholder="Rio Grande do Sul">
 
   <label for="id_country_name">País:</label>
-  <input type="text" name="country_name" id="id_country_name" class="form-control">
+    <div class="country-text-div">
+      <p>Será preenchido automaticamente após a escolha da cidade e estado</p>
+    </div>
+  <input readonly type="text" name="country_name" id="id_country_name" class="form-control">
+
+  <div id="location-status"></div>
 
   {{ observation_form.latitude }}
   {{ observation_form.longitude }}
 
   {{ media_form.as_p }}
 
-  <button type="submit">Cadastrar</button>
+  <div class="form-buttons">
+    <button type="submit" id="submit-button">Cadastrar</button>
+    <a href="{% url 'criar_observacao' %}">Voltar</a>
+  </div>
 </form>
 
-<div id="location-status" style="margin-top: 10px; color: #007bff;"></div>
 
-<a href="{% url 'criar_observacao' %}">Voltar</a>
+
 {% endblock %}
 
 {% block script %}

@@ -11,15 +11,15 @@
 {% endblock %}
 
 {% block content %}
-<h2>Observações Pendentes</h2>
-<ul>
+<h1>Observações Pendentes</h1>
+<div class="observation-list-div">
   {% for obs in observacoes %}
-    <li>
+    <div class="observation-list-item">
       {{ obs.localization.city_name }}, {{ obs.localization.state_name }} —
       <button class="btn-avaliar" data-id="{{ obs.id }}">Avaliar</button>
-    </li>
+    </div>
   {% endfor %}
-</ul>
+</div>
 
   <!-- Modal container -->
   <div id="modal-container">

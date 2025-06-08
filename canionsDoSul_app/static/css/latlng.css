@@ -1,0 +1,198 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #F8FFFA;
+    padding-top: 100px; /* Altura do header */
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  min-height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.instructions-div {
+    width: 100%;
+    padding: 0.313rem 0.313rem 0.313rem 0.313rem;
+    /* margin-bottom: 0.625rem; */
+}
+
+.instructions-div p {
+    text-align: justify;
+    font-size: 0.9rem;
+}
+
+.leaflet-container {
+  z-index: 0 !important;
+}
+
+/* Mapa responsivo */
+#map {
+    width: 100%;
+    height: 400px;
+    /* margin-bottom: 1.5rem; */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Inputs e labels */
+label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+p>label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+input[type="text"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+p>input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.form-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    gap: 20px;
+}
+
+.form-buttons button,
+.form-buttons a {
+    padding: 12px 20px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.form-buttons button {
+    background-color: #3B7A57;
+
+}
+
+.form-buttons a {
+    text-align: center;
+    background-color: #6c757d;
+    text-decoration: none;
+}
+
+#submit-button:hover {
+    background-color: #266d46;
+}
+
+#btn_buscar_localizacao {
+    background-color: #6c63ff;
+}
+
+#btn_buscar_localizacao:hover {
+    background-color: #524ae0;
+}
+
+/* Link "Voltar" */
+/* a {
+    display: inline-block;
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: bold;
+} */
+
+/* a:hover {
+    text-decoration: underline;
+} */
+
+/* Responsivo extra */
+@media (max-width: 480px) {
+    form {
+        padding: 1rem;
+    }
+
+    button {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    z-index: 1100; /* acima do header */
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px; /* abaixo do header */
+    left: -100%;
+    width: 100%;
+    background-color: #3b7457;
+    flex-direction: column;
+    text-align: center;
+    transition: 0.3s;
+    padding: 1rem 0;
+    z-index: 999; /* abaixo do hamburger mas acima do mapa */
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-item {
+    margin: 16px 0;
+  }
+}

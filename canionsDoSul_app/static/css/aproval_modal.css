@@ -1,3 +1,57 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #F8FFFA;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  margin-TOP: 1rem;
+}
+
+/* Lista de observações */
+.observation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.observation-list-item {
+  background-color: #fff;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botão de avaliação */
+.btn-avaliar {
+  background-color: #3B7A57;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-avaliar:hover {
+  background-color: #266d46;
+}
+
+/*MODAL*/
 #modal-container {
   display: none;
   position: fixed;
@@ -104,3 +158,16 @@
 .close-btn{
   background-color: #6c757d;
 }
+
+/* Responsividade extra */
+/* @media (max-width: 480px) {
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-avaliar {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+} */
