@@ -3,15 +3,24 @@
 
 {% block title %}Cadastrar por Latitude/Longitude{% endblock %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/form.css' %}">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
-  <link rel="stylesheet" href="{% static 'css/map.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static 'css/latlng.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/form.css' %}"> -->
 {% endblock %}
 
 {% block content %}
-<h2>Cadastro com Mapa</h2>
+<h1>Cadastro com Mapa</h1>
+
+<div class="instructions-div">
+  <p>Selecione um ponto no Mapa para preencher automaticamente os dados</p>
+</div>
 
 <div id="map"></div>
+
+<div class="instructions-div">
+  <p>Não encontrou a cidade no Mapa mas sabe a latitude e longitude? Então preencha a latitude e longitude manualmente
+    nos campos abaixo e então clique no botão de "Buscar Localização" para preencher automaticamente o restante dos dados</p>
+</div>
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
@@ -27,11 +36,16 @@
 
   {{ media_form.as_p }}
 
-  <button type="button" id="btn_buscar_localizacao">Buscar Localização</button>
-  <button type="submit">Cadastrar</button>
+  <div class="form-buttons">
+    <button type="button" id="btn_buscar_localizacao">Buscar Localização</button>
+    <button type="submit" id="submit-button">Cadastrar</button>
+    <a href="{% url 'criar_observacao' %}" class="go-back-btn">Voltar</a>
+  </div>
 </form>
 
-<a href="{% url 'criar_observacao' %}">Voltar</a>
+<!-- <div class="go-back-div">
+  <a href="{% url 'criar_observacao' %}" class="go-back-btn">Voltar</a>
+</div> -->
 {% endblock %}
 
 {% block script %}
