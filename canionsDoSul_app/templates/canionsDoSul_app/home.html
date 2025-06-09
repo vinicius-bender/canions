@@ -4,31 +4,33 @@
 {% load user_tags %}
 
 {% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 
 {% block content %}
 <h1>Bem-vindo à Plataforma</h1>
-<ul>
-    {% if not user.is_authenticated %}
-    <li><a href="{% url 'registrar' %}">Registrar-se</a></li>
-    <li><a href="{% url 'login' %}">Login</a></li>
-    {% endif %}
-    {% if user.is_authenticated and user.role == "admin" %}
-    <li><a href="{% url 'promover_usuario' %}">Promover Usuário</a></li>
-    <li><a href="{% url 'cadastrar' %}">Cadastrar taxonomia</a></li>
-    {% endif %}
-    <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
-    <li><a href="{% url 'observacoes' %}">Últimas observações</a></li>
-    {% if user.is_authenticated %}
-    <li><a href="{% url 'minhas_observacoes' %}">Minhas observações</a></li>
-    {% endif %}
-    {% if user.is_authenticated and user.role|not_in:"default" %}
-    <li><a href="{% url 'lista_observacoes_pendentes' %}">Observações pendentes</a></li>
-    {% endif %}
-</ul>
-{% if user.is_authenticated %}
-<form action="{% url 'logout' %}" method="post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-{% endif %}
+
+<div class="section-div">
+    <label for="input-busca" id="busca">FAÇA UMA BUSCA</label>
+    <input type="text" name="input-busca" id="input-busca" placeholder="Digite a espécie do animal que procura...">
+    <div class="all-info-div">
+        <div class="all-info-div">
+            <div class="info-div">
+                <p class="info" id="count-species" data-value="{{ num_species|default:0 }}">0</p>
+                <p class="info-small">Espécies</p>
+            </div>
+            <div class="info-div">
+                <p class="info" id="count-records" data-value="{{ num_records|default:0 }}">0</p>
+                <p class="info-small">Registros</p>
+            </div>
+            <div class="info-div">
+                <p class="info" id="count-approved" data-value="{{ num_approved_observations|default:0 }}">0</p>
+                <p class="info-small">Observações</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'scripts/home.js' %}"></script>
 {% endblock %}

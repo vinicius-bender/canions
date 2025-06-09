@@ -22,48 +22,30 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <img class="nav-branding" src="{% static 'assets/logo.png' %}" alt="Logo">
+                <a href="{% url 'home' %}" class="logo"><img class="nav-branding" src="{% static 'assets/logo.png' %}"
+                        alt="Logo" /></a>
                 <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Contact</a>
-                    </li class="nav-item">
-                    {% if not user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'registrar' %}" class="nav-link">Registrar-se</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'login' %}" class="nav-link">Login</a>
-                    </li>
-                    {% endif %}
+                    <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="{% url 'sobre' %}" class="nav-link">Sobre</a></li>
+                    <li class="nav-item"><a href="{% url 'contato' %}" class="nav-link">Contato</a></li>
                     {% if user.is_authenticated and user.role == "admin" %}
-                    <li class="nav-item">
-                        <a href="{% url 'promover_usuario' %}" class="nav-link">Promover Usuário</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'cadastrar' %}" class="nav-link">Cadastrar taxonomia</a>
+                    <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
                     </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a href="{% url 'criar_observacao' %}" class="nav-link">Cadastrar Observação</a>
+                    <li class="nav-item"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar observação</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{% url 'observacoes' %}" class="nav-link">Últimas observações</a>
-                    </li>
+                    <li class="nav-item"><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas
+                            observações</a></li>
+                    <li class="nav-item"><a href="{% url 'observacoes' %}" class="nav-link">Todas observações</a></li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'registrar' %}" class="nav-link">Registrar-se</a></li>
+                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas observações</a>
-                    </li>
-                    {% endif %}
-                    {% if user.is_authenticated and user.role|not_in:"default" %}
-                    <li class="nav-item">
-                        <a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações pendentes</a>
-                    </li>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Logout</button>
+                    </form>
                     {% endif %}
                 </ul>
                 <div class="hamburger">
@@ -75,6 +57,7 @@
         </div>
     </header>
 
+    {% if request.path != '/' %}
     <nav class="breadcrumb">
         <a href="{% url 'home' %}">Home</a>
         {% for crumb in breadcrumbs %}
@@ -86,6 +69,7 @@
         {% endif %}
         {% endfor %}
     </nav>
+    {% endif %}
 
     <section class="main-content">
         {% block content %}
