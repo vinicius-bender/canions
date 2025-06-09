@@ -5,7 +5,7 @@ def breadcrumbs(request):
     url = ''
     
     breadcrumb_names = {
-        'cadastrar': 'Cadastrar',
+        'cadastrar': 'Cadastrar Cadeia Taxonômica',
         'criar_observacao': 'Criar Observação',
         'minhas_observacoes': 'Minhas Observações',
         'observacoes': 'Últimas Observações',

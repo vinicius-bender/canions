@@ -1,0 +1,24 @@
+{% extends "canionsDoSul_app/base.html" %}
+{% load static %}
+
+{% load user_tags %}
+
+{% block title %}Painel de administrador{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h1>Painel de administrador</h1>
+<div class="admin-options-div">
+    {% if user.is_authenticated and user.role == "admin" %}
+    <div><a href="{% url 'cadastrar' %}" class="admin-options-item">Cadastrar taxonomia</a></div>
+    <div><a href="{% url 'promover_usuario' %}" class="admin-options-item">Promover Usuário</a></div>
+    {% endif %}
+    {% if user.is_authenticated and user.role|not_in:"default" %}
+    <div><a href="{% url 'lista_observacoes_pendentes' %}" class="admin-options-item">Observações pendentes</a></div>
+    {% endif %}
+    <div><a href="{% url 'home' %}" class="admin-options-item go-back-btn">Voltar</a></div> 
+</div>
+{% endblock %}

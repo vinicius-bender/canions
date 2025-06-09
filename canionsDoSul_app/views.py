@@ -21,7 +21,35 @@ def is_admin(user):
     return user.is_authenticated and user.role == "admin"
 
 def home(request):
-    return render(request, 'canionsDoSul_app/home.html', {'user': request.user})
+
+    # Número de espécies com pelo menos uma observação associada
+    num_species = Species.objects.filter(observation__isnull=False).distinct().count()
+
+    # Total de registros (todas as observações, independente do status)
+    num_records = Observation.objects.count()
+
+    # Total de observações aprovadas
+    num_approved_observations = Observation.objects.filter(status='Aprovada').count()
+
+    context = {
+        'user': request.user,
+        'num_species': num_species,
+        'num_records': num_records,
+        'num_approved_observations': num_approved_observations,
+    }
+
+    return render(request, 'canionsDoSul_app/home.html', context)
+
+def about(request):
+    return render(request, 'canionsDoSul_app/sobre.html')
+
+def contact(request):
+    return render(request, 'canionsDoSul_app/contato.html')
+
+@login_required
+@user_passes_test(is_admin, login_url='erro_permissao')
+def admin_panel(request):
+    return render(request, 'canionsDoSul_app/painel_administrador.html')
 
 # @login_required
 # def cadastrar(request):

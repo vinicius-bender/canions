@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #f8fffa;
+}
+
+/* Título */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+    color: black;
+}
+
+/* Container das opções */
+.admin-options-div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cada item do painel */
+.admin-options-item {
+    display: block;
+    background-color: #3b7457;
+    color: #ffffff;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.admin-options-item:hover {
+    background-color: #2e5f45;
+}
+
+.go-back-btn {
+    background-color: #6c757d;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .admin-options-div {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .admin-options-item {
+        font-size: 0.95rem;
+        padding: 0.65rem;
+    }
+}
