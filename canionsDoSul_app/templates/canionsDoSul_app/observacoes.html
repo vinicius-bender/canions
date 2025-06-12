@@ -3,11 +3,30 @@
 
 {% block title %}Últimas observações{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'css/cards.css' %}">
 {% endblock %}
 
 {% block content %}
 <h1 class="my-observation-page-title">Últimas Observações | {{ page_obj.paginator.count }} Registros encontrados</h1>
+
+<!-- Filtros -->
+<div class="filter-container">
+  <form id="filterForm" method="get" class="filter-form">
+    <div class="search-wrapper">
+      <input type="text" name="q" placeholder="Pesquisar por nome da espécie..." value="{{ search_query }}">
+      <button type="submit" class="search-btn" aria-label="Buscar">
+        <i class="fas fa-search"></i> <!-- Ícone da lupa -->
+      </button>
+    </div>
+
+    <select name="sort" id="sortSelect">
+      <option value="recentes" {% if sort_option == 'recentes' %}selected{% endif %}>Mais recentes</option>
+      <option value="antigos" {% if sort_option == 'antigos' %}selected{% endif %}>Mais antigos</option>
+      <option value="alfabetica" {% if sort_option == 'alfabetica' %}selected{% endif %}>Ordem alfabética</option>
+    </select>
+  </form>
+</div>
 
 <div class="card-section">
   {% for obs in page_obj %}
@@ -33,6 +52,7 @@
         </div>
         <p>Data: {{ obs.created_at|date:"d/m/Y" }}</p>
         <p>Foto por: {{ obs.user.username }}</p>
+        <div class="ver-mais-fake-button">Ver mais</div>
       </div>
     </div>
   </a>
@@ -45,15 +65,18 @@
 <div class="pagination">
   {% if page_obj.has_previous %}
   <a href="?page=1">&laquo; Primeira</a>
+  <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
   <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
   {% endif %}
 
-  <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-
   {% if page_obj.has_next %}
   <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+  <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
   <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
   {% endif %}
 </div>
-<a href="{% url 'home' %}" class="back-btn">Voltar</a>
+
+<div class="back-div">
+  <a href="{% url 'home' %}" class="back-btn">Voltar</a>
+</div>
 {% endblock %}

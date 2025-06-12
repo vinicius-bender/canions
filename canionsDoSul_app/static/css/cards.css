@@ -1,11 +1,66 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-  }
+}
 
-a{
+.filter-container {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    /* background-color: white; */
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.search-wrapper input[type="text"] {
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 1rem;
+    flex: 1;
+    width: 100%;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #3B7A57;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+.search-btn:hover {
+    color: #2d5e44;
+}
+
+.filter-form select {
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    width: 100%;
+}
+
+/* a{
     text-decoration: none;
     width: 100%;
 }
@@ -36,16 +91,14 @@ a:visited {
     width: 100%;
     padding: 10px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
     gap: 10px;
 }
 
 .observation-card{
     width: 100%;
-    border-radius: 10px; /* Apenas parte de cima */
-    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .observation-image{
@@ -75,4 +128,241 @@ a:visited {
 
 .back-btn{
     padding: 0px 10px;
+} */
+
+/* Links gerais */
+a {
+    text-decoration: none;
+    width: 100%;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+/* Vídeo placeholder */
+.observation-video-placeholder {
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 13.75rem;
+}
+
+.observation-video-icon {
+    width: 64px;
+    opacity: 0.7;
+}
+
+/* Título da página */
+.my-observation-page-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 10px;
+    color: #2d5e44;
+    text-align: center;
+}
+
+/* Container dos cards */
+.card-section {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* alinha cards à esquerda */
+    gap: 10px;
+}
+
+.observation-card {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    height: 23.75rem;
+    /* altura fixa total do card */
+}
+
+.observation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.observation-card-link {
+    display: block;
+    width: 100%;
+    /* mobile: 1 card por linha */
+}
+
+.observation-image {
+    width: 100%;
+    height: 13.75rem;
+    /* altura fixa da imagem */
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.observation-info {
+    height: 10rem; /* altura fixa da área verde */
+    color: white;
+    background-color: #3B7A57;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; centraliza verticalmente */
+    justify-content: flex-start;
+    padding-top: 10px;
+    /* padding-bottom: 10px;  */
+}
+
+.observation-info-titles {
+    margin-bottom: 1rem;
+}
+
+.observation-info-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.observation-info-title-small {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #d8f3e0;
+}
+
+
+.ver-mais-fake-button {
+    margin-top: 8px;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 0.85rem;
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.observation-card-link:hover .ver-mais-fake-button {
+    background-color: #fff;
+    color: #3B7A57;
+}
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+    font-size: 0.9rem;
+}
+
+.pagination a {
+    width: fit-content;
+    padding: 6px 12px;
+    border: 1px solid #3B7A57;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #3B7A57;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #3B7A57;
+    color: #fff;
+}
+
+.pagination span {
+    padding: 6px 12px;
+    color: #555;
+}
+
+
+.back-div{
+    width: 100%;
+    padding: 10px;
+}
+
+.back-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid #3B7A57;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #3B7A57;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.back-btn:hover {
+    background-color: #3B7A57;
+    color: #fff;
+}
+
+@media (min-width: 600px) {
+    .filter-form {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        max-width: 800px;
+    }
+
+    .filter-form select {
+        width: auto;
+    }
+
+    .search-wrapper {
+        width: auto;
+        flex: 1;
+    }
+
+    .search-wrapper input[type="text"] {
+        width: auto;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .observation-card-link {
+        width: calc(50% - 10px);
+    }
+}
+
+/* Desktop: 4 colunas */
+@media (min-width: 1024px){
+    .observation-card-link {
+        width: calc(25% - 10px);
+    }
+
+    .card-section {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .observation-info {
+        overflow-y: auto;
+    }   
+
+    /* .observation-info-title {
+        margin: 0;
+        font-size: 0.85rem;
+        font-weight: bold;
+    }
+
+    .observation-info-title-small {
+        font-size: 0.70rem;
+        font-style: italic;
+        color: #d8f3e0;
+    } */
 }
