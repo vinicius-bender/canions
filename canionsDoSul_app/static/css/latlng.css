@@ -7,7 +7,7 @@
 
 body {
     background-color: #F8FFFA;
-    padding-top: 100px; /* Altura do header */
+    /* padding-top: 80px; */
 }
 
 header {
@@ -43,7 +43,10 @@ h1 {
 
 .instructions-div p {
     text-align: justify;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .leaflet-container {
@@ -57,6 +60,7 @@ h1 {
     /* margin-bottom: 1.5rem; */
     border-radius: 10px;
     border: 1px solid #ccc;
+    padding: 0rem 0.5rem 0rem 0.5rem;
 }
 
 
@@ -157,6 +161,27 @@ p>input {
 /* a:hover {
     text-decoration: underline;
 } */
+
+
+.messages {
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.alert.error {
+    background-color: #ffe0e0;
+    color: #c00;
+    border: 1px solid #c00;
+}
 
 /* Responsivo extra */
 @media (max-width: 480px) {

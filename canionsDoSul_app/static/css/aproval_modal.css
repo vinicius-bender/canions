@@ -32,7 +32,17 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+
+.observation-list-item span {
+  flex: 1;
+  min-width: 0; /* necessário para text-overflow funcionar corretamente */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Botão de avaliação */

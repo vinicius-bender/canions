@@ -1,36 +1,42 @@
 {% extends "canionsDoSul_app/base.html" %}
 {% load static %}
-
 {% load user_tags %}
 
 {% block title %}Home{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
-
 
 {% block content %}
 <h1>Bem-vindo à Plataforma</h1>
 
 <div class="section-div">
-    <label for="input-busca" id="busca">FAÇA UMA BUSCA</label>
-    <input type="text" name="input-busca" id="input-busca" placeholder="Digite a espécie do animal que procura...">
+    <form id="busca-form" method="get" action="{% url 'observacoes' %}" class="busca-form">
+        <label id="busca">FAÇA UMA BUSCA</label>
+        <div class="search-wrapper">
+            <input autocomplete="off" type="text" name="q" id="input-busca" placeholder="Digite a espécie do animal que procura...">
+            <button type="submit" class="search-icon-btn" aria-label="Buscar">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+
     <div class="all-info-div">
-        <div class="all-info-div">
-            <div class="info-div">
-                <p class="info" id="count-species" data-value="{{ num_species|default:0 }}">0</p>
-                <p class="info-small">Espécies</p>
-            </div>
-            <div class="info-div">
-                <p class="info" id="count-records" data-value="{{ num_records|default:0 }}">0</p>
-                <p class="info-small">Registros</p>
-            </div>
-            <div class="info-div">
-                <p class="info" id="count-approved" data-value="{{ num_approved_observations|default:0 }}">0</p>
-                <p class="info-small">Observações</p>
-            </div>
+        <div class="info-div">
+            <p class="info" id="count-species" data-value="{{ num_species|default:0 }}">0</p>
+            <p class="info-small">Espécies</p>
+        </div>
+        <div class="info-div">
+            <p class="info" id="count-records" data-value="{{ num_records|default:0 }}">0</p>
+            <p class="info-small">Registros</p>
+        </div>
+        <div class="info-div">
+            <p class="info" id="count-approved" data-value="{{ num_approved_observations|default:0 }}">0</p>
+            <p class="info-small">Observações</p>
         </div>
     </div>
 </div>
+
 <script src="{% static 'scripts/home.js' %}"></script>
 {% endblock %}

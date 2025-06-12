@@ -110,18 +110,67 @@ def create_species(request):
 def create_observation(request):
     return render(request, 'canionsDoSul_app/criar_observacao.html')
 
+# def observation_by_latlng(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationLatLngForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         # Pega os dados de localização preenchidos via JS
+#         city = request.POST.get('city_name')
+#         state = request.POST.get('state_name')
+#         country = request.POST.get('country_name', 'Brasil')  # Default para Brasil
+
+#         if observation_form.is_valid():
+#             # Cria ou obtém a localização
+#             localization, created = Localization.objects.get_or_create(
+#                 city_name=city,
+#                 state_name=state,
+#                 country_name=country,
+#                 defaults={'user': request.user if request.user.is_authenticated else None}
+#             )
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = request.user
+#             observation.status = observation_form.cleaned_data.get('status', 'Pendente')  # Status default
+#             observation.save()
+
+#             # Processa as imagens
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255],
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+
+#             return redirect('home')
+#         else:
+#             print(observation_form.errors)
+
+#     else:
+#         observation_form = ObservationLatLngForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/latlng.html', {
+#         'observation_form': observation_form,
+#         'media_form': media_form
+#     })
 def observation_by_latlng(request):
     if request.method == 'POST':
         observation_form = ObservationLatLngForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
 
-        # Pega os dados de localização preenchidos via JS
         city = request.POST.get('city_name')
         state = request.POST.get('state_name')
-        country = request.POST.get('country_name', 'Brasil')  # Default para Brasil
+        country = request.POST.get('country_name', 'Brasil')
 
-        if observation_form.is_valid():
-            # Cria ou obtém a localização
+        if country.lower() != 'brasil':
+            messages.error(request, 'Somente observações no Brasil são permitidas.')
+        elif observation_form.is_valid():
             localization, created = Localization.objects.get_or_create(
                 city_name=city,
                 state_name=state,
@@ -132,10 +181,9 @@ def observation_by_latlng(request):
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = request.user
-            observation.status = observation_form.cleaned_data.get('status', 'Pendente')  # Status default
+            observation.status = observation_form.cleaned_data.get('status', 'Pendente')
             observation.save()
 
-            # Processa as imagens
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
@@ -157,14 +205,70 @@ def observation_by_latlng(request):
 
     return render(request, 'canionsDoSul_app/latlng.html', {
         'observation_form': observation_form,
-        'media_form': media_form
+        'media_form': media_form,
     })
 
+
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         if observation_form.is_valid() and localization_form.is_valid():
+#             localization = localization_form.save(commit=False)
+#             localization.user = request.user
+#             localization.save()
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = request.user
+#             observation.status = "Pendente"
+#             observation.save()
+
+#             # for file in request.FILES.getlist('images'):
+#             #     Media.objects.create(observation=observation, file=file)
+            
+#             # Processa as imagens
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255]
+#                     )
+                    
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+#             return redirect('home')
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
         localization_form = LocalizationForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
+
+        country = request.POST.get('country_name', '').strip().lower()
+
+        if not country or country != 'brasil':
+            messages.error(request, 'Somente observações no Brasil são permitidas.')
+
+            return render(request, 'canionsDoSul_app/cidade.html', {
+                'observation_form': observation_form,
+                'localization_form': localization_form,
+                'media_form': media_form
+            })
 
         if observation_form.is_valid() and localization_form.is_valid():
             localization = localization_form.save(commit=False)
@@ -177,18 +281,12 @@ def observation_by_city(request):
             observation.status = "Pendente"
             observation.save()
 
-            # for file in request.FILES.getlist('images'):
-            #     Media.objects.create(observation=observation, file=file)
-            
-            # Processa as imagens
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
-
                     media = Media.objects.create(
                         files=file,
                         name=file.name[:255]
                     )
-                    
                     ObservationMedia.objects.create(
                         observation=observation,
                         media=media

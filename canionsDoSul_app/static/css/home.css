@@ -33,11 +33,53 @@ h1 {
     padding: 0.75rem;
 }
 
-#busca {
+#busca{
     font-size: 1.6rem;
     font-weight: bold;
+    margin: 0rem 0rem 0.8rem 0rem;
 }
 
+.busca-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0rem 0rem 3rem 0rem;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    /* margin: 1rem 0 3rem 0; */
+}
+
+#input-busca {
+    width: 100%;
+    padding: 1rem;
+    color: black;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.search-icon-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.8rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.search-icon-btn:hover {
+    color: #000;
+}
+
+/* 
 .section-div input {
     width: 100%;
     padding: 0.75rem;
@@ -45,7 +87,7 @@ h1 {
     margin: 1rem 0 3rem 0;
     border: none;
     border-radius: 0.75rem;
-}
+} */
 
 .all-info-div {
     width: 100%;

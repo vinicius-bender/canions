@@ -15,7 +15,7 @@
 <div class="observation-list-div">
   {% for obs in observacoes %}
     <div class="observation-list-item">
-      {{ obs.localization.city_name }}, {{ obs.localization.state_name }} —
+      {{ obs.localization.city_name }}, {{ obs.localization.state_name }}, {{ obs.localization.country_name }}
       <button class="btn-avaliar" data-id="{{ obs.id }}">Avaliar</button>
     </div>
   {% endfor %}
