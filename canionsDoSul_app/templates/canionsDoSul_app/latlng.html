@@ -11,6 +11,14 @@
 {% block content %}
 <h1>Cadastro com Mapa</h1>
 
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="instructions-div">
   <p>Selecione um ponto no Mapa para preencher automaticamente os dados</p>
 </div>
@@ -18,8 +26,9 @@
 <div id="map"></div>
 
 <div class="instructions-div">
-  <p>Não encontrou a cidade no Mapa mas sabe a latitude e longitude? Então preencha a latitude e longitude manualmente
-    nos campos abaixo e então clique no botão de "Buscar Localização" para preencher automaticamente o restante dos dados</p>
+  <p>Não conseguiu encontrar a cidade no Mapa, mas sabe a <strong>latitude</strong> e <strong>longitude</strong>? Então preencha <strong>apenas</strong> a <strong>latitude</strong> e <strong>longitude</strong> manualmente
+    nos campos abaixo e então clique no botão de <strong>"Buscar Localização"</strong> para preencher automaticamente o restante dos dados</p>
+  <p>Se não souber a <strong>latitude</strong> e <strong>longitude</strong>, retorne <strong>a página anterior</strong> e selecione a opção de <strong>"Cadastrar por Cidade/Estado"</strong></p>
 </div>
 
 <form method="POST" enctype="multipart/form-data">

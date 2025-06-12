@@ -124,6 +124,26 @@ a:hover {
   text-decoration: underline;
 } */
 
+.messages {
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.alert.error {
+    background-color: #ffe0e0;
+    color: #c00;
+    border: 1px solid #c00;
+}
+
 /* Responsivo extra */
 @media (max-width: 480px) {
     form {
