@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url("../assets/Canions_Geoparque-blur.png");
+    background-image: url("../assets/Gemini_Generated_Image_xvgu8yxvgu8yxvgu.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -17,9 +17,10 @@ body {
 h1 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    padding-top: 1.5rem;
+    padding: 1.5rem 0.8rem 0rem 0.8rem;
     text-align: center;
     color: white;
+    margin-top: 80px; /* Para afastar do header fixo */
 }
 
 .section-div {

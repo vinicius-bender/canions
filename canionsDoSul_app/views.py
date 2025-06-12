@@ -207,32 +207,87 @@ def observation_by_city(request):
 
 @login_required
 def observations_list(request):
-    observations = Observation.objects.filter(user=request.user, status='Aprovada') \
-        .select_related('species', 'localization') \
-        .order_by('-created_at')
-    
+    search_query = request.GET.get('q', '')
+    sort_option = request.GET.get('sort', 'recentes')
+
+    observations = Observation.objects.filter(user=request.user, status='Aprovada').select_related('species', 'localization')
+
+    if search_query:
+        observations = observations.filter(species__popular_name__icontains=search_query)
+
+    if sort_option == 'recentes':
+        observations = observations.order_by('-created_at')
+    elif sort_option == 'antigos':
+        observations = observations.order_by('created_at')
+    elif sort_option == 'alfabetica':
+        observations = observations.order_by('species__popular_name')
+
     paginator = Paginator(observations, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'canionsDoSul_app/minhas_observacoes.html', {
-        'observations': page_obj,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'sort_option': sort_option,
     })
+# def observations_list(request):
+#     observations = Observation.objects.filter(user=request.user, status='Aprovada') \
+#         .select_related('species', 'localization') \
+#         .order_by('-created_at')
+    
+#     paginator = Paginator(observations, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'canionsDoSul_app/minhas_observacoes.html', {
+#         'observations': page_obj,
+#         'page_obj': page_obj
+#     })
 
 def all_observations_list(request):
-    observations_list = Observation.objects.filter(status='Aprovada') \
-        .select_related('species', 'localization') \
-        .order_by('-created_at')
+    search_query = request.GET.get('q', '')
+    sort_option = request.GET.get('sort', 'recentes')
 
-    paginator = Paginator(observations_list, 10)
+    observations_list = Observation.objects.filter(status='Aprovada')
+
+    if search_query:
+        observations_list = observations_list.filter(
+            Q(species__popular_name__icontains=search_query) |
+            Q(species__scientific_name__icontains=search_query)
+        )
+
+    if sort_option == 'recentes':
+        observations_list = observations_list.order_by('-created_at')
+    elif sort_option == 'antigos':
+        observations_list = observations_list.order_by('created_at')
+    elif sort_option == 'alfabetica':
+        observations_list = observations_list.order_by('species__popular_name')
+
+    paginator = Paginator(observations_list.select_related('species', 'localization'), 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'canionsDoSul_app/observacoes.html', {
         'observations': page_obj,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'sort_option': sort_option,
     })
+
+# def all_observations_list(request):
+#     observations_list = Observation.objects.filter(status='Aprovada') \
+#         .select_related('species', 'localization') \
+#         .order_by('-created_at')
+
+#     paginator = Paginator(observations_list, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'canionsDoSul_app/observacoes.html', {
+#         'observations': page_obj,
+#         'page_obj': page_obj
+#     })
 
 def observation_detail(request, pk):
     observation = get_object_or_404(Observation, pk=pk)
