@@ -40,11 +40,11 @@ def home(request):
 
     return render(request, 'canionsDoSul_app/home.html', context)
 
-def about(request):
-    return render(request, 'canionsDoSul_app/sobre.html')
+# def about(request):
+#     return render(request, 'canionsDoSul_app/sobre.html')
 
-def contact(request):
-    return render(request, 'canionsDoSul_app/contato.html')
+# def contact(request):
+#     return render(request, 'canionsDoSul_app/contato.html')
 
 @login_required
 @user_passes_test(is_admin, login_url='erro_permissao')
