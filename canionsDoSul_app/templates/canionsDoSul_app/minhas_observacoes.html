@@ -31,7 +31,7 @@
 
 <div class="card-section">
   {% for obs in page_obj %}
-  <a href="{% url 'detalhes_observacoes' obs.id %}" class="observation-card-link">
+  <a href="{% url 'detalhes_minhas_observacoes' obs.id %}" class="observation-card-link">
     <div class="observation-card">
       {% with obs.medias.all|first as media %}
       {% if media %}
