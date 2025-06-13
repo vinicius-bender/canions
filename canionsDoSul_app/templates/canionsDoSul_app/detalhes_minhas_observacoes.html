@@ -1,0 +1,32 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+{% load user_tags %}
+
+{% block title %}Detalhe minhas Observações{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/observations.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ observation.species.popular_name }}</h1>
+<p><strong>Nome científico:</strong> {{ observation.species.scientific_name }}</p>
+<p><strong>Usuário:</strong> {{ observation.user.username }}</p>
+<p><strong>Data:</strong> {{ observation.created_at|date:"d/m/Y H:i" }}</p>
+<p><strong>Localização:</strong> Lat {{ observation.latitude }}, Long {{ observation.longitude }}</p>
+<p><strong>Informações:</strong> {{ observation.habitat }}</p>
+
+{% for media in observation.medias.all %}
+{% if media.is_image %}
+<img src="{{ media.files.url }}" alt="{{ media.name }}">
+{% elif media.is_video %}
+<video controls>
+    <source src="{{ media.files.url }}" type="video/mp4">
+    Seu navegador não suporta o vídeo.
+</video>
+{% endif %}
+{% endfor %}
+
+<a href="{% url 'minhas_observacoes' %}">← Voltar</a>
+{% endblock %}

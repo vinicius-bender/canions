@@ -391,6 +391,10 @@ def observation_detail(request, pk):
     observation = get_object_or_404(Observation, pk=pk)
     return render(request, 'canionsDoSul_app/detalhes_observacao.html', {'observation': observation})
 
+def my_observation_detail(request, pk):
+    observation = get_object_or_404(Observation, pk=pk)
+    return render(request, 'canionsDoSul_app/detalhes_minhas_observacoes.html', {'observation': observation})
+
 @login_required
 def localization_list_create(request):
     localizations = Localization.objects.filter(user=request.user).order_by('-created_at')

@@ -26,8 +26,10 @@
                         alt="Logo" /></a>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="https://canionsdosul.org/conheca/" target="_blank" rel="noopener noreferrer"  class="nav-link">Sobre</a></li>
-                    <li class="nav-item"><a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer"  class="nav-link">Contato</a></li>
+                    <li class="nav-item"><a href="https://canionsdosul.org/conheca/" target="_blank"
+                            rel="noopener noreferrer" class="nav-link">Sobre</a></li>
+                    <li class="nav-item"><a href="https://canionsdosul.org/contato/" target="_blank"
+                            rel="noopener noreferrer" class="nav-link">Contato</a></li>
                     {% if not user.is_authenticated %}
                     <li class="nav-item"><a href="{% url 'registrar' %}" class="nav-link">Registrar-se</a></li>
                     <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
@@ -76,6 +78,36 @@
         <!-- O conteúdo de cada página será inserido aqui -->
         {% endblock %}
     </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h3>Geoparque Caminhos dos Cânions do Sul</h3>
+                <p>Plataforma de Ciência Cidadã<br>para observações da fauna local.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Links Úteis</h4>
+                <ul>
+                    <!-- <li><a href="{% url 'observacoes' %}">Observações</a></li>
+                    <li><a href="{% url 'registrar' %}">Registrar</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li> -->
+                    <li><a href="https://canionsdosul.org/" target="_blank" rel="noopener noreferrer">Geoparque Oficial</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contato</h4>
+                <p><a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer">Nos envie um Email</a></p>
+                <p>Instagram: <a href="https://www.instagram.com/geoparquecanionsdosul/" target="_blank" rel="noopener noreferrer">@geoparquecanionsdosul</a></p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Geoparque Caminhos dos Cânions do Sul. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
     <script src="{% static 'scripts/script.js' %}"></script>
     {% block script %}{% endblock %}
 </body>
