@@ -14,8 +14,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    {% block head %}{% endblock %}
+        {% block head %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 
 <body>
@@ -37,6 +37,10 @@
                     {% if user.is_authenticated and user.role == "admin" %}
                     <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
                     </li>
+                    {% endif %}
+                    {% if user.is_authenticated and is_specialist or is_scientist %}
+                    <li class="nav-item"><a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações Pendentes</a></li>
+                    <li class="nav-item"><a href="{% url 'cadastrar' %}" class="nav-link">Cadastrar taxonômia</a></li>
                     {% endif %}
                     <li class="nav-item"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar observação</a>
                     </li>

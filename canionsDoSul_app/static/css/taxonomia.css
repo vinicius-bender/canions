@@ -3,7 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-    color: black;
+    /* color: black; */
 }
 
 body {
@@ -34,7 +34,7 @@ body {
     justify-content: center;
 }
 
-label, p{
+.form-div label, .form-div p{
     font-weight: 600;
     color: #333;
 }

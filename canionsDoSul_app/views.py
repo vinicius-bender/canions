@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.views.decorators.http import require_POST
 
 #views
 def is_specialist_or_scientist(user):
@@ -558,3 +559,22 @@ def autocomplete_species(request):
     term = request.GET.get('term', '')
     especies = Species.objects.filter(scientific_name__icontains=term).values('scientific_name', 'popular_name')
     return JsonResponse(list(especies), safe=False)
+
+@login_required
+@user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
+@require_POST
+def excluir_midia_observacao(request, media_id):
+    try:
+        # Exclui o vínculo
+        observation_media = get_object_or_404(ObservationMedia, media_id=media_id)
+        media = observation_media.media
+        observation_media.delete()
+
+        # Verifica se a mídia não está mais associada a nenhuma observação
+        if not ObservationMedia.objects.filter(media=media).exists():
+            media.files.delete()  # Remove o arquivo do sistema de arquivos
+            media.delete()        # Remove do banco
+
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)

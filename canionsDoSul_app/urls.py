@@ -37,4 +37,5 @@ urlpatterns = [
     path("erro_permissao/", views.permission_error, name="erro_permissao"),
     path('buscar-generos/<int:family_id>/', views.buscar_generos_por_familia, name='buscar_generos'),
     path('buscar-especies/<int:genus_id>/', views.buscar_especies_por_genero, name='buscar_especies'),
+    path('observacoes/midia/<int:media_id>/excluir/', views.excluir_midia_observacao, name='excluir_midia_observacao'),
 ]

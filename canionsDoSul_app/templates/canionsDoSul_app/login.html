@@ -1,27 +1,39 @@
 {% extends 'canionsDoSul_app/base.html' %}
 
 {% load static %}
+{% load user_tags %}
 
 {% block title %}Login{% endblock %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h2>Faça seu login</h2>
+<h2>Faça seu login</h2>
+<div class="main-content">
   <form method="post" class="form-control">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    {{ form.username.label_tag }}
-    {{ form.username }}
+
+    <label for="{{ form.username.id_for_label }}">Usuário</label>
+    <div class="input-group">
+      <i class="fa-solid fa-user icon"></i>
+      {{ form.username }}
+    </div>
     {{ form.username.errors }}
-    
-    {{ form.password.label_tag }}
-    {{ form.password }}
+
+    <label for="{{ form.password.id_for_label }}">Senha</label>
+    <div class="input-group">
+      <i class="fa-solid fa-lock icon"></i>
+      {{ form.password }}
+    </div>
     {{ form.password.errors }}
+
     <div class="div-btn">
       <button type="submit" class="submit-btn">Entrar</button>
     </div>
   </form>
-  <p class="register-link">Não possui uma conta? <a href="{% url 'registrar' %}"> Cadastre-se aqui!</a></p>
+  <p class="register-link">Não possui uma conta? <a href="{% url 'registrar' %}">Cadastre-se aqui!</a></p>
+</div>
 {% endblock %}

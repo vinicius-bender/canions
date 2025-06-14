@@ -105,4 +105,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return cookieValue;
   }
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-delete-image')) {
+      const mediaId = e.target.dataset.imageId;
+      if (confirm('Deseja realmente excluir esta mídia?')) {
+        fetch(`/observacoes/midia/${mediaId}/excluir/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+          },
+          credentials: 'same-origin',
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              document.querySelector(`.media-item[data-id="${mediaId}"]`).remove();
+            } else {
+              alert('Erro ao excluir a mídia: ' + data.error);
+            }
+          })
+          .catch(err => alert('Erro ao excluir a mídia: ' + err));
+      }
+    }
+  });
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      for (let cookie of document.cookie.split(';')) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
 });
