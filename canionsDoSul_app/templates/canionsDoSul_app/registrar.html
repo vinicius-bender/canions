@@ -1,38 +1,53 @@
 {% extends 'canionsDoSul_app/base.html' %}
 
 {% load static %}
+{% load user_tags %}
 
 {% block title %}Registrar usuário{% endblock %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
 {% endblock %}
 
 {% block content %}
-  <h1>Registrar usuário</h1>
-  
+<h1>Registrar usuário</h1>
+<div class="main-content">
   <form method="post" class="form-control">
     {% csrf_token %}
-    
     {{ form.non_field_errors }}
-    {{ form.username.label_tag }}
-    {{ form.username }}
+
+    <label for="{{ form.username.id_for_label }}">Usuário</label>
+    <div class="input-group">
+      <i class="fa-solid fa-user icon"></i>
+      {{ form.username }}
+    </div>
     {{ form.username.errors }}
 
-    {{ form.email.label_tag }}
-    {{ form.email }}
+    <label for="{{ form.email.id_for_label }}">Email</label>
+    <div class="input-group">
+      <i class="fa-solid fa-envelope icon"></i>
+      {{ form.email }}
+    </div>
     {{ form.email.errors }}
 
-    {{ form.password1.label_tag }}
-    {{ form.password1 }}
+    <label for="{{ form.password1.id_for_label }}">Senha</label>
+    <div class="input-group">
+      <i class="fa-solid fa-lock icon"></i>
+      {{ form.password1 }}
+    </div>
     {{ form.password1.errors }}
 
-    {{ form.password2.label_tag }}
-    {{ form.password2 }}
+    <label for="{{ form.password2.id_for_label }}">Confirme a senha</label>
+    <div class="input-group">
+      <i class="fa-solid fa-lock icon"></i>
+      {{ form.password2 }}
+    </div>
     {{ form.password2.errors }}
 
     <div class="div-btn">
       <button type="submit" class="submit-btn">Registrar</button>
     </div>
   </form>
-  <p class="register-link">Já possui uma conta? <a href="{% url 'login' %}"> Logue aqui!</a></p>
+  <p class="register-link">Já possui uma conta? <a href="{% url 'login' %}">Logue aqui!</a></p>
+</div>
 {% endblock %}

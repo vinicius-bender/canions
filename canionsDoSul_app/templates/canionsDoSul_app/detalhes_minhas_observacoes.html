@@ -10,23 +10,56 @@
 
 
 {% block content %}
-<h1>{{ observation.species.popular_name }}</h1>
-<p><strong>Nome científico:</strong> {{ observation.species.scientific_name }}</p>
-<p><strong>Usuário:</strong> {{ observation.user.username }}</p>
-<p><strong>Data:</strong> {{ observation.created_at|date:"d/m/Y H:i" }}</p>
-<p><strong>Localização:</strong> Lat {{ observation.latitude }}, Long {{ observation.longitude }}</p>
-<p><strong>Informações:</strong> {{ observation.habitat }}</p>
+<div class="observation-detail">
+    <div class="info">
+        <h1>{{ observation.species.popular_name }}</h1>
+        <p><strong>Familia:</strong> {{ observation.species.genus.family }}</p>
+        <p><strong>Genero:</strong> {{ observation.species.genus }}</p>
+        <p><strong>Nome científico:</strong> {{ observation.species.scientific_name }}</p>
+        <p><strong>Nome popular:</strong> {{ observation.species.popular_name }}</p>
+        <p><strong>Cidade:</strong> {{ observation.localization.city_name }}</p>
+        <p><strong>Estado:</strong> {{ observation.localization.state_name }}</p>
+        <p><strong>País:</strong> {{ observation.localization.country_name }}</p>
+        <p><strong>Latitude:</strong>{{ observation.latitude }}</p>
+        <p><strong>Longitude:</strong>{{ observation.longitude }}</p>
+        <p><strong>Data:</strong> {{ observation.created_at|date:"d/m/Y H:i" }}</p>
+        <p><strong>Informações:</strong> {{ observation.habitat|default:"Sem informações adicionais" }}</p>
+        <p><strong>Usuário:</strong> {{ observation.user.username }}</p>
 
-{% for media in observation.medias.all %}
-{% if media.is_image %}
-<img src="{{ media.files.url }}" alt="{{ media.name }}">
-{% elif media.is_video %}
-<video controls>
-    <source src="{{ media.files.url }}" type="video/mp4">
-    Seu navegador não suporta o vídeo.
-</video>
-{% endif %}
-{% endfor %}
+    </div>
 
-<a href="{% url 'minhas_observacoes' %}">← Voltar</a>
+    <h2>Galeria</h2>
+    {% if observation.medias.all %}
+    <div class="media-carousel-wrapper">
+        <button class="carousel-btn prev">‹</button>
+        <div class="media-carousel" id="carousel">
+            {% for media in observation.medias.all %}
+            {% if media.is_image %}
+            <div class="media-item">
+                <img src="{{ media.files.url }}" alt="{{ media.name }}">
+            </div>
+            {% elif media.is_video %}
+            <div class="media-item">
+                <video muted playsinline>
+                    <source src="{{ media.files.url }}" type="video/mp4">
+                    Seu navegador não suporta o vídeo.
+                </video>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <button class="carousel-btn next">›</button>
+    </div>
+    <!-- <a href="{% url 'minhas_observacoes' %}" class="back-link">← Voltar</a> -->
+    {% endif %}
+</div>
+
+<div id="mediaModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <video class="modal-content" id="modalVideo" controls></video>
+</div>
+{% block scripts %}
+<script src="{% static 'scripts/observation.js' %}"></script>
+{% endblock %}
 {% endblock %}
