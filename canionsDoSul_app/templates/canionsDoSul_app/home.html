@@ -1,34 +1,124 @@
 {% extends "canionsDoSul_app/base.html" %}
 {% load static %}
-
 {% load user_tags %}
 
 {% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>Bem-vindo à Plataforma</h1>
-<ul>
-    {% if not user.is_authenticated %}
-    <li><a href="{% url 'registrar' %}">Registrar-se</a></li>
-    <li><a href="{% url 'login' %}">Login</a></li>
-    {% endif %}
-    {% if user.is_authenticated and user.role == "admin" %}
-    <li><a href="{% url 'promover_usuario' %}">Promover Usuário</a></li>
-    <li><a href="{% url 'cadastrar' %}">Cadastrar taxonomia</a></li>
-    {% endif %}
-    <li><a href="{% url 'criar_observacao' %}">Cadastrar Observação</a></li>
-    <li><a href="{% url 'observacoes' %}">Últimas observações</a></li>
-    {% if user.is_authenticated %}
-    <li><a href="{% url 'minhas_observacoes' %}">Minhas observações</a></li>
-    {% endif %}
-    {% if user.is_authenticated and user.role|not_in:"default" %}
-    <li><a href="{% url 'lista_observacoes_pendentes' %}">Observações pendentes</a></li>
-    {% endif %}
-</ul>
-{% if user.is_authenticated %}
-<form action="{% url 'logout' %}" method="post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-{% endif %}
+<section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+        <h1>Bem-vindo à Plataforma</h1>
+
+        <div class="section-div">
+            <form id="busca-form" method="get" action="{% url 'observacoes' %}" class="busca-form">
+                <label id="busca">FAÇA UMA BUSCA</label>
+                <div class="search-wrapper">
+                    <input autocomplete="off" type="text" name="q" id="input-busca"
+                        placeholder="Digite a espécie do animal que procura...">
+                    <button type="submit" class="search-icon-btn" aria-label="Buscar">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="all-info-div">
+                <div class="info-div">
+                    <p class="info" id="count-species" data-value="{{ num_species|default:0 }}">0</p>
+                    <p class="info-small">Espécies</p>
+                </div>
+                <div class="info-div">
+                    <p class="info" id="count-records" data-value="{{ num_records|default:0 }}">0</p>
+                    <p class="info-small">Registros</p>
+                </div>
+                <div class="info-div">
+                    <p class="info" id="count-approved" data-value="{{ num_approved_observations|default:0 }}">0</p>
+                    <p class="info-small">Observações</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-down-arrow">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<section class="conteudo">
+    <div class="conteudo-wrapper">
+        <h2 class="quem-somos-titulo">Quem somos nós?</h2>
+        <p class="quem-somos-p">
+            O <strong>Geoparque Mundial da UNESCO Caminhos dos Cânions do Sul</strong> é uma estratégia que busca
+            impulsionar
+            o desenvolvimento sustentável sociocultural, ambiental e econômico da região.
+        </p>
+        <p class="quem-somos-p">
+            Situado na região Sul do Brasil, entre os estados de <strong>Santa Catarina</strong> e <strong>Rio
+                Grande do Sul</strong>,
+            o território integra 7 municípios:
+            <span class="municipio">Praia Grande</span>, <span class="municipio">Jacinto Machado</span>, <span
+                class="municipio">Timbé do Sul</span> e
+            <span class="municipio">Morro Grande</span> (SC); <span class="municipio">Torres</span>, <span
+                class="municipio">Mampituba</span> e
+            <span class="municipio">Cambará do Sul</span> (RS).
+            Totaliza uma área de <strong>2.830 km²</strong> e população estimada em <strong>78.000
+                habitantes</strong> (2022).
+        </p>
+        <!-- <p>
+            Totaliza uma área de <strong>2.830 km²</strong> e população estimada em <strong>78.000
+                habitantes</strong> (2022).
+        </p> -->
+
+        <a href="https://canionsdosul.org/" rel="noopener noreferrer" target="_blank" class="geoparque-btn">
+            Conheça o site oficial do Geoparque <i class="fa-solid fa-earth-americas"></i>
+        </a>
+    </div>
+</section>
+
+<section class="explore-section">
+    <div class="container">
+        <h2 class="explore-title">Explore a Plataforma</h2>
+        <p class="explore-subtitle">Ainda não tem uma conta? Veja o que você já pode fazer como visitante:</p>
+
+        <div class="explore-grid">
+            <a href="{% url 'observacoes' %}" class="explore-card">
+                <i class="fa-solid fa-binoculars"></i>
+                <h3>Ver Observações</h3>
+                <p>Explore registros feitos por outros usuários da fauna local.</p>
+            </a>
+
+            <a href="https://canionsdosul.org/conheca/" target="_blank" rel="noopener noreferrer" class="explore-card">
+                <i class="fa-solid fa-tree"></i>
+                <h3>Sobre o Geoparque</h3>
+                <p>Saiba mais sobre o Geoparque Caminhos dos Cânions do Sul.</p>
+            </a>
+
+            <a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer" class="explore-card">
+                <i class="fa-solid fa-envelope"></i>
+                <h3>Contato</h3>
+                <p>Entre em contato conosco para tirar dúvidas ou dar sugestões.</p>
+            </a>
+
+            <a href="{% url 'registrar' %}" class="explore-card">
+                <i class="fa-solid fa-user-plus"></i>
+                <h3>Crie sua Conta</h3>
+                <p>
+                    Participe da plataforma e registre suas próprias observações.<br>
+                    <small><em>*não é necessário criar conta para registrar uma observação, porem, não será possível listar as suas observações de forma individual</em></small>
+                </p>
+            </a>
+
+            <a href="{% url 'login' %}" class="explore-card">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <h3>Login</h3>
+                <p>Já possui conta? Acesse sua área de usuário.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'scripts/home.js' %}"></script>
 {% endblock %}

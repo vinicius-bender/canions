@@ -9,9 +9,11 @@
 <div class="modal-body">
   <h4>Imagens:</h4>
   <div class="medias">
-    {% for media in observacao.medias.all %}
+  {% for media in observacao.medias.all %}
+    <div class="media-wrapper media-item" data-id="{{ media.id }}">
+      <button type="button" class="btn-delete-image" data-image-id="{{ media.id }}">×</button>
       {% if media.is_image %}
-        <img src="{{ media.files.url }}">
+        <img src="{{ media.files.url }}" alt="{{ media.name }}">
       {% elif media.is_video %}
         <video controls>
           <source src="{{ media.files.url }}" type="video/mp4">
@@ -20,10 +22,11 @@
       {% else %}
         <p>Tipo de mídia não suportado.</p>
       {% endif %}
-    {% empty %}
-      <p>Sem mídias.</p>
-    {% endfor %}
-  </div>
+    </div>
+  {% empty %}
+    <p>Sem mídias.</p>
+  {% endfor %}
+</div>
   <form id="avaliar-form" class="avaliar-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 

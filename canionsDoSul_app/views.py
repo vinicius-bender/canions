@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.views.decorators.http import require_POST
 
 #views
 def is_specialist_or_scientist(user):
@@ -21,7 +22,35 @@ def is_admin(user):
     return user.is_authenticated and user.role == "admin"
 
 def home(request):
-    return render(request, 'canionsDoSul_app/home.html', {'user': request.user})
+
+    # Número de espécies com pelo menos uma observação associada
+    num_species = Species.objects.filter(observation__isnull=False).distinct().count()
+
+    # Total de registros (todas as observações, independente do status)
+    num_records = Observation.objects.count()
+
+    # Total de observações aprovadas
+    num_approved_observations = Observation.objects.filter(status='Aprovada').count()
+
+    context = {
+        'user': request.user,
+        'num_species': num_species,
+        'num_records': num_records,
+        'num_approved_observations': num_approved_observations,
+    }
+
+    return render(request, 'canionsDoSul_app/home.html', context)
+
+# def about(request):
+#     return render(request, 'canionsDoSul_app/sobre.html')
+
+# def contact(request):
+#     return render(request, 'canionsDoSul_app/contato.html')
+
+@login_required
+@user_passes_test(is_admin, login_url='erro_permissao')
+def admin_panel(request):
+    return render(request, 'canionsDoSul_app/painel_administrador.html')
 
 # @login_required
 # def cadastrar(request):
@@ -82,18 +111,67 @@ def create_species(request):
 def create_observation(request):
     return render(request, 'canionsDoSul_app/criar_observacao.html')
 
+# def observation_by_latlng(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationLatLngForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         # Pega os dados de localização preenchidos via JS
+#         city = request.POST.get('city_name')
+#         state = request.POST.get('state_name')
+#         country = request.POST.get('country_name', 'Brasil')  # Default para Brasil
+
+#         if observation_form.is_valid():
+#             # Cria ou obtém a localização
+#             localization, created = Localization.objects.get_or_create(
+#                 city_name=city,
+#                 state_name=state,
+#                 country_name=country,
+#                 defaults={'user': request.user if request.user.is_authenticated else None}
+#             )
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = request.user
+#             observation.status = observation_form.cleaned_data.get('status', 'Pendente')  # Status default
+#             observation.save()
+
+#             # Processa as imagens
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255],
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+
+#             return redirect('home')
+#         else:
+#             print(observation_form.errors)
+
+#     else:
+#         observation_form = ObservationLatLngForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/latlng.html', {
+#         'observation_form': observation_form,
+#         'media_form': media_form
+#     })
 def observation_by_latlng(request):
     if request.method == 'POST':
         observation_form = ObservationLatLngForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
 
-        # Pega os dados de localização preenchidos via JS
         city = request.POST.get('city_name')
         state = request.POST.get('state_name')
-        country = request.POST.get('country_name', 'Brasil')  # Default para Brasil
+        country = request.POST.get('country_name', 'Brasil')
 
-        if observation_form.is_valid():
-            # Cria ou obtém a localização
+        if country.lower() != 'brasil':
+            messages.error(request, 'Somente observações no Brasil são permitidas.')
+        elif observation_form.is_valid():
             localization, created = Localization.objects.get_or_create(
                 city_name=city,
                 state_name=state,
@@ -104,10 +182,9 @@ def observation_by_latlng(request):
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = request.user
-            observation.status = observation_form.cleaned_data.get('status', 'Pendente')  # Status default
+            observation.status = observation_form.cleaned_data.get('status', 'Pendente')
             observation.save()
 
-            # Processa as imagens
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
@@ -129,14 +206,70 @@ def observation_by_latlng(request):
 
     return render(request, 'canionsDoSul_app/latlng.html', {
         'observation_form': observation_form,
-        'media_form': media_form
+        'media_form': media_form,
     })
 
+
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         if observation_form.is_valid() and localization_form.is_valid():
+#             localization = localization_form.save(commit=False)
+#             localization.user = request.user
+#             localization.save()
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = request.user
+#             observation.status = "Pendente"
+#             observation.save()
+
+#             # for file in request.FILES.getlist('images'):
+#             #     Media.objects.create(observation=observation, file=file)
+            
+#             # Processa as imagens
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255]
+#                     )
+                    
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+#             return redirect('home')
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
         localization_form = LocalizationForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
+
+        country = request.POST.get('country_name', '').strip().lower()
+
+        if not country or country != 'brasil':
+            messages.error(request, 'Somente observações no Brasil são permitidas.')
+
+            return render(request, 'canionsDoSul_app/cidade.html', {
+                'observation_form': observation_form,
+                'localization_form': localization_form,
+                'media_form': media_form
+            })
 
         if observation_form.is_valid() and localization_form.is_valid():
             localization = localization_form.save(commit=False)
@@ -149,18 +282,12 @@ def observation_by_city(request):
             observation.status = "Pendente"
             observation.save()
 
-            # for file in request.FILES.getlist('images'):
-            #     Media.objects.create(observation=observation, file=file)
-            
-            # Processa as imagens
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
-
                     media = Media.objects.create(
                         files=file,
                         name=file.name[:255]
                     )
-                    
                     ObservationMedia.objects.create(
                         observation=observation,
                         media=media
@@ -179,36 +306,95 @@ def observation_by_city(request):
 
 @login_required
 def observations_list(request):
-    observations = Observation.objects.filter(user=request.user, status='Aprovada') \
-        .select_related('species', 'localization') \
-        .order_by('-created_at')
-    
+    search_query = request.GET.get('q', '')
+    sort_option = request.GET.get('sort', 'recentes')
+
+    observations = Observation.objects.filter(user=request.user, status='Aprovada').select_related('species', 'localization')
+
+    if search_query:
+        observations = observations.filter(species__popular_name__icontains=search_query)
+
+    if sort_option == 'recentes':
+        observations = observations.order_by('-created_at')
+    elif sort_option == 'antigos':
+        observations = observations.order_by('created_at')
+    elif sort_option == 'alfabetica':
+        observations = observations.order_by('species__popular_name')
+
     paginator = Paginator(observations, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'canionsDoSul_app/minhas_observacoes.html', {
-        'observations': page_obj,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'sort_option': sort_option,
     })
+# def observations_list(request):
+#     observations = Observation.objects.filter(user=request.user, status='Aprovada') \
+#         .select_related('species', 'localization') \
+#         .order_by('-created_at')
+    
+#     paginator = Paginator(observations, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'canionsDoSul_app/minhas_observacoes.html', {
+#         'observations': page_obj,
+#         'page_obj': page_obj
+#     })
 
 def all_observations_list(request):
-    observations_list = Observation.objects.filter(status='Aprovada') \
-        .select_related('species', 'localization') \
-        .order_by('-created_at')
+    search_query = request.GET.get('q', '')
+    sort_option = request.GET.get('sort', 'recentes')
 
-    paginator = Paginator(observations_list, 10)
+    observations_list = Observation.objects.filter(status='Aprovada')
+
+    if search_query:
+        observations_list = observations_list.filter(
+            Q(species__popular_name__icontains=search_query) |
+            Q(species__scientific_name__icontains=search_query)
+        )
+
+    if sort_option == 'recentes':
+        observations_list = observations_list.order_by('-created_at')
+    elif sort_option == 'antigos':
+        observations_list = observations_list.order_by('created_at')
+    elif sort_option == 'alfabetica':
+        observations_list = observations_list.order_by('species__popular_name')
+
+    paginator = Paginator(observations_list.select_related('species', 'localization'), 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'canionsDoSul_app/observacoes.html', {
         'observations': page_obj,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'sort_option': sort_option,
     })
+
+# def all_observations_list(request):
+#     observations_list = Observation.objects.filter(status='Aprovada') \
+#         .select_related('species', 'localization') \
+#         .order_by('-created_at')
+
+#     paginator = Paginator(observations_list, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'canionsDoSul_app/observacoes.html', {
+#         'observations': page_obj,
+#         'page_obj': page_obj
+#     })
 
 def observation_detail(request, pk):
     observation = get_object_or_404(Observation, pk=pk)
     return render(request, 'canionsDoSul_app/detalhes_observacao.html', {'observation': observation})
+
+def my_observation_detail(request, pk):
+    observation = get_object_or_404(Observation, pk=pk)
+    return render(request, 'canionsDoSul_app/detalhes_minhas_observacoes.html', {'observation': observation})
 
 @login_required
 def localization_list_create(request):
@@ -373,3 +559,22 @@ def autocomplete_species(request):
     term = request.GET.get('term', '')
     especies = Species.objects.filter(scientific_name__icontains=term).values('scientific_name', 'popular_name')
     return JsonResponse(list(especies), safe=False)
+
+@login_required
+@user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
+@require_POST
+def excluir_midia_observacao(request, media_id):
+    try:
+        # Exclui o vínculo
+        observation_media = get_object_or_404(ObservationMedia, media_id=media_id)
+        media = observation_media.media
+        observation_media.delete()
+
+        # Verifica se a mídia não está mais associada a nenhuma observação
+        if not ObservationMedia.objects.filter(media=media).exists():
+            media.files.delete()  # Remove o arquivo do sistema de arquivos
+            media.delete()        # Remove do banco
+
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)

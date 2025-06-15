@@ -1,0 +1,466 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* body {
+    background-image: url("../assets/Canions_Geoparque-blur.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+} */
+
+
+
+/* body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+} */
+
+body {
+    background: none;
+    background-color: white;
+}
+
+/* HERO SECTION */
+.hero {
+    position: relative;
+    height: 100vh;
+    background-image: url("../assets/Canions_Geoparque-blur.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1000px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 0.8rem 0rem 0.8rem;
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+    /* Para afastar do header fixo */
+}
+
+.section-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0.75rem;
+}
+
+#busca {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 0rem 0rem 0.8rem 0rem;
+}
+
+.busca-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0rem 0rem 3.5rem 0rem;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    /* margin: 1rem 0 3rem 0; */
+}
+
+#input-busca {
+    width: 100%;
+    padding: 1rem;
+    color: black;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.search-icon-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.8rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.search-icon-btn:hover {
+    color: #000;
+}
+
+/* 
+.section-div input {
+    width: 100%;
+    padding: 0.75rem;
+    color: black;
+    margin: 1rem 0 3rem 0;
+    border: none;
+    border-radius: 0.75rem;
+} */
+
+.all-info-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.info-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.info-small {
+    color: white;
+    font-size: 0.8rem;
+}
+
+.scroll-down-arrow {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 2rem;
+    animation: floatDown 2s infinite ease-in-out;
+    z-index: 3;
+    cursor: pointer;
+}
+
+@keyframes floatDown {
+    0% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.8;
+    }
+}
+
+/* Seção abaixo da primeira dobra */
+.conteudo {
+    width: 100%;
+    /* background-color: #f5f5f5; */
+    padding: 0.5rem;
+    text-align: left;
+    padding: 0.875rem;
+    border-radius: 1rem;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    /* margin-top: 1rem; */
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #333;
+}
+
+.conteudo h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #2c7a7b;
+}
+
+.conteudo-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.conteudo p {
+    max-width: 100%;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+
+.municipio {
+    color: #2c7a7b;
+    font-weight: 600;
+}
+
+.geoparque-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.7rem 1.5rem;
+    background-color: #2c7a7b;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    /* margin: 1rem auto 0 auto; */
+}
+
+.geoparque-btn:hover {
+    background-color: #225e61;
+}
+
+
+.explore-section {
+    /* background-color: #f0fdfa; */
+    padding: 2rem 0.875rem;
+    text-align: center;
+    border-radius: 1rem;
+    margin-top: 3rem;
+}
+
+.explore-title {
+    font-size: 2rem;
+    color: #2c7a7b;
+    margin-bottom: 0.5rem;
+}
+
+.explore-subtitle {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 2rem;
+}
+
+.explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+}
+
+.explore-card {
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: #2d3748;
+    transition: all 0.3s ease;
+    max-width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.explore-card:hover {
+    background-color: #f0fdfa;
+    transform: translateY(-5px);
+    border-color: #2c7a7b;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.explore-card i {
+    font-size: 2rem;
+    color: #2c7a7b;
+    margin-bottom: 0.5rem;
+}
+
+.explore-card h3 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+    color: #2c7a7b;
+}
+
+.explore-card p {
+    font-size: 0.95rem;
+    color: #4a5568;
+}
+
+/*-----------------------------MEDIA QUERIES---------------------------*/
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+        /* margin-bottom: 1rem;
+    padding: 1.5rem 0.8rem 0rem 0.8rem;
+    text-align: center;
+    color: white;
+    margin-top: 80px; */
+    }
+
+    /* .section-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0.75rem;
+} */
+
+    #busca {
+        font-size: 2rem;
+        /* font-weight: bold;
+    margin: 0rem 0rem 0.8rem 0rem; */
+    }
+
+    /* .busca-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0rem 0rem 3rem 0rem;
+} */
+
+    .search-wrapper {
+        padding: 0rem 8rem;
+    }
+
+    #input-busca {
+        width: 100%;
+        padding: 1rem;
+        color: black;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .search-icon-btn {
+        position: absolute;
+        top: 50%;
+        right: 9rem;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: #555;
+        font-size: 1.2rem;
+    }
+
+    .search-icon-btn:hover {
+        color: #000;
+    }
+
+    /* 
+.section-div input {
+    width: 100%;
+    padding: 0.75rem;
+    color: black;
+    margin: 1rem 0 3rem 0;
+    border: none;
+    border-radius: 0.75rem;
+} */
+
+    .all-info-div {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .info-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info {
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .info-small {
+        color: white;
+        font-size: 1.6rem;
+    }
+
+    /* .conteudo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .conteudo-wrapper {
+        align-items: center;
+    } */
+
+    .quem-somos-titulo{
+        text-align: left;
+    }
+
+    .quem-somos-p{
+        text-align: center;
+    }
+
+    .geoparque-btn{
+        margin: 0 auto;
+    }
+}
+
+
+@media (min-width: 1024px) {
+    /* .conteudo {
+        
+    } */
+
+    .conteudo-wrapper {
+        max-width: 60%;
+        margin: 0 auto;
+    } 
+
+    .quem-somos-titulo{
+        text-align: center;
+    }
+
+    .quem-somos-p{
+        text-align: center;
+    }
+
+    .geoparque-btn{
+        margin: 0 auto;
+    }
+}

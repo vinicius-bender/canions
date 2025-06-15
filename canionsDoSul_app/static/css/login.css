@@ -1,11 +1,133 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-  }
-  
-body{
+}
+
+body {
+    background-color: #F8FFFA;
+}
+
+h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.main-content {
+    margin: 0.5rem auto;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #3B7A57;
+    color: white;
+    border-radius: 10px;
+    padding: 0.625rem;
+}
+
+.form-control {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* gap: 1rem; */
+}
+
+label {
+    font-weight: 600;
+    /* margin-bottom: 0.2rem; */
+    user-select: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 12px;
+    color: #a0cfa0;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 2.8rem;
+    border: none;
+    border-radius: 6px;
+    outline: none;
+    font-size: 1rem;
+    color: #3B7A57;
+}
+
+.input-group input::placeholder {
+    color: #7aa67a;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 4px 2px white;
+    background-color: #e6f0e6;
+}
+
+.div-btn {
+    margin-top: 1rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    color: #3B7A57;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #b1d8b1;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: white;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+}
+
+.register-link a {
+    color: white;
+    /* text-decoration: none; */
+    font-weight: 600;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    color: #7aa67a;
+    text-decoration: underline;
+}
+
+/* body{
   background-color: #F8FFFA;
 }
 
@@ -15,18 +137,17 @@ h2 {
 
 
 .main-content{
-    margin: 0.5rem auto 0.5rem auto; /* Centraliza horizontalmente */
+    margin: 0.5rem auto 0.5rem auto;
     width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* gap: 2rem; */
     background-color: #3B7A57;
     color: white;
     border-style: none;
-    border-radius: 10px; /* Apenas parte de cima */
-    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    border-radius: 10px;
+    overflow: hidden;
     padding: 2rem 1rem;
     text-transform: uppercase;
 }
@@ -36,8 +157,6 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    /* align-items: center; */
 }
 
 label, .submit-btn{
@@ -46,8 +165,8 @@ label, .submit-btn{
 
 input{
     border-style: none;
-    border-radius: 0.2rem; /* Apenas parte de cima */
-    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    border-radius: 0.2rem;
+    overflow: hidden;
     padding: 0.5rem;
 }
 
@@ -69,8 +188,8 @@ input:focus {
     width: 100%;
     padding: 0.6rem 1rem;
     border-style: none;
-    border-radius: 10px; /* Apenas parte de cima */
-    overflow: hidden; /* Evita que o conteúdo ultrapasse os cantos arredondados */
+    border-radius: 10px;
+    overflow: hidden;
     color: #3B7A57;
     font-weight: 600;
     font-size: 1rem;
@@ -88,4 +207,4 @@ input:focus {
 .register-link a{
     color: white;
     text-decoration-color: white;
-}
+} */

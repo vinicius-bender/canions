@@ -11,6 +11,14 @@
 {% block content %}
 <h1>Cadastro por Cidade</h1>
 
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="instructions-div">
   <p>Preencha os campos com os dados correspondentes</p>
 </div>
