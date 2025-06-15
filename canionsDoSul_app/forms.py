@@ -111,36 +111,6 @@ class LocalizationForm(forms.ModelForm):
             # 'country_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-# class ObservationForm(forms.ModelForm):
-#     class Meta:
-#         model = Observation
-#         # fields = ['longitude', 'latitude', 'species', 'localization', 'status']
-#         fields = ['longitude', 'latitude', 'species', 'localization']
-#         widgets = {
-#             'longitude': forms.NumberInput(attrs={
-#                 'step': '0.00000001',
-#                 'placeholder': 'Ex: -51.23456789',
-#                 'class': 'form-control custom-input'
-#             }),
-#             'latitude': forms.NumberInput(attrs={
-#                 'step': '0.00000001',
-#                 'placeholder': 'Ex: -29.12345678',
-#                 'class': 'form-control custom-input'
-#             }),
-#             'species': forms.Select(attrs={
-#                 'placeholder': 'Selecione uma espécie',
-#                 'class': 'form-control custom-select'
-#             }),
-#             'localization': forms.Select(attrs={
-#                 'placeholder': 'Selecione uma localização',
-#                 'class': 'form-control custom-select'
-#             }),
-#         }
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['species'].empty_label = 'Selecione uma espécie'
-#         self.fields['localization'].empty_label = 'Selecione uma localização'
-
 class ObservationLatLngForm(forms.ModelForm):
     class Meta:
         model = Observation
@@ -192,19 +162,6 @@ class ObservationReviewForm(forms.ModelForm):
             }),
         }
     
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-    #     if self.instance and self.instance.species:
-    #         genus = self.instance.species.genus
-    #         family = genus.family
-    #         self.fields['genus'].queryset = Genus.objects.filter(family=family)
-    #         self.fields['species'].queryset = Species.objects.filter(genus=genus)
-    #         self.initial['genus'] = genus
-    #         self.initial['family'] = family
-    #     else:
-    #         self.fields['genus'].queryset = Genus.objects.none()
-    #         self.fields['species'].queryset = Species.objects.none()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -251,3 +208,26 @@ class AprovarObservacaoForm(forms.ModelForm):
     class Meta:
         model = Observation
         fields = ['species']  # ou outros campos editáveis
+
+class CriarContaRealForm(forms.ModelForm):
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+    password_confirm = forms.CharField(label='Confirme a Senha', widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirm = cleaned_data.get("password_confirm")
+
+        if password and password != password_confirm:
+            self.add_error('password_confirm', "As senhas não coincidem.")
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user

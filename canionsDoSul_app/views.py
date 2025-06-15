@@ -1,7 +1,7 @@
 #imports
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Specialist, Scientist, Family, Genus, Species, Observation, Localization, Media, ObservationMedia
-from .forms import FamilyForm, GenusForm, SpeciesForm, LocalizationForm, CustomLoginForm, CustomUserCreationForm, MediaForm, MultipleFileInput, ObservationLatLngForm, ObservationCityForm, AprovarObservacaoForm, ObservationReviewForm
+from .forms import FamilyForm, GenusForm, SpeciesForm, LocalizationForm, CustomLoginForm, CustomUserCreationForm, MediaForm, MultipleFileInput, ObservationLatLngForm, ObservationCityForm, AprovarObservacaoForm, ObservationReviewForm, CriarContaRealForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
@@ -10,6 +10,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.views.decorators.http import require_POST
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
+import uuid
+from django.http import Http404, HttpResponseNotFound
 
 #views
 def is_specialist_or_scientist(user):
@@ -75,6 +79,56 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'canionsDoSul_app/registrar.html', {'form': form})
 
+User = get_user_model()
+
+def get_or_create_anonymous_user(request):
+    if request.user.is_authenticated:
+        return request.user
+
+    if 'anon_user_id' in request.session:
+        try:
+            return User.objects.get(id=request.session['anon_user_id'])
+        except User.DoesNotExist:
+            pass  # Usuário expirou ou foi apagado
+
+    # Criação de novo usuário anônimo
+    anon_username = f"anon_{uuid.uuid4().hex[:10]}"
+    anon_email = f"{anon_username}@anon.com"
+
+    anon_user = User.objects.create_user(
+        username=anon_username,
+        email=anon_email,
+        password=User.objects.make_random_password(),
+        role="anonymous",
+    )
+
+    request.session['anon_user_id'] = anon_user.id
+    login(request, anon_user)
+
+    return anon_user
+
+@login_required
+def criar_conta_real(request):
+    user = request.user
+
+    if user.role != 'anonymous':
+        messages.info(request, "Sua conta já é uma conta real.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = CriarContaRealForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.role = 'default'  # atualiza o tipo de conta
+            user.save()
+            messages.success(request, "Conta real criada com sucesso!")
+            login(request, user)  # garante que ele continua logado
+            return redirect('home')
+    else:
+        form = CriarContaRealForm(instance=user)
+
+    return render(request, 'canionsDoSul_app/criar_conta_real.html', {'form': form})
+
 @login_required
 def create_family(request):
     if request.method == 'POST':
@@ -111,55 +165,6 @@ def create_species(request):
 def create_observation(request):
     return render(request, 'canionsDoSul_app/criar_observacao.html')
 
-# def observation_by_latlng(request):
-#     if request.method == 'POST':
-#         observation_form = ObservationLatLngForm(request.POST)
-#         media_form = MediaForm(request.POST, request.FILES)
-
-#         # Pega os dados de localização preenchidos via JS
-#         city = request.POST.get('city_name')
-#         state = request.POST.get('state_name')
-#         country = request.POST.get('country_name', 'Brasil')  # Default para Brasil
-
-#         if observation_form.is_valid():
-#             # Cria ou obtém a localização
-#             localization, created = Localization.objects.get_or_create(
-#                 city_name=city,
-#                 state_name=state,
-#                 country_name=country,
-#                 defaults={'user': request.user if request.user.is_authenticated else None}
-#             )
-
-#             observation = observation_form.save(commit=False)
-#             observation.localization = localization
-#             observation.user = request.user
-#             observation.status = observation_form.cleaned_data.get('status', 'Pendente')  # Status default
-#             observation.save()
-
-#             # Processa as imagens
-#             if 'files' in request.FILES:
-#                 for file in request.FILES.getlist('files'):
-#                     media = Media.objects.create(
-#                         files=file,
-#                         name=file.name[:255],
-#                     )
-#                     ObservationMedia.objects.create(
-#                         observation=observation,
-#                         media=media
-#                     )
-
-#             return redirect('home')
-#         else:
-#             print(observation_form.errors)
-
-#     else:
-#         observation_form = ObservationLatLngForm()
-#         media_form = MediaForm()
-
-#     return render(request, 'canionsDoSul_app/latlng.html', {
-#         'observation_form': observation_form,
-#         'media_form': media_form
-#     })
 def observation_by_latlng(request):
     if request.method == 'POST':
         observation_form = ObservationLatLngForm(request.POST)
@@ -181,7 +186,7 @@ def observation_by_latlng(request):
 
             observation = observation_form.save(commit=False)
             observation.localization = localization
-            observation.user = request.user
+            observation.user = get_or_create_anonymous_user(request)
             observation.status = observation_form.cleaned_data.get('status', 'Pendente')
             observation.save()
 
@@ -209,51 +214,6 @@ def observation_by_latlng(request):
         'media_form': media_form,
     })
 
-
-# def observation_by_city(request):
-#     if request.method == 'POST':
-#         observation_form = ObservationCityForm(request.POST)
-#         localization_form = LocalizationForm(request.POST)
-#         media_form = MediaForm(request.POST, request.FILES)
-
-#         if observation_form.is_valid() and localization_form.is_valid():
-#             localization = localization_form.save(commit=False)
-#             localization.user = request.user
-#             localization.save()
-
-#             observation = observation_form.save(commit=False)
-#             observation.localization = localization
-#             observation.user = request.user
-#             observation.status = "Pendente"
-#             observation.save()
-
-#             # for file in request.FILES.getlist('images'):
-#             #     Media.objects.create(observation=observation, file=file)
-            
-#             # Processa as imagens
-#             if 'files' in request.FILES:
-#                 for file in request.FILES.getlist('files'):
-
-#                     media = Media.objects.create(
-#                         files=file,
-#                         name=file.name[:255]
-#                     )
-                    
-#                     ObservationMedia.objects.create(
-#                         observation=observation,
-#                         media=media
-#                     )
-#             return redirect('home')
-#     else:
-#         observation_form = ObservationCityForm()
-#         localization_form = LocalizationForm()
-#         media_form = MediaForm()
-
-#     return render(request, 'canionsDoSul_app/cidade.html', {
-#         'observation_form': observation_form,
-#         'localization_form': localization_form,
-#         'media_form': media_form
-#     })
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
@@ -278,7 +238,8 @@ def observation_by_city(request):
 
             observation = observation_form.save(commit=False)
             observation.localization = localization
-            observation.user = request.user
+            user = get_or_create_anonymous_user(request)
+            observation.user = user
             observation.status = "Pendente"
             observation.save()
 
@@ -330,19 +291,6 @@ def observations_list(request):
         'search_query': search_query,
         'sort_option': sort_option,
     })
-# def observations_list(request):
-#     observations = Observation.objects.filter(user=request.user, status='Aprovada') \
-#         .select_related('species', 'localization') \
-#         .order_by('-created_at')
-    
-#     paginator = Paginator(observations, 10)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-
-#     return render(request, 'canionsDoSul_app/minhas_observacoes.html', {
-#         'observations': page_obj,
-#         'page_obj': page_obj
-#     })
 
 def all_observations_list(request):
     search_query = request.GET.get('q', '')
@@ -373,20 +321,6 @@ def all_observations_list(request):
         'search_query': search_query,
         'sort_option': sort_option,
     })
-
-# def all_observations_list(request):
-#     observations_list = Observation.objects.filter(status='Aprovada') \
-#         .select_related('species', 'localization') \
-#         .order_by('-created_at')
-
-#     paginator = Paginator(observations_list, 10)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-
-#     return render(request, 'canionsDoSul_app/observacoes.html', {
-#         'observations': page_obj,
-#         'page_obj': page_obj
-#     })
 
 def observation_detail(request, pk):
     observation = get_object_or_404(Observation, pk=pk)

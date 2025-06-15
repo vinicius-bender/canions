@@ -9,6 +9,17 @@
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated and user.role == 'anonymous' %}
+<div class="anon-alert" id="anonAlert">
+  <button class="close-alert">&#x2715</button>
+  <p>
+    Você está usando uma conta temporária. <br>
+    <strong>Crie sua conta real</strong> para salvar suas observações permanentemente!
+  </p>
+  <a class="anon-btn" href="{% url 'criar_conta_real' %}">Criar Conta Real</a>
+</div>
+{% endif %}
+
 <section class="hero">
     <div class="overlay"></div>
     <div class="hero-content">

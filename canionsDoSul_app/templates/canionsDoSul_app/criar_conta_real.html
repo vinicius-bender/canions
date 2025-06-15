@@ -1,0 +1,43 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+{% load user_tags %}
+
+{% block title %}Criar Conta Real{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="main-content">
+    <h1>Criar Conta Real</h1>
+
+    <p style="text-align: center; margin-bottom: 1rem;">
+      Você está usando uma conta <strong>temporária</strong>. Para salvar suas observações permanentemente e acessar todos os recursos da plataforma, crie sua conta real abaixo:
+    </p>
+
+    <form method="post" class="form-control">
+      {% csrf_token %}
+      <div class="input-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+      <div class="input-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <div class="input-group">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </div>
+      <div class="input-group">
+        {{ form.password_confirm.label_tag }}
+        {{ form.password_confirm }}
+      </div>
+
+      <div class="div-btn">
+        <button class="submit-btn" type="submit">Converter Conta</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

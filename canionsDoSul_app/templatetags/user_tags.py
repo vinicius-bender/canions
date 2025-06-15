@@ -5,11 +5,12 @@ register = template.Library()
 @register.filter
 def translate_role(role):
     return {
+        'user': 'Usuário',
         'specialist': 'Especialista',
         'scientist': 'Cientista',
-        'user': 'Usuário',
         'admin': 'Administrador',
-        'default': 'Padrão'
+        'default': 'Padrão',
+        'anonymous': 'Anônimo'
     }.get(role, role)
 
 @register.filter

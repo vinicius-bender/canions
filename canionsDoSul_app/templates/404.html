@@ -1,0 +1,16 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+{% load user_tags %}
+
+{% block title %}404 - Página não encontrada{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/erros.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="erro-section">
+  <h1 class="erro-titulo">404</h1>
+  <p class="erro-msg">Oops! A página que você procura não existe.</p>
+  <a class="erro-btn" href="{% url 'home' %}">Voltar à Página Inicial</a>
+</section>
+{% endblock %}

@@ -66,6 +66,99 @@ body {
     max-width: 1000px;
 }
 
+.anon-alert {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  width: 90%;
+  margin-top: 5rem;
+  max-width: 18.75rem;
+  background-color: #f9fbe7;
+  border: 0.125rem solid #cddc39;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.50rem rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", sans-serif;
+  text-align: left;
+  animation: fadeInDown 0.5s ease-out;
+}
+
+.anon-alert p {
+  font-size: 0.9rem;
+  color: #3B7A57;
+  margin: 0 0 0.6rem 0;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.anon-alert strong {
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.anon-btn {
+  display: inline-block;
+  background-color: #3B7A57;
+  color: white;
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.anon-btn:hover {
+  background-color: #2e6248;
+}
+
+/* Animação suave na entrada */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsivo para telas maiores */
+@media (min-width: 600px) {
+  .anon-alert {
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .anon-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.1rem;
+  }
+}
+
+.close-alert {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #3B7A57;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-alert:hover {
+  color: #1e3d2f;
+}
+
 h1 {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
