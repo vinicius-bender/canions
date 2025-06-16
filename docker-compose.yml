@@ -42,4 +42,14 @@ services:
 volumes:
   postgres_data:
   static_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/deploy/projetos/canions/staticfiles
+      o: bind
   media_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/deploy/projetos/canions/media
+      o: bind
