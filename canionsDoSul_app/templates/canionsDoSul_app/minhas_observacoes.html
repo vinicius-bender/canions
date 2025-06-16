@@ -1,10 +1,11 @@
 {% extends 'canionsDoSul_app/base.html' %}
 {% load static %}
+{% load user_tags %}
 
 {% block title %}Minhas observações{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+<link rel="stylesheet" href="{% static 'canionsDoSul_app/css/cards.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -39,11 +40,11 @@
       <img src="{{ media.files.url }}" alt="{{ media.name }}" class="observation-image">
       {% elif media.is_video %}
       <div class="observation-video-placeholder">
-        <img src="{% static 'assets/video-placeholder.png' %}" alt="Vídeo" class="observation-video-icon">
+        <img src="{% static 'canionsDoSul_app/assets/video-placeholder.png' %}" alt="Vídeo" class="observation-video-icon">
       </div>
       {% endif %}
       {% else %}
-      <img src="{% static 'assets/no-image.png' %}" alt="Sem mídia" class="observation-image">
+      <img src="{% static 'canionsDoSul_app/assets/no-image.png' %}" alt="Sem mídia" class="observation-image">
       {% endif %}
       {% endwith %}
 
@@ -82,5 +83,5 @@
   <a href="{% url 'home' %}" class="back-btn">Voltar</a>
 </div> -->
 
-<script src="{% static 'scripts/search-observations.js' %}"></script>
+<script src="{% static 'canionsDoSul_app/scripts/search-observations.js' %}"></script>
 {% endblock %}

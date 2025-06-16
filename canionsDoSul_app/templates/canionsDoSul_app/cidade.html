@@ -1,11 +1,12 @@
 {% extends 'canionsDoSul_app/base.html' %}
 {% load static %}
+{% load user_tags %}
 
 {% block title %}Cadastrar por Cidade{% endblock %}
 
 {% block head %}
 <!-- <link rel="stylesheet" href="{% static 'css/form.css' %}"> -->
-<link rel="stylesheet" href="{% static 'css/city.css' %}">
+<link rel="stylesheet" href="{% static 'canionsDoSul_app/css/city.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -56,5 +57,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'scripts/cidade.js' %}"></script>
+<script src="{% static 'canionsDoSul_app/scripts/cidade.js' %}"></script>
 {% endblock %}
