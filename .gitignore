@@ -1,1 +1,35 @@
-/media/
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Environments
+.env
+*.env
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# Docker
+*.pid
+*.sock
+*.db
+docker-compose.override.yml
+
+# Git
+*.swp
+*.swo
+
+# Bytecode / caches
+*.egg-info/
+.eggs/
+*.bak
+*.tmp
+*.DS_Store

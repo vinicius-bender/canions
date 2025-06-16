@@ -1,15 +1,20 @@
+version: '3.8'
+
 services:
   web:
     build: .
-    command: gunicorn canionsDoSul_project.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn canionsDoSul_project.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
       - ./:/canionsDoSul
+      - static_volume:/canionsDoSul/staticfiles
+      - media_volume:/canionsDoSul/media
     ports:
       - "8000:8000"
     depends_on:
       - db
     env_file:
       - .env
+    restart: unless-stopped
   
   db:
     image: postgres:17.4
@@ -21,6 +26,7 @@ services:
       - POSTGRES_DB=canions_db
     ports:
       - "5432:5432"
+    restart: unless-stopped
   
   pgadmin:
     image: dpage/pgadmin4
@@ -31,6 +37,9 @@ services:
       - "5050:80"
     depends_on:
       - db
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
