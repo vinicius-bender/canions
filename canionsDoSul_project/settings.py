@@ -27,8 +27,9 @@ LOGOUT_REDIRECT_URL = 'home'
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG") == 'True'
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-&igchf+l+n$70@4@1)%m(-khtaxx$%$h$#=g9_+5ly8$-#8&^3")
+# DEBUG = os.getenv("DEBUG") == 'True'
+DEBUG = False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 
