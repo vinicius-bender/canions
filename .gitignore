@@ -33,3 +33,5 @@ docker-compose.override.yml
 *.bak
 *.tmp
 *.DS_Store
+
+*media/
