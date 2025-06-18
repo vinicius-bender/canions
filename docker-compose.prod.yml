@@ -27,8 +27,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
-      - static_volume:/canionsDoSul/staticfiles
-      - media_volume:/canionsDoSul/media
+      - static_volume:/canions/staticfiles
+      - media_volume:/canions/media
     depends_on:
       - web
 
