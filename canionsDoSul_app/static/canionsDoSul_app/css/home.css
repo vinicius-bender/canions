@@ -413,6 +413,122 @@ h1 {
     color: #4a5568;
 }
 
+#map {
+  max-width: 900px;        /* Limita largura para não ficar gigante na tela grande */
+  height: 480px;
+  margin: 30px auto;       /* Centraliza horizontalmente e dá margem em cima/baixo */
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(0, 70, 50, 0.15);
+  border: 2px solid #2a7a65;
+  background: linear-gradient(135deg, #e3f6f5, #c1e7e3);
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+#map:hover {
+  box-shadow: 0 12px 40px rgba(0, 70, 50, 0.3);
+}
+
+.map-section{
+    margin-top: 1rem;
+}
+
+.map-section > .container > .explore-title, .explore-subtitle{
+    text-align: center;
+}
+
+/* Popup do Leaflet */
+.leaflet-popup-content-wrapper {
+  background: #ffffffee; /* Branco com leve transparência */
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 70, 50, 0.2);
+  padding: 20px 25px;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1b3a34;
+  max-width: 280px;
+  line-height: 1.5;
+  backdrop-filter: saturate(180%) blur(10px);
+  border: 1.5px solid #2a7a65;
+  user-select: none;
+}
+
+/* Conteúdo do popup */
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-popup-content h3 {
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: #0e4a3b;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.leaflet-popup-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #3a5a50;
+}
+
+/* Botão no popup */
+.leaflet-popup-content .button-link {
+  display: inline-block;
+  background-color: #2a7a65;
+  color: #e3f6f5;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(42, 122, 101, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+}
+
+.leaflet-popup-content .button-link:hover {
+  background-color: #1c5b45;
+  box-shadow: 0 8px 25px rgba(28, 91, 69, 0.6);
+  text-decoration: none;
+}
+
+/* Ponteira do popup */
+.leaflet-popup-tip {
+  background: #ffffffee;
+  filter: drop-shadow(0 4px 6px rgba(0, 70, 50, 0.15));
+  border-left: 1.5px solid #2a7a65;
+  border-bottom: 1.5px solid #2a7a65;
+  transform: rotate(45deg);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #map {
+    max-width: 95%;
+    height: 360px;
+    border-radius: 16px;
+  }
+
+  .leaflet-popup-content-wrapper {
+    max-width: 240px;
+    padding: 16px 20px;
+    border-radius: 14px;
+  }
+
+  .leaflet-popup-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .leaflet-popup-content .button-link {
+    font-size: 0.95rem;
+    padding: 8px 20px;
+  }
+}
+
 /*-----------------------------MEDIA QUERIES---------------------------*/
 @media (min-width: 768px) {
     h1 {

@@ -6,7 +6,7 @@ def breadcrumbs(request):
     
     breadcrumb_names = {
         'cadastrar': 'Cadastrar Cadeia Taxonômica',
-        'criar_observacao': 'Criar Observação',
+        'criar_observacao': 'Relatar Observação',
         'minhas_observacoes': 'Minhas Observações',
         'observacoes': 'Últimas Observações',
         'criar_espécie': 'Criar Espécie',
@@ -21,6 +21,8 @@ def breadcrumbs(request):
         'latlng': 'Cadastro por Latitude/Longitude',
         'cidade': 'Cadastro por Cidade/Estado',
         'promover_usuario': 'Promover Usuário',
+        'observacoes_pendentes': 'Observações Pendentes',
+        'painel_administrador': 'Painel do Administrador',
         # adicione mais conforme necessário
     }
 

@@ -7,6 +7,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.views.decorators.http import require_POST
@@ -14,6 +16,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 import uuid
 from django.http import Http404, HttpResponseNotFound
+from django.db.models import F
 
 #views
 def is_specialist_or_scientist(user):
@@ -36,11 +39,22 @@ def home(request):
     # Total de observações aprovadas
     num_approved_observations = Observation.objects.filter(status='Aprovada').count()
 
+     # Observações aprovadas para o mapa
+    observations = Observation.objects.filter(status='Aprovada').select_related('species', 'localization').values(
+        'id',
+        'latitude',
+        'longitude',
+        species_name=F('species__popular_name'),
+        city=F('localization__city_name'),   # Note o _name
+        state=F('localization__state_name'), # Note o _name
+    )
+
     context = {
         'user': request.user,
         'num_species': num_species,
         'num_records': num_records,
         'num_approved_observations': num_approved_observations,
+        'observations_json': json.dumps(list(observations), cls=DjangoJSONEncoder),
     }
 
     return render(request, 'canionsDoSul_app/home.html', context)

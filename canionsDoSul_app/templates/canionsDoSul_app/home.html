@@ -4,8 +4,9 @@
 
 {% block title %}Home{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'canionsDoSul_app/css/home.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% endblock %}
 
 {% block content %}
@@ -95,6 +96,11 @@
         <p class="explore-subtitle">Ainda não tem uma conta? Veja o que você já pode fazer como visitante:</p>
 
         <div class="explore-grid">
+            <a href="{% url 'criar_observacao' %}" class="explore-card">
+                <i class="fa-solid fa-paw"></i>
+                <h3>Relatar observação</h3>
+                <p>Viu um animal interessante? Contribua com a ciência cidadã registrando uma observação da fauna local na plataforma.</p>
+            </a>
             <a href="{% url 'observacoes' %}" class="explore-card">
                 <i class="fa-solid fa-binoculars"></i>
                 <h3>Ver Observações</h3>
@@ -118,7 +124,7 @@
                 <h3>Crie sua Conta</h3>
                 <p>
                     Participe da plataforma e registre suas próprias observações.<br>
-                    <small><em>*não é necessário criar conta para registrar uma observação, porem, não será possível listar as suas observações de forma individual</em></small>
+                    <small><em>*Você pode registrar uma observação sem criar uma conta, mas recomendamos que se cadastre para acompanhar e gerenciar seus registros futuramente.</em></small>
                 </p>
             </a>
 
@@ -131,5 +137,24 @@
     </div>
 </section>
 
+<section class="map-section">
+    <div class="container">
+        <h2 class="explore-title">Mapa das Observações Registradas</h2>
+        <p class="explore-subtitle">Explore as observações da fauna registradas pela comunidade científica cidadã</p>
+        
+        <!-- Loading state (opcional - pode ser controlado via JavaScript) -->
+        <div class="map-loading" id="mapLoading" style="display: none;">
+            <div class="spinner"></div>
+            <span>Carregando observações...</span>
+        </div>
+        
+        <div id="map"></div>
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const observations = JSON.parse("{{ observations_json|escapejs }}");
+</script>
 <script src="{% static 'canionsDoSul_app/scripts/home.js' %}"></script>
 {% endblock %}
