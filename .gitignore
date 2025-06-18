@@ -5,8 +5,7 @@ __pycache__/
 *.log
 
 # Environments
-.env
-*.env
+
 
 # Django
 db.sqlite3

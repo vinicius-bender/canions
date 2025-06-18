@@ -27,8 +27,8 @@ def is_admin(user):
 
 def home(request):
 
-    # Número de espécies com pelo menos uma observação associada
-    num_species = Species.objects.filter(observation__isnull=False).distinct().count()
+    # Número de espécies
+    num_species = Species.objects.filter().distinct().count()
 
     # Total de registros (todas as observações, independente do status)
     num_records = Observation.objects.count()
@@ -44,12 +44,6 @@ def home(request):
     }
 
     return render(request, 'canionsDoSul_app/home.html', context)
-
-# def about(request):
-#     return render(request, 'canionsDoSul_app/sobre.html')
-
-# def contact(request):
-#     return render(request, 'canionsDoSul_app/contato.html')
 
 @login_required
 @user_passes_test(is_admin, login_url='erro_permissao')
