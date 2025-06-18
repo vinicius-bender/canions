@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    command: gunicorn canionsDoSul.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/canionsDoSul/staticfiles
+      - media_volume:/canionsDoSul/media
+    expose:
+      - 8000
+    env_file:
+      - .env.prod
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=canions_db
+      - POSTGRES_USER=canions_user
+      - POSTGRES_PASSWORD=canions_pass
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/canionsDoSul/staticfiles
+      - media_volume:/canionsDoSul/media
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

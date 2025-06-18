@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env.prod'))
 
 AUTH_USER_MODEL = 'canionsDoSul_app.User'
 
@@ -10,11 +13,10 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'home'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&igchf+l+n$70@4@1)%m(-khtaxx$%$h$#=g9_+5ly8$-#8&^3'
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+DEBUG = os.getenv('DEBUG') == 'True'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+ALLOWED_HOSTS = ['31.220.102.180', 'localhost']
 
 
 # Application definition
@@ -116,9 +118,9 @@ USE_TZ = True
 # settings.py
 
 # URL para acessar os arquivos estáticos
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Para arquivos estáticos em desenvolvimento
 STATICFILES_DIRS = [
