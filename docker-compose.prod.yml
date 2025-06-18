@@ -1,10 +1,10 @@
 services:
   web:
     build: .
-    command: gunicorn canionsDoSul.wsgi:application --bind 0.0.0.0:8000
+    command: command: gunicorn canionsDoSul_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/canionsDoSul/staticfiles
-      - media_volume:/canionsDoSul/media
+      - static_volume:/canions/staticfiles
+      - media_volume:/canions/media
     expose:
       - 8000
     env_file:
