@@ -6,6 +6,8 @@ __pycache__/
 
 # Environments
 .env.prod
+.env.dev
+docker-compose.dev.yml
 
 # Django
 db.sqlite3

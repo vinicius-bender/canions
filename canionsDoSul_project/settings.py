@@ -6,7 +6,10 @@ AUTH_USER_MODEL = 'canionsDoSul_app.User'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env.prod'))
+# Carrega o .env baseado na variável DJANGO_ENV
+ENV = os.getenv("DJANGO_ENV", "dev")
+dotenv_path = BASE_DIR / (".env.prod" if ENV == "prod" else ".env.dev")
+load_dotenv(dotenv_path=dotenv_path)
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'home'
@@ -71,11 +74,11 @@ WSGI_APPLICATION = 'canionsDoSul_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'canions_db',
-        'USER': 'canions_user',
-        'PASSWORD': 'canions_pass',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
@@ -118,12 +121,18 @@ USE_TZ = True
 
 # URL para acessar os arquivos estáticos
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_ROOT = '/canions/staticfiles'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = '/canions/staticfiles'
 MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_ROOT = '/canions/media'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = '/canions/media'
 # Para arquivos estáticos em desenvolvimento
+if ENV == "prod":
+    STATIC_ROOT = '/canions/staticfiles'
+    MEDIA_ROOT = '/canions/media'
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     BASE_DIR / "canionsDoSul_app" / "static",  # Ajuste conforme o nome do seu app
 ]
