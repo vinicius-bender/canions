@@ -118,9 +118,11 @@ USE_TZ = True
 
 # URL para acessar os arquivos estáticos
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/canions/staticfiles'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/canions/media'
 # Para arquivos estáticos em desenvolvimento
 STATICFILES_DIRS = [
     BASE_DIR / "canionsDoSul_app" / "static",  # Ajuste conforme o nome do seu app
