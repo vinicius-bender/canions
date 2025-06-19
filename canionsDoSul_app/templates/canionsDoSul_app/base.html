@@ -50,8 +50,10 @@
                     {% endif %}
                     <li class="nav-group-mobile"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar
                             observação</a></li>
+                    {% if user.is_authenticated %}
                     <li class="nav-group-mobile"><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas
                             observações</a></li>
+                    {% endif %}
                     <li class="nav-group-mobile"><a href="{% url 'observacoes' %}" class="nav-link">Todas
                             observações</a></li>
                     <!-- Bloco especial para observações Desktop -->
@@ -59,7 +61,9 @@
                         <span class="nav-link">Observações ▼</span>
                         <ul class="dropdown-observacoes">
                             <li><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar observação</a></li>
+                            {% if user.is_authenticated %}
                             <li><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas observações</a></li>
+                            {% endif %}
                             <li><a href="{% url 'observacoes' %}" class="nav-link">Todas observações</a></li>
                         </ul>
                     </li>
