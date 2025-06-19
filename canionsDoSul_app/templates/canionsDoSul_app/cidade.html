@@ -37,7 +37,7 @@
     <div class="country-text-div">
       <p>Será preenchido automaticamente após a escolha da cidade e estado</p>
     </div>
-  <input readonly type="text" name="country_name" id="id_country_name" class="form-control">
+  <input readonly type="text" name="country_name" id="id_country_name" class="form-control" placeholder="Será preenchido automaticamente após a escolha da cidade e estado">
 
   <div id="location-status"></div>
 
@@ -47,8 +47,8 @@
   {{ media_form.as_p }}
 
   <div class="form-buttons">
-    <button type="submit" id="submit-button">Cadastrar</button>
-    <a href="{% url 'criar_observacao' %}">Voltar</a>
+    <button type="submit" class="submit-button">Cadastrar</button>
+    <a class="back-a" href="{% url 'criar_observacao' %}">Voltar</a>
   </div>
 </form>
 

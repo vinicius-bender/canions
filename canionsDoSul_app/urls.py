@@ -36,4 +36,8 @@ urlpatterns = [
     path('buscar-generos/<int:family_id>/', views.buscar_generos_por_familia, name='buscar_generos'),
     path('buscar-especies/<int:genus_id>/', views.buscar_especies_por_genero, name='buscar_especies'),
     path('observacoes/midia/<int:media_id>/excluir/', views.excluir_midia_observacao, name='excluir_midia_observacao'),
+    path('especies/', views.species_list_view, name='listar_especies'),
+    path('especie/<int:id>/info/', views.modal_species_info, name='informacoes_especies'),
+    path('especie/<int:id>/editar/', views.modal_edit_species, name='editar_especies'),
+    path('especie/<int:id>/deletar/', views.modal_delete_species, name='deletar_especies'),
 ]

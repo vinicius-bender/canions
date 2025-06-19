@@ -1,0 +1,49 @@
+{% extends 'canionsDoSul_app/base.html' %}
+{% load static %}
+{% block title %}Espécies Cadastradas{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'canionsDoSul_app/css/species_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Espécies Cadastradas</h1>
+
+<div class="search-container">
+    <form method="get" action="{% url 'listar_especies' %}">
+        <input id="searchInput" type="text" name="q" placeholder="Pesquisar espécie..." value="{{ query }}">
+        <button type="submit">Buscar</button>
+    </form>
+</div>
+
+<div class="species-list">
+    {% for s in species_list %}
+    <div class="species-list-item" data-nome="{{ s.popular_name }} {{ s.scientific_name }}">
+        <span class="species-name">{{ s.popular_name }} ({{ s.scientific_name }})</span>
+        <div class="action-icons">
+            <button class="btn-icon" data-url="{% url 'informacoes_especies' s.id %}" data-action="info"
+                aria-label="Ver Detalhes">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn-icon" data-url="{% url 'editar_especies' s.id %}" data-action="edit" aria-label="Editar">
+                <i class="fas fa-pen"></i>
+            </button>
+            <button class="btn-icon" data-url="{% url 'deletar_especies' s.id %}" data-action="delete"
+                aria-label="Excluir">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+    {% empty %}
+    <p class="empty-message">Nenhuma espécie encontrada.</p>
+    {% endfor %}
+</div>
+
+<!-- Modal -->
+<div id="modal-container">
+    <div id="modal-content"></div>
+</div>
+
+<script src="{% static 'canionsDoSul_app/scripts/species_list.js' %}"></script>
+{% endblock %}

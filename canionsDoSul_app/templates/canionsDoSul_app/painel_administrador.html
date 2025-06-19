@@ -18,6 +18,7 @@
     {% endif %}
     {% if user.is_authenticated and user.role|not_in:"default" %}
     <div><a href="{% url 'lista_observacoes_pendentes' %}" class="admin-options-item">Observações pendentes</a></div>
+    <div><a href="{% url 'listar_especies' %}" class="admin-options-item">Espécies cadastradas</a></div>
     {% endif %}
     <div><a href="{% url 'home' %}" class="admin-options-item go-back-btn">Voltar</a></div> 
 </div>

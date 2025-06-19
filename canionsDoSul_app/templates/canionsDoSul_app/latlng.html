@@ -24,7 +24,9 @@
   <p>Selecione um ponto no Mapa para preencher automaticamente os dados</p>
 </div>
 
-<div id="map"></div>
+<div class="map-container">
+    <div id="map"></div>
+</div>
 
 <div class="instructions-div">
   <p>Não conseguiu encontrar a cidade no Mapa, mas sabe a <strong>latitude</strong> e <strong>longitude</strong>? Então preencha <strong>apenas</strong> a <strong>latitude</strong> e <strong>longitude</strong> manualmente
@@ -32,22 +34,22 @@
   <p>Se não souber a <strong>latitude</strong> e <strong>longitude</strong>, retorne <strong>a página anterior</strong> e selecione a opção de <strong>"Cadastrar por Cidade/Estado"</strong></p>
 </div>
 
-<form method="POST" enctype="multipart/form-data">
+<form class="data-form" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ observation_form.as_p }}
   <label for="id_city_name">Cidade:</label>
-  <input type="text" name="city_name" id="id_city_name" class="form-control">
+  <input type="text" name="city_name" id="id_city_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
   <label for="id_state_name">Estado:</label>
-  <input type="text" name="state_name" id="id_state_name" class="form-control">
+  <input type="text" name="state_name" id="id_state_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
   <label for="id_country_name">País:</label>
-  <input type="text" name="country_name" id="id_country_name" class="form-control">
+  <input type="text" name="country_name" id="id_country_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
   {{ media_form.as_p }}
 
   <div class="form-buttons">
-    <button type="button" id="btn_buscar_localizacao">Buscar Localização</button>
+    <button type="button" class="btn-forms" id="btn_buscar_localizacao">Buscar Localização</button>
     <button type="submit" id="submit-button">Cadastrar</button>
     <a href="{% url 'criar_observacao' %}" class="go-back-btn">Voltar</a>
   </div>

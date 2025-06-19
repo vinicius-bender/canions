@@ -88,7 +88,8 @@ function closeAnonAlert() {
 
 function initMap() {
     const mapContainer = document.getElementById('map');
-    if (!mapContainer || typeof observations === 'undefined' || !Array.isArray(observations)) return;
+    //if (!mapContainer || typeof observations === 'undefined' || !Array.isArray(observations)) return;
+    if (!mapContainer) return;
 
     const map = L.map('map').setView([-28.73, -50.82], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -112,7 +113,7 @@ function initMap() {
             <div class="popup-content">
                 <h3>${obs.species_name}</h3>
                 <p>Local: ${obs.city}, ${obs.state}</p>
-                <a href="/observacao/${obs.id}/" target="_blank" class="button-link">Ver mais detalhes</a>
+                <a href="/observacoes/${obs.id}/" target="_blank" class="button-link">Ver mais detalhes</a>
             </div>
         `);
     });

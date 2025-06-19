@@ -1,0 +1,273 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.search-container form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    gap: 0.5rem;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.search-container button {
+    background-color: #3B7A57;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.species-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.species-list-item {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.species-name {
+    font-weight: 600;
+    flex: 1;
+    word-break: break-word;
+}
+
+.action-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    color: #333;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #3B7A57;
+}
+
+.empty-message {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+
+#modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+} 
+
+#modal-content {
+    width: 95%;
+    max-width: 500px;
+    background: white;
+    border-radius: 10px;
+    max-height: 90%;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.modal-body {
+  width: 100%;
+  max-width: 100%;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  color: #222;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.btn-fechar-modal-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #3B7A57;
+  flex-grow: 1;
+}
+
+.btn-fechar-modal {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  /* padding: 0; */
+  /* width: 36px;
+  height: 36px; */
+  transition: color 0.2s ease;
+}
+
+.btn-fechar-modal:hover {
+  color: #3B7A57;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+strong {
+  color: #2c5d3f;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #3B7A57;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #3B7A57;
+  outline: none;
+}
+
+.buttons-div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+
+.buttons-div button {
+  width: 100%;
+  padding: 0.6rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  color: white;
+}
+
+/* Botões específicos */
+.aprove-btn {
+  background-color: #3B7A57;
+}
+
+.aprove-btn:hover {
+  background-color: #2c5d3f;
+}
+
+.reject-btn {
+  background-color: #c82333;
+}
+
+.reject-btn:hover {
+  background-color: #a31c28;
+}
+
+.close-btn {
+  background-color: #6c757d;
+}
+
+.close-btn:hover {
+  background-color: #5a6268;
+}
+
+/* ========================= */
+/* A partir de telas maiores */
+/* ========================= */
+
+@media (min-width: 521px) {
+  .modal-body {
+    max-width: 480px;
+    padding: 1.5rem 2rem;
+    font-size: 1rem;
+  }
+
+  .buttons-div {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .buttons-div button {
+    width: auto;
+    padding: 0.6rem;
+  }
+}

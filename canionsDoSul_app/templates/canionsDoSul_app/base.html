@@ -9,52 +9,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Plataforma Cânions do Sul{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'canionsDoSul_app/assets/logo.png' %}" >
+    <link rel="shortcut icon" type="image/png" href="{% static 'canionsDoSul_app/assets/logo.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-        {% block head %}{% endblock %}
-        <link rel="stylesheet" href="{% static 'canionsDoSul_app/css/base.css' %}">
+
+    <link rel="stylesheet" href="{% static 'canionsDoSul_app/css/base.css' %}">
+    {% block head %}{% endblock %}
 </head>
 
 <body>
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="{% url 'home' %}" class="logo"><img class="nav-branding" src="{% static 'canionsDoSul_app/assets/logo.png' %}"
-                        alt="Logo" /></a>
+                <a href="{% url 'home' %}" class="logo">
+                    <img class="nav-branding" src="{% static 'canionsDoSul_app/assets/logo.png' %}" alt="Logo" />
+                </a>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="https://canionsdosul.org/conheca/" target="_blank"
-                            rel="noopener noreferrer" class="nav-link">Sobre</a></li>
-                    <li class="nav-item"><a href="https://canionsdosul.org/contato/" target="_blank"
-                            rel="noopener noreferrer" class="nav-link">Contato</a></li>
-                    {% if not user.is_authenticated %}
-                    <li class="nav-item"><a href="{% url 'registrar' %}" class="nav-link">Registrar-se</a></li>
-                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a href="https://canionsdosul.org/conheca/" target="_blank" rel="noopener noreferrer"
+                            class="nav-link">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer"
+                            class="nav-link">Contato</a>
+                    </li>
+
                     {% if user.is_authenticated and user.role == "admin" %}
                     <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
                     </li>
                     {% endif %}
+
                     {% if user.is_authenticated and is_specialist or is_scientist %}
-                    <li class="nav-item"><a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações Pendentes</a></li>
+                    <li class="nav-item"><a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações
+                            Pendentes</a></li>
                     <li class="nav-item"><a href="{% url 'cadastrar' %}" class="nav-link">Cadastrar taxonômia</a></li>
                     {% endif %}
-                    <li class="nav-item"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar observação</a>
-                    </li>
-                    <li class="nav-item"><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas
+                    <li class="nav-group-mobile"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar
+                            observação</a></li>
+                    <li class="nav-group-mobile"><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas
                             observações</a></li>
-                    <li class="nav-item"><a href="{% url 'observacoes' %}" class="nav-link">Todas observações</a></li>
+                    <li class="nav-group-mobile"><a href="{% url 'observacoes' %}" class="nav-link">Todas
+                            observações</a></li>
+                    <!-- Bloco especial para observações Desktop -->
+                    <li class="nav-item nav-group-desktop">
+                        <span class="nav-link">Observações ▼</span>
+                        <ul class="dropdown-observacoes">
+                            <li><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar observação</a></li>
+                            <li><a href="{% url 'minhas_observacoes' %}" class="nav-link">Minhas observações</a></li>
+                            <li><a href="{% url 'observacoes' %}" class="nav-link">Todas observações</a></li>
+                        </ul>
+                    </li>
+
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    {% endif %}
+
                     {% if user.is_authenticated %}
-                    <form action="{% url 'logout' %}" method="post">
+                    <form action="{% url 'logout' %}" method="post" id="logout-btn-div-desktop">
                         {% csrf_token %}
-                        <button type="submit" class="logout-btn">Logout</button>
+                        <button type="submit" id="logout-btn-desktop">Logout</button>
+                    </form>
+                    <form action="{% url 'logout' %}" method="post" id="logout-btn-div-mobile">
+                        {% csrf_token %}
+                        <button type="submit" id="logout-btn-mobile">Logout</button>
                     </form>
                     {% endif %}
                 </ul>
+
                 <div class="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -97,14 +122,17 @@
                     <!-- <li><a href="{% url 'observacoes' %}">Observações</a></li>
                     <li><a href="{% url 'registrar' %}">Registrar</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li> -->
-                    <li><a href="https://canionsdosul.org/" target="_blank" rel="noopener noreferrer">Geoparque Oficial</a></li>
+                    <li><a href="https://canionsdosul.org/" target="_blank" rel="noopener noreferrer">Geoparque
+                            Oficial</a></li>
                 </ul>
             </div>
 
             <div class="footer-contact">
                 <h4>Contato</h4>
-                <p><a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer">Nos envie um Email</a></p>
-                <p>Instagram: <a href="https://www.instagram.com/geoparquecanionsdosul/" target="_blank" rel="noopener noreferrer">@geoparquecanionsdosul</a></p>
+                <p><a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer">Nos envie um
+                        Email</a></p>
+                <p>Instagram: <a href="https://www.instagram.com/geoparquecanionsdosul/" target="_blank"
+                        rel="noopener noreferrer">@geoparquecanionsdosul</a></p>
             </div>
         </div>
 

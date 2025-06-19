@@ -12,6 +12,15 @@
 
 {% block content %}
 <h1>Cadastrar Cadeia Taxonômica</h1>
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <form method="POST" class="form-container">
     {% csrf_token %}
 
@@ -57,15 +66,6 @@
         <a href="{% url 'home' %}">Voltar</a>
     </div>
 </form>
-
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
 <script src="{% static 'canionsDoSul_app/scripts/taxonomia.js' %}"></script>
 
 {% endblock %}
