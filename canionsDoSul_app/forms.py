@@ -16,6 +16,7 @@ class MultipleFileInput(Input):
     def __init__(self, attrs=None):
         super().__init__(attrs)
         self.attrs['multiple'] = True
+        self.attrs['accept'] = 'image/*,video/*'  #abre a galeria no celular
     
     def value_from_datadict(self, data, files, name):
         if hasattr(files, 'getlist'):
