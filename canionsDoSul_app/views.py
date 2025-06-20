@@ -241,13 +241,13 @@ def observation_by_city(request):
 
         if observation_form.is_valid() and localization_form.is_valid():
             localization = localization_form.save(commit=False)
-            localization.user = request.user
+            # localization.user = request.user
+            localization.user = get_or_create_anonymous_user(request)
             localization.save()
 
             observation = observation_form.save(commit=False)
             observation.localization = localization
-            user = get_or_create_anonymous_user(request)
-            observation.user = user
+            observation.user = get_or_create_anonymous_user(request)
             observation.status = "Pendente"
             observation.save()
 
