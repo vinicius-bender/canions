@@ -156,3 +156,10 @@ input[type="text"]:focus {
 strong{
     color: #3B7A57;
 }
+
+@media (min-width: 1024px){
+    .main-content{
+        max-width: 50%;
+        margin: 0 auto;
+    }
+}

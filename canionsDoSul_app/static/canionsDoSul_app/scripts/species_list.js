@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
           btnFechar.addEventListener('click', fecharModal);
         });
 
+        modalContent.querySelectorAll('.close-btn').forEach(btnFechar => {
+          btnFechar.addEventListener('click', fecharModal);
+        });
+
         // Formulário de edição
         if (action === 'edit') {
           const editForm = document.getElementById('edit-form');
@@ -82,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+
+
 
 
 // document.addEventListener('DOMContentLoaded', () => {

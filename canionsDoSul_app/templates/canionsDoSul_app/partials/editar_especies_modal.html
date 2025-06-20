@@ -7,6 +7,32 @@
   </div>
   <form id="edit-form">
     {% csrf_token %}
+    
+    <label for="popular_name">Nome Popular:</label>
+    <input type="text" id="popular_name" name="popular_name" value="{{ species.popular_name }}">
+
+    <label for="scientific_name">Espécie:</label>
+    <input type="text" id="scientific_name" name="scientific_name" value="{{ species.scientific_name }}">
+
+    <label for="habitat">Informações adicionais:</label>
+    <textarea id="habitat" name="habitat" maxlength="2000" rows="6">{{ species.habitat }}</textarea>
+
+    <div class="buttons-div">
+      <button type="submit" class="aprove-btn">Salvar</button>
+      <button type="button" class="close-btn">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<!-- <div class="modal-body">
+  <div class="modal-header">
+    <div class="btn-fechar-modal-div">
+      <h2 class="modal-title">Editar Espécie</h2>
+      <button class="btn-fechar-modal" aria-label="Fechar modal">×</button>
+    </div>
+  </div>
+  <form id="edit-form">
+    {% csrf_token %}
     <label>Nome Popular:</label>
     <input type="text" name="popular_name" value="{{ species.popular_name }}">
     <label>Espécie:</label>
@@ -18,4 +44,4 @@
       <button type="button" class="close-btn btn-fechar-modal">Cancelar</button>
     </div>
   </form>
-</div>
+</div> -->

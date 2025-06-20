@@ -5,9 +5,28 @@
       <button class="btn-fechar-modal" aria-label="Fechar modal">×</button>
     </div>
   </div>
+
+  <p><strong>Família:</strong> {{ species.genus.family.name }}</p>
+  <p><strong>Gênero:</strong> {{ species.genus.name }}</p>
+  <p><strong>Espécie:</strong> {{ species.scientific_name }}</p>
+  <p><strong>Nome Popular:</strong> {{ species.popular_name }}</p>
+
+  <p><strong>Informações adicionais:</strong></p>
+  <div class="habitat-box">
+    {{ species.habitat|default:"Sem informações adicionais." }}
+  </div>
+</div>
+
+<!-- <div class="modal-body">
+  <div class="modal-header">
+    <div class="btn-fechar-modal-div">
+      <h2 class="modal-title">Detalhes da Espécie</h2>
+      <button class="btn-fechar-modal" aria-label="Fechar modal">×</button>
+    </div>
+  </div>
   <p><strong>Família:</strong> {{ species.genus.family.name }}</p>
   <p><strong>Gênero:</strong> {{ species.genus.name }}</p>
   <p><strong>Espécie:</strong> {{ species.scientific_name }}</p>
   <p><strong>Nome Popular:</strong> {{ species.popular_name }}</p>
   <p><strong>Informações adicionais:</strong> {{ species.habitat }}</p>
-</div>
+</div> -->
