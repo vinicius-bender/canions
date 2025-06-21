@@ -5,7 +5,6 @@
 {% block title %}Cadastrar por Cidade{% endblock %}
 
 {% block head %}
-<!-- <link rel="stylesheet" href="{% static 'css/form.css' %}"> -->
 <link rel="stylesheet" href="{% static 'canionsDoSul_app/css/city.css' %}">
 {% endblock %}
 
@@ -24,7 +23,7 @@
   <p>Preencha os campos com os dados correspondentes</p>
 </div>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" action="{% url 'cidade' %}">
   {% csrf_token %}
 
   <label for="id_city_name">Cidade:</label>
@@ -47,13 +46,11 @@
   {{ media_form.as_p }}
 
   <div class="form-buttons">
-    <button type="submit" class="submit-button">Cadastrar</button>
+    <button type="submit" id="submit-button" class="submit-button" disabled>Cadastrar</button>
+    <div id="loading-spinner" class="spinner" style="display: none;"></div>
     <a class="back-a" href="{% url 'criar_observacao' %}">Voltar</a>
   </div>
 </form>
-
-
-
 {% endblock %}
 
 {% block script %}
