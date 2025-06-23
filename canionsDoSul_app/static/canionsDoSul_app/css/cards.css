@@ -289,16 +289,4 @@ a:visited {
     .observation-info {
         overflow-y: auto;
     }   
-
-    /* .observation-info-title {
-        margin: 0;
-        font-size: 0.85rem;
-        font-weight: bold;
-    }
-
-    .observation-info-title-small {
-        font-size: 0.70rem;
-        font-style: italic;
-        color: #d8f3e0;
-    } */
 }

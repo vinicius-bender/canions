@@ -45,8 +45,8 @@ def home(request):
         'latitude',
         'longitude',
         species_name=F('species__popular_name'),
-        city=F('localization__city_name'),   # Note o _name
-        state=F('localization__state_name'), # Note o _name
+        city=F('localization__city_name'),
+        state=F('localization__state_name'),
     )
 
     context = {

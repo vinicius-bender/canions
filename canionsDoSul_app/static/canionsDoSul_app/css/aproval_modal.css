@@ -133,14 +133,6 @@ h1 {
   margin-bottom: 1.125rem;
 }
 
-/* .medias img,
-.medias video {
-  width: calc(50% - 0.625rem);
-  height: auto;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
-  border-radius: 0.375rem;
-} */
 
 .medias img,
 .medias video {
@@ -155,14 +147,6 @@ h1 {
 .btn-delete-image:hover {
   background-color: #c82333;
 }
-
-/* .media-wrapper {
-  position: relative;
-  width: calc(50% - 10px);
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 0.375rem;
-} */
 
 .media-wrapper {
   width: calc(50% - 10px);
