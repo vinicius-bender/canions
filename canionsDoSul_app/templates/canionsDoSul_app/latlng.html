@@ -13,11 +13,11 @@
 <h1>Cadastro com Mapa</h1>
 
 {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
+<div class="messages">
+  {% for message in messages %}
+  <div class="alert {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
 {% endif %}
 
 <div class="instructions-div">
@@ -25,28 +25,71 @@
 </div>
 
 <div class="map-container">
-    <div id="map"></div>
+  <div id="map"></div>
 </div>
 
 <div class="instructions-div">
-  <p>Não conseguiu encontrar a cidade no Mapa, mas sabe a <strong>latitude</strong> e <strong>longitude</strong>? Então preencha <strong>apenas</strong> a <strong>latitude</strong> e <strong>longitude</strong> manualmente
-    nos campos abaixo e então clique no botão de <strong>"Buscar Localização"</strong> para preencher automaticamente o restante dos dados</p>
-  <p>Se não souber a <strong>latitude</strong> e <strong>longitude</strong>, retorne <strong>a página anterior</strong> e selecione a opção de <strong>"Cadastrar por Cidade/Estado"</strong></p>
+  <p>Não conseguiu encontrar a cidade no Mapa, mas sabe a <strong>latitude</strong> e <strong>longitude</strong>? Então
+    preencha <strong>apenas</strong> a <strong>latitude</strong> e <strong>longitude</strong> manualmente
+    nos campos abaixo e então clique no botão de <strong>"Buscar Localização"</strong> para preencher automaticamente o
+    restante dos dados</p>
+  <p>Se não souber a <strong>latitude</strong> e <strong>longitude</strong>, retorne <strong>a página anterior</strong>
+    e selecione a opção de <strong>"Cadastrar por Cidade/Estado"</strong></p>
 </div>
 
 <form class="data-form" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ observation_form.as_p }}
+  <!-- {{ observation_form.as_p }} -->
+  <label for="id_latitude"><span class="asterisc">*</span>Latitude:</label>
+  {{ observation_form.latitude }}
+
+  <label for="id_longitude"><span class="asterisc">*</span>Longitude:</label>
+  {{ observation_form.longitude }}
+
   <label for="id_city_name">Cidade:</label>
-  <input type="text" name="city_name" id="id_city_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
+  <input type="text" name="city_name" id="id_city_name" class="form-control mbt"
+    placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
   <label for="id_state_name">Estado:</label>
-  <input type="text" name="state_name" id="id_state_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
+  <input type="text" name="state_name" id="id_state_name" class="form-control mbt"
+    placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
   <label for="id_country_name">País:</label>
-  <input type="text" name="country_name" id="id_country_name" class="form-control" placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
+  <input type="text" name="country_name" id="id_country_name" class="form-control mbt"
+    placeholder="Será preenchido automaticamente ao escolher um ponto no mapa">
 
-  {{ media_form.as_p }}
+  <div class="animal-suggest mbt">
+    <label for="id_family">Família:</label>
+    <input type="text" name="family_name" id="id_family" placeholder="Digite ou selecione uma família"
+      autocomplete="off">
+    <div class="autocomplete-suggestions" id="family-suggestions"></div>
+  </div>
+
+  <div class="animal-suggest mbt">
+    <label for="id_genus">Gênero:</label>
+    <input type="text" name="genus_name" id="id_genus" placeholder="Digite ou selecione um gênero" autocomplete="off">
+    <div class="autocomplete-suggestions" id="genus-suggestions"></div>
+  </div>
+
+  <div class="animal-suggest mbt">
+    <label for="id_species">Espécie (Nome Científico):</label>
+    <input type="text" name="species_scientific_name" id="id_species" placeholder="Digite ou selecione uma espécie"
+      autocomplete="off">
+    <div class="autocomplete-suggestions" id="species-suggestions"></div>
+  </div>
+
+
+  <label for="id_popular_name">Nome Popular:</label>
+  <input class="mbt" type="text" name="species_popular_name" id="id_popular_name" placeholder="Nome popular da espécie">
+
+  <label for="id_notes"><span class="asterisc">*</span>Informações adicionais:</label>
+  <textarea required name="notes" id="id_notes"
+    placeholder="Ex: Características físicas do animal etc..."></textarea>
+  <div id="char-count" class="char-count mbt">0 / 2000</div>
+
+  <label for="id_files"><span class="asterisc">*</span>Selecione arquivos de imagem ou vídeo:</label>
+  {{ media_form.files }}
+  <!-- {{ media_form.as_p }} -->
 
   <div class="form-buttons">
     <button type="button" class="btn-forms" id="btn_buscar_localizacao">Buscar Localização</button>
@@ -54,10 +97,6 @@
     <a href="{% url 'criar_observacao' %}" class="go-back-btn">Voltar</a>
   </div>
 </form>
-
-<!-- <div class="go-back-div">
-  <a href="{% url 'criar_observacao' %}" class="go-back-btn">Voltar</a>
-</div> -->
 {% endblock %}
 
 {% block script %}

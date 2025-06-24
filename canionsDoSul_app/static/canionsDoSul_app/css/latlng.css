@@ -87,7 +87,7 @@ h1 {
 .data-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
     background-color: #fff;
     padding: 1.5rem;
     border-radius: 12px;
@@ -98,15 +98,16 @@ h1 {
 .data-form label {
     font-weight: 600;
     font-size: 0.95rem;
-    margin-bottom: 0.3rem;
+    /* margin-bottom: 0.3rem; */
 }
 
 .data-form p>label {
     font-weight: 600;
     font-size: 0.95rem;
-    margin-bottom: 0.3rem;
+    /* margin-bottom: 0.3rem; */
 }
 
+.data-form input[type="number"],
 .data-form input[type="text"],
 .data-form input[type="file"],
 .data-form select,
@@ -116,6 +117,10 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
+}
+
+.mbt, #id_latitude, #id_longitude, #id_files{
+    margin-bottom: 1.5rem;
 }
 
 .data-form p>input {
@@ -155,6 +160,53 @@ h1 {
     text-decoration: none;
 }
 
+.animal-suggest{
+    position: relative;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Itens individuais da lista */
+.autocomplete-suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Efeito hover */
+.autocomplete-suggestions div:hover {
+    background-color: #f1f1f1;
+}
+
+#id_notes{
+    padding: 0.625rem;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    height: 12.5rem;
+    /* max-height: 31.25rem; */
+    overflow-y: auto;
+}
+
+#id_notes:focus{
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+}
+
 #submit-button:hover {
     background-color: #266d46;
 }
@@ -166,21 +218,6 @@ h1 {
 #btn_buscar_localizacao:hover {
     background-color: #524ae0;
 }
-
-/* Link "Voltar" */
-/* a {
-    display: inline-block;
-    margin-top: 1.5rem;
-    text-align: center;
-    color: #0077cc;
-    text-decoration: none;
-    font-weight: bold;
-} */
-
-/* a:hover {
-    text-decoration: underline;
-} */
-
 
 .messages {
     margin: 1rem auto;
@@ -204,6 +241,10 @@ h1 {
 
 .active>span {
   background-color: #3b7457;
+}
+
+.asterisc{
+ color: #c00;   
 }
 
 /* Responsivo extra */

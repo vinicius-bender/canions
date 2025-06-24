@@ -48,6 +48,10 @@ label {
     /* margin-bottom: 0.3rem; */
 }
 
+.mbt, #id_files{
+    margin-bottom: 1.5rem;
+}
+
 input[type="text"],
 input[type="file"],
 select,
@@ -57,7 +61,7 @@ textarea {
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 8px;
-    margin-bottom: 0.625rem;
+    /* margin-bottom: 0.625rem; */
 }
 
 /* Campos ocultos latitude/longitude */
@@ -104,10 +108,57 @@ input[name="longitude"] {
     font-style: italic;
 }
 
+.animal-suggest{
+    position: relative;
+}
+
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    background: white;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.suggestion-item {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f2f2f2;
+}
+
+#id_notes{
+    padding: 0.625rem;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    height: 12.5rem;
+    /* max-height: 31.25rem; */
+    overflow-y: auto;
+}
+
+#id_notes:focus{
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+}
+
+.asterisc{
+ color: #c00;   
+}
+
 /* Mensagem de localização */
 #location-status {
     color: #007bff;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
     font-size: 0.95rem;
     /* text-align: center; */
 }
@@ -141,6 +192,7 @@ input[name="longitude"] {
     border-top-color: #3B7A57;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    margin-top: 0.8rem;
     margin-left: 10px;
     vertical-align: middle;
 }

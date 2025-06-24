@@ -113,10 +113,32 @@ class LocalizationForm(forms.ModelForm):
             # 'country_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+# class ObservationLatLngForm(forms.ModelForm):
+#     class Meta:
+#         model = Observation
+#         # fields = ['latitude', 'longitude', 'species']
+#         fields = ['latitude', 'longitude']
+#         widgets = {
+#             'latitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -29.12345678',
+#                 'id': 'id_latitude',
+#             }),
+#             'longitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -51.23456789',
+#                 'id': 'id_longitude'
+#             }),
+#         }
 class ObservationLatLngForm(forms.ModelForm):
+    family_name = forms.CharField(max_length=255, required=False, label="Família")
+    genus_name = forms.CharField(max_length=255, required=False, label="Gênero")
+    species_scientific_name = forms.CharField(max_length=255, required=False, label="Espécie (nome popular)")
+    species_popular_name = forms.CharField(max_length=255, required=False, label="Nome Científico")
+    notes = forms.CharField(widget=forms.Textarea, required=False, label="Observações adicionais")
+
     class Meta:
         model = Observation
-        # fields = ['latitude', 'longitude', 'species']
         fields = ['latitude', 'longitude']
         widgets = {
             'latitude': forms.NumberInput(attrs={
@@ -131,28 +153,96 @@ class ObservationLatLngForm(forms.ModelForm):
             }),
         }
 
+# class ObservationCityForm(forms.ModelForm):
+#     class Meta:
+#         model = Observation
+#         exclude = ['species', 'status', 'user', 'medias']
+#         widgets = {
+#             'latitude': forms.HiddenInput(attrs={
+#                 'id': 'id_latitude',
+#             }),
+#             'longitude': forms.HiddenInput(attrs={
+#                 'id': 'id_longitude',
+#             }),
+#         }
 class ObservationCityForm(forms.ModelForm):
+    family_name = forms.CharField(max_length=255, required=False, label="Família")
+    genus_name = forms.CharField(max_length=255, required=False, label="Gênero")
+    species_scientific_name = forms.CharField(max_length=255, required=False, label="Nome Científico")
+    species_popular_name = forms.CharField(max_length=255, required=False, label="Espécie (nome popular)")
+    notes = forms.CharField(widget=forms.Textarea, required=False, label="Observações adicionais")
+
     class Meta:
         model = Observation
         exclude = ['species', 'status', 'user', 'medias']
         widgets = {
-            'latitude': forms.HiddenInput(attrs={
-                'id': 'id_latitude',
-            }),
-            'longitude': forms.HiddenInput(attrs={
-                'id': 'id_longitude',
-            }),
+            'latitude': forms.HiddenInput(attrs={'id': 'id_latitude'}),
+            'longitude': forms.HiddenInput(attrs={'id': 'id_longitude'}),
         }
 ObservationCityForm.localization = LocalizationForm()
 
+# class ObservationReviewForm(forms.ModelForm):
+#     family = forms.ModelChoiceField(queryset=Family.objects.all(), required=False, label="Família")
+#     genus = forms.ModelChoiceField(queryset=Genus.objects.none(), required=False, label="Gênero")
+#     species = forms.ModelChoiceField(queryset=Species.objects.none(), required=False, label="Espécie")
+
+#     class Meta:
+#         model = Observation
+#         fields = ['family', 'genus', 'species', 'latitude', 'longitude']
+#         widgets = {
+#             'latitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -29.12345678',
+#             }),
+#             'longitude': forms.NumberInput(attrs={
+#                 'step': '0.00000001',
+#                 'placeholder': 'Ex: -51.23456789',
+#             }),
+#         }
+    
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+
+#         # Caso esteja editando uma instância já salva
+#         if self.instance and self.instance.species:
+#             genus = self.instance.species.genus
+#             family = genus.family if genus else None
+
+#             if family:
+#                 self.fields['genus'].queryset = Genus.objects.filter(family=family)
+#             if genus:
+#                 self.fields['species'].queryset = Species.objects.filter(genus=genus)
+
+#         # Se os dados foram enviados no POST
+#         if 'family' in self.data:
+#             try:
+#                 family_id = int(self.data.get('family'))
+#                 self.fields['genus'].queryset = Genus.objects.filter(family_id=family_id)
+#             except (ValueError, TypeError):
+#                 pass
+
+#         if 'genus' in self.data:
+#             try:
+#                 genus_id = int(self.data.get('genus'))
+#                 self.fields['species'].queryset = Species.objects.filter(genus_id=genus_id)
+#             except (ValueError, TypeError):
+#                 pass
+
+#     def clean_species(self):
+#         species = self.cleaned_data.get('species')
+#         if not species:
+#             raise forms.ValidationError("É necessário selecionar uma espécie.")
+#         return species
 class ObservationReviewForm(forms.ModelForm):
     family = forms.ModelChoiceField(queryset=Family.objects.all(), required=False, label="Família")
     genus = forms.ModelChoiceField(queryset=Genus.objects.none(), required=False, label="Gênero")
     species = forms.ModelChoiceField(queryset=Species.objects.none(), required=False, label="Espécie")
+    notes = forms.CharField(widget=forms.Textarea, required=False, label="Observações adicionais")
+    habitat = forms.CharField(widget=forms.Textarea, required=False, label="Informações sobre a espécie")
 
     class Meta:
         model = Observation
-        fields = ['species', 'latitude', 'longitude']
+        fields = ['family', 'genus', 'species', 'latitude', 'longitude', 'notes']
         widgets = {
             'latitude': forms.NumberInput(attrs={
                 'step': '0.00000001',
@@ -163,21 +253,32 @@ class ObservationReviewForm(forms.ModelForm):
                 'placeholder': 'Ex: -51.23456789',
             }),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Caso esteja editando uma instância já salva
-        if self.instance and self.instance.species:
-            genus = self.instance.species.genus
-            family = genus.family if genus else None
+        self.fields['genus'].queryset = Genus.objects.none()
+        self.fields['species'].queryset = Species.objects.none()
 
+        if self.instance and self.instance.species:
+            species = self.instance.species
+            genus = species.genus
+            family = genus.family if genus else None
+            self.fields['habitat'].initial = self.instance.species.habitat
+            # self.fields['habitat'].widget.attrs['readonly'] = True
+
+            # Preenche os campos visuais
             if family:
+                self.fields['family'].initial = family.pk
                 self.fields['genus'].queryset = Genus.objects.filter(family=family)
+
             if genus:
+                self.fields['genus'].initial = genus.pk
                 self.fields['species'].queryset = Species.objects.filter(genus=genus)
 
-        # Se os dados foram enviados no POST
+            self.fields['species'].initial = species.pk    
+
+        # Atualização dinâmica no POST
         if 'family' in self.data:
             try:
                 family_id = int(self.data.get('family'))
@@ -202,8 +303,8 @@ class ObservationReviewForm(forms.ModelForm):
 class MediaForm(forms.Form):
     files = forms.FileField(
         widget=MultipleFileInput(),
-        label='Selecione arquivos de imagem ou vídeo',
-        required=False,
+        # label='Selecione arquivos de imagem ou vídeo',
+        required=True,
     )
 
 class AprovarObservacaoForm(forms.ModelForm):

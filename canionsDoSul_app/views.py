@@ -169,6 +169,54 @@ def create_species(request):
 def create_observation(request):
     return render(request, 'canionsDoSul_app/criar_observacao.html')
 
+# def observation_by_latlng(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationLatLngForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         city = request.POST.get('city_name')
+#         state = request.POST.get('state_name')
+#         country = request.POST.get('country_name', 'Brasil')
+
+#         if country.lower() != 'brasil':
+#             messages.error(request, 'Somente observações no Brasil são permitidas.')
+#         elif observation_form.is_valid():
+#             localization, created = Localization.objects.get_or_create(
+#                 city_name=city,
+#                 state_name=state,
+#                 country_name=country,
+#                 defaults={'user': request.user if request.user.is_authenticated else None}
+#             )
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = get_or_create_anonymous_user(request)
+#             observation.status = observation_form.cleaned_data.get('status', 'Pendente')
+#             observation.save()
+
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255],
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+
+#             return redirect('home')
+#         else:
+#             print(observation_form.errors)
+
+#     else:
+#         observation_form = ObservationLatLngForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/latlng.html', {
+#         'observation_form': observation_form,
+#         'media_form': media_form,
+#     })
 def observation_by_latlng(request):
     if request.method == 'POST':
         observation_form = ObservationLatLngForm(request.POST)
@@ -181,19 +229,53 @@ def observation_by_latlng(request):
         if country.lower() != 'brasil':
             messages.error(request, 'Somente observações no Brasil são permitidas.')
         elif observation_form.is_valid():
-            localization, created = Localization.objects.get_or_create(
+            # Criação/Busca de localização
+            localization, _ = Localization.objects.get_or_create(
                 city_name=city,
                 state_name=state,
                 country_name=country,
                 defaults={'user': request.user if request.user.is_authenticated else None}
             )
 
-            observation = observation_form.save(commit=False)
-            observation.localization = localization
-            observation.user = get_or_create_anonymous_user(request)
-            observation.status = observation_form.cleaned_data.get('status', 'Pendente')
+            # Pega os dados do form
+            family_name = observation_form.cleaned_data['family_name'] or None
+            genus_name = observation_form.cleaned_data['genus_name'] or None
+            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or None
+            species_popular_name = observation_form.cleaned_data['species_popular_name'] or None
+            notes = observation_form.cleaned_data['notes'] or None
+            # habitat = observation_form.cleaned_data['habitat']
+            status=observation_form.cleaned_data.get('status', 'Pendente')
+
+            # Criação ou obtenção da família
+            family, _ = Family.objects.get_or_create(name=family_name)
+
+            # Criação ou obtenção do gênero vinculado à família
+            genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
+
+            # Criação da espécie vinculada ao gênero
+            species, _ = Species.objects.get_or_create(
+                popular_name=species_popular_name,
+                scientific_name=species_scientific_name,
+                genus=genus,
+                defaults={
+                    # 'habitat': habitat
+                    'user': request.user if request.user.is_authenticated else None
+                }
+            )
+
+            # Criação da observação
+            observation = Observation(
+                latitude=observation_form.cleaned_data['latitude'],
+                longitude=observation_form.cleaned_data['longitude'],
+                species=species,
+                localization=localization,
+                user=get_or_create_anonymous_user(request),
+                notes=notes,
+                status="Pendente",
+            )
             observation.save()
 
+            # Upload de mídia
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
@@ -218,6 +300,56 @@ def observation_by_latlng(request):
         'media_form': media_form,
     })
 
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         country = request.POST.get('country_name', '').strip().lower()
+
+#         if not country or country != 'brasil':
+#             messages.error(request, 'Somente observações no Brasil são permitidas.')
+
+#             return render(request, 'canionsDoSul_app/cidade.html', {
+#                 'observation_form': observation_form,
+#                 'localization_form': localization_form,
+#                 'media_form': media_form
+#             })
+
+#         if observation_form.is_valid() and localization_form.is_valid():
+#             localization = localization_form.save(commit=False)
+#             # localization.user = request.user
+#             localization.user = get_or_create_anonymous_user(request)
+#             localization.save()
+
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = get_or_create_anonymous_user(request)
+#             observation.status = "Pendente"
+#             observation.save()
+
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255]
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+#             return redirect('home')
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
@@ -228,7 +360,6 @@ def observation_by_city(request):
 
         if not country or country != 'brasil':
             messages.error(request, 'Somente observações no Brasil são permitidas.')
-
             return render(request, 'canionsDoSul_app/cidade.html', {
                 'observation_form': observation_form,
                 'localization_form': localization_form,
@@ -237,16 +368,65 @@ def observation_by_city(request):
 
         if observation_form.is_valid() and localization_form.is_valid():
             localization = localization_form.save(commit=False)
-            # localization.user = request.user
             localization.user = get_or_create_anonymous_user(request)
             localization.save()
 
+            # # Campos extras
+            # family_name = observation_form.cleaned_data.get('family_name')
+            # genus_name = observation_form.cleaned_data.get('genus_name')
+            # species_scientific_name = observation_form.cleaned_data.get('species_scientific_name')
+            # species_popular_name = observation_form.cleaned_data.get('species_name')
+            # habitat = observation_form.cleaned_data.get('habitat')
+            # status=observation_form.cleaned_data.get('status', 'Pendente')
+
+            # species = None
+            # if family_name and genus_name:
+            #     family, _ = Family.objects.get_or_create(name=family_name)
+            #     genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
+            #     species, _ = Species.objects.get_or_create(
+            #         scientific_name=species_scientific_name or "Desconhecido",
+            #         popular_name=species_popular_name or "Desconhecido",
+            #         genus=genus,
+            #         defaults={
+            #             'habitat': habitat or "",
+            #             'user': request.user if request.user.is_authenticated else None
+            #         }
+            #     )
+            # Pega os dados do form
+            family_name = observation_form.cleaned_data['family_name'] or None
+            genus_name = observation_form.cleaned_data['genus_name'] or None
+            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or None
+            species_popular_name = observation_form.cleaned_data['species_popular_name'] or None
+            notes = observation_form.cleaned_data['notes'] or None
+            status=observation_form.cleaned_data.get('status', 'Pendente')
+
+            # Criação ou obtenção da família
+            family, _ = Family.objects.get_or_create(name=family_name)
+
+            # Criação ou obtenção do gênero vinculado à família
+            genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
+
+            # Criação da espécie vinculada ao gênero
+            species, _ = Species.objects.get_or_create(
+                popular_name=species_popular_name,
+                scientific_name=species_scientific_name,
+                genus=genus,
+                defaults={
+                    # 'habitat': habitat,
+                    'user': request.user if request.user.is_authenticated else None
+                }
+            )
+
+            # Criação da observação
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = get_or_create_anonymous_user(request)
             observation.status = "Pendente"
+            observation.species = species
+            observation.notes= notes
             observation.save()
 
+            # Upload da mídia
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
@@ -258,6 +438,7 @@ def observation_by_city(request):
                         media=media
                     )
             return redirect('home')
+
     else:
         observation_form = ObservationCityForm()
         localization_form = LocalizationForm()
@@ -356,7 +537,7 @@ def localization_list_create(request):
 @login_required
 @user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
 def lista_observacoes_pendentes(request):
-    observacoes = Observation.objects.filter(species__isnull=True).order_by('created_at')
+    observacoes = Observation.objects.filter(status='Pendente').order_by('created_at')
     return render(request, 'canionsDoSul_app/lista_observacoes_pendentes.html', {
         'observacoes': observacoes
     })
@@ -369,6 +550,14 @@ def avaliar_observacao_modal(request, observacao_id):
     if request.method == 'POST':
         if 'aprovar' in request.POST:
             form = ObservationReviewForm(request.POST, instance=observacao)
+            # if form.is_valid():
+            #     observacao = form.save(commit=False)
+            #     localization_id = request.POST.get('localization')
+            #     if localization_id:
+            #         observacao.localization_id = localization_id
+            #     observacao.status = 'Aprovada'
+            #     observacao.save()
+            #     return JsonResponse({'success': True, 'status': 'aprovada'})
             if form.is_valid():
                 observacao = form.save(commit=False)
                 localization_id = request.POST.get('localization')
@@ -376,6 +565,12 @@ def avaliar_observacao_modal(request, observacao_id):
                     observacao.localization_id = localization_id
                 observacao.status = 'Aprovada'
                 observacao.save()
+
+                # ⚠️ Atualiza o habitat da espécie SE tiver sido alterado
+                habitat_input = form.cleaned_data.get('habitat')
+                if observacao.species and habitat_input and habitat_input != observacao.species.habitat:
+                    observacao.species.habitat = habitat_input
+                    observacao.species.save()
                 return JsonResponse({'success': True, 'status': 'aprovada'})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
@@ -424,6 +619,7 @@ def promover_usuario(request):
 def permission_error(request):
     return render(request, 'canionsDoSul_app/erro_permissao.html')
 
+#Busca acoplada ente familia, genero e espécie
 @login_required
 def buscar_generos_por_familia(request, family_id):
     generos = Genus.objects.filter(family_id=family_id).values('id', 'name')
@@ -486,14 +682,14 @@ def cadastrar_taxonomia(request):
     }
     return render(request, 'canionsDoSul_app/cadastrar.html', context)
 
-@login_required
+# @login_required
 @csrf_exempt
 def autocomplete_family(request):
     term = request.GET.get('term', '')
     families = Family.objects.filter(name__icontains=term).values_list('name', flat=True)
     return JsonResponse(list(families), safe=False)
 
-@login_required
+# @login_required
 @csrf_exempt
 def autocomplete_genus(request):
     term = request.GET.get('term', '')
@@ -514,7 +710,7 @@ def autocomplete_genus(request):
 
     return JsonResponse(list(generos), safe=False)
 
-@login_required
+# @login_required
 @csrf_exempt
 def autocomplete_species(request):
     term = request.GET.get('term', '')
@@ -536,6 +732,14 @@ def autocomplete_species(request):
     ).values('scientific_name', 'popular_name')
 
     return JsonResponse(list(especies), safe=False)
+
+@login_required
+def get_specie_habitat(request, especie_id):
+    try:
+        especie = Species.objects.get(id=especie_id)
+        return JsonResponse({'habitat': especie.habitat})
+    except Species.DoesNotExist:
+        return JsonResponse({'habitat': ''})
 
 @login_required
 @user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')

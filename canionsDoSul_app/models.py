@@ -68,7 +68,7 @@ class Scientist(models.Model):
 
 
 class Family(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -76,11 +76,11 @@ class Family(models.Model):
         db_table = 'family'
 
     def __str__(self):
-        return self.name
+        return self.name or "Desconhecida"
 
 
 class Genus(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -89,13 +89,13 @@ class Genus(models.Model):
         db_table = 'genus'
 
     def __str__(self):
-        return self.name
+        return self.name or "Desconhecida"
 
 
 class Species(models.Model):
-    scientific_name = models.CharField(max_length=255)
-    popular_name = models.CharField(max_length=255)
-    habitat = models.CharField(max_length=2000)
+    scientific_name = models.CharField(max_length=255, null=True, blank=True)
+    popular_name = models.CharField(max_length=255, null=True, blank=True)
+    habitat = models.CharField(max_length=2000, null=True, blank=True)
     genus = models.ForeignKey(Genus, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -105,7 +105,7 @@ class Species(models.Model):
         db_table = 'species'
 
     def __str__(self):
-        return self.popular_name
+        return self.popular_name or "Desconhecida"
 
 
 class Localization(models.Model):
@@ -156,12 +156,13 @@ class Observation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=100, default="pendente")  # <- default
     medias = models.ManyToManyField(Media, through='ObservationMedia')
+    notes = models.TextField(max_length=2000, blank=True, null=True)  # nova informação específica da observação
 
     class Meta:
         db_table = 'observation'
 
     def __str__(self):
-        return f"Observation {self.id} - {self.species.popular_name if self.species else 'Sem espécie'}"
+        return f"Observation {self.id} - {self.species.popular_name if self.species else "Desconhecida"}"
 
 class ObservationMedia(models.Model):
     observation = models.ForeignKey(Observation, on_delete=models.CASCADE)

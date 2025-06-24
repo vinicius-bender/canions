@@ -55,6 +55,16 @@
       {{ form.longitude }}
     </p>
 
+    <p>
+      <label for="id_notes"><strong>Notas da observação:</strong></label>
+      {{ form.notes }}
+    </p>
+
+    <p>
+      <label for="id_habitat"><strong>Informações sobre a espécie:</strong></label>
+      {{ form.habitat }}
+    </p>
+
     <label><strong>Localização:</strong></label>
     <p>{{ observacao.localization.city_name }} - {{ observacao.localization.state_name }}</p>
     <input type="hidden" name="localization" value="{{ observacao.localization.id }}">

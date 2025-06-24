@@ -144,4 +144,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return cookieValue;
   }
+
+  const speciesSelect = document.getElementById('id_species');
+  if (speciesSelect) {
+    speciesSelect.addEventListener('change', function () {
+      const speciesId = this.value;
+      if (speciesId) {
+        fetch(`/especies/${speciesId}/habitat/`)  // Crie essa rota
+          .then(response => response.json())
+          .then(data => {
+            const habitatInput = document.getElementById('id_habitat');
+            if (habitatInput && data.habitat) {
+              habitatInput.value = data.habitat;
+            }
+          });
+      }
+    });
+  }
 });

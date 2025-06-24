@@ -23,8 +23,8 @@
     <p><strong>País:</strong> {{ observation.localization.country_name }}</p>
     <p><strong>Localização:</strong> Lat {{ observation.latitude }}, Long {{ observation.longitude }}</p>
     <p><strong>Data:</strong> {{ observation.created_at|date:"d/m/Y H:i" }}</p>
-    <p><strong>Informações:</strong> {{ observation.habitat|default:"Sem informações adicionais" }}</p>
-    <p><strong>Usuário:</strong> {{ observation.user.username }}</p>
+    <p><strong>Informações sobre a espécie:</strong> {{ observation.species.habitat|default:"Sem informações adicionais" }}</p>
+    <p><strong>Observação feita pelo usuário:</strong> {{ observation.user.username }}</p>
 
   </div>
 

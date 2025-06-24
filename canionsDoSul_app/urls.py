@@ -17,6 +17,7 @@ urlpatterns = [
     path('autocomplete-family/', views.autocomplete_family, name='autocomplete_family'),
     path('autocomplete-genus/', views.autocomplete_genus, name='autocomplete_genus'),
     path('autocomplete-species/', views.autocomplete_species, name='autocomplete_species'),
+    path("especies/<int:especie_id>/habitat/", views.get_specie_habitat, name="obter_habitat_especie"),
     path('cadastrar/familia/', views.create_family, name='criar_familia'),
     path('cadastrar/genero/', views.create_genus, name='criar_genero'),
     path('cadastrar/especie/', views.create_species, name='criar_especie'),

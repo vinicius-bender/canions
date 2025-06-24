@@ -12,11 +12,11 @@
 <h1>Cadastro por Cidade</h1>
 
 {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
+<div class="messages">
+  {% for message in messages %}
+  <div class="alert {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
 {% endif %}
 
 <div class="instructions-div">
@@ -26,28 +26,60 @@
 <form method="POST" enctype="multipart/form-data" action="{% url 'cidade' %}">
   {% csrf_token %}
 
-  <label for="id_city_name">Cidade:</label>
-  <input type="text" name="city_name" id="id_city_name" class="form-control" placeholder="Torres">
+  <label required for="id_city_name"><span class="asterisc">*</span>Cidade:</label>
+  <input type="text" name="city_name" id="id_city_name" class="form-control mbt" placeholder="Torres">
 
-  <label for="id_state_name">Estado:</label>
-  <input type="text" name="state_name" id="id_state_name" class="form-control" placeholder="Rio Grande do Sul">
+  <label required for="id_state_name"><span class="asterisc">*</span>Estado:</label>
+  <input class="mbt" type="text" name="state_name" id="id_state_name" class="form-control"
+    placeholder="Rio Grande do Sul">
 
   <label for="id_country_name">País:</label>
-    <div class="country-text-div">
-      <p>Será preenchido automaticamente após a escolha da cidade e estado</p>
-    </div>
-  <input readonly type="text" name="country_name" id="id_country_name" class="form-control" placeholder="Será preenchido automaticamente após a escolha da cidade e estado">
+  <div class="country-text-div">
+    <p>Será preenchido automaticamente após a escolha da cidade e estado</p>
+  </div>
+  <input readonly type="text" name="country_name" id="id_country_name" class="form-control"
+    placeholder="***">
 
+  <div id="loading-spinner" class="spinner" style="display: none;"></div>
   <div id="location-status"></div>
 
   {{ observation_form.latitude }}
   {{ observation_form.longitude }}
 
-  {{ media_form.as_p }}
+  <div class="animal-suggest mbt">
+    <label for="id_family">Família:</label>
+    <input type="text" name="family_name" id="id_family" placeholder="Digite ou selecione uma família"
+      autocomplete="off">
+    <div class="autocomplete-suggestions" id="family-suggestions"></div>
+  </div>
+
+  <div class="animal-suggest mbt">
+    <label for="id_genus">Gênero:</label>
+    <input type="text" name="genus_name" id="id_genus" placeholder="Digite ou selecione um gênero" autocomplete="off">
+    <div class="autocomplete-suggestions" id="genus-suggestions"></div>
+  </div>
+
+  <div class="animal-suggest mbt">
+    <label for="id_species">Espécie (Nome Científico):</label>
+    <input type="text" name="species_scientific_name" id="id_species" placeholder="Digite ou selecione uma espécie"
+      autocomplete="off">
+    <div class="autocomplete-suggestions" id="species-suggestions"></div>
+  </div>
+
+  <label for="id_popular_name">Nome Popular:</label>
+  <input class="mbt" type="text" name="species_name" id="id_popular_name" placeholder="Nome popular da espécie">
+
+  <label for="id_notes"><span class="asterisc">*</span>Informações adicionais:</label>
+  <textarea name="habitat" id="id_notes" placeholder="Ex: Características físicas do animal etc..."></textarea>
+  <div id="char-count" class="char-count mbt">0 / 2000</div>
+
+  <label for="id_files"><span class="asterisc">*</span>Selecione arquivos de imagem ou vídeo:</label>
+  {{ media_form.files }}
+
+  <!-- {{ media_form.as_p }} -->
 
   <div class="form-buttons">
     <button type="submit" id="submit-button" class="submit-button" disabled>Cadastrar</button>
-    <div id="loading-spinner" class="spinner" style="display: none;"></div>
     <a class="back-a" href="{% url 'criar_observacao' %}">Voltar</a>
   </div>
 </form>
