@@ -238,10 +238,10 @@ def observation_by_latlng(request):
             )
 
             # Pega os dados do form
-            family_name = observation_form.cleaned_data['family_name'] or None
-            genus_name = observation_form.cleaned_data['genus_name'] or None
-            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or None
-            species_popular_name = observation_form.cleaned_data['species_popular_name'] or None
+            family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
+            genus_name = observation_form.cleaned_data['genus_name'] or "Desconhecida"
+            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
+            species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
             notes = observation_form.cleaned_data['notes'] or None
             # habitat = observation_form.cleaned_data['habitat']
             status=observation_form.cleaned_data.get('status', 'Pendente')
@@ -393,10 +393,10 @@ def observation_by_city(request):
             #         }
             #     )
             # Pega os dados do form
-            family_name = observation_form.cleaned_data['family_name'] or None
-            genus_name = observation_form.cleaned_data['genus_name'] or None
-            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or None
-            species_popular_name = observation_form.cleaned_data['species_popular_name'] or None
+            family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
+            genus_name = observation_form.cleaned_data['genus_name'] or "Desconhecida"
+            species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
+            species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
             notes = observation_form.cleaned_data['notes'] or None
             status=observation_form.cleaned_data.get('status', 'Pendente')
 
@@ -550,27 +550,20 @@ def avaliar_observacao_modal(request, observacao_id):
     if request.method == 'POST':
         if 'aprovar' in request.POST:
             form = ObservationReviewForm(request.POST, instance=observacao)
-            # if form.is_valid():
-            #     observacao = form.save(commit=False)
-            #     localization_id = request.POST.get('localization')
-            #     if localization_id:
-            #         observacao.localization_id = localization_id
-            #     observacao.status = 'Aprovada'
-            #     observacao.save()
-            #     return JsonResponse({'success': True, 'status': 'aprovada'})
             if form.is_valid():
                 observacao = form.save(commit=False)
                 localization_id = request.POST.get('localization')
                 if localization_id:
                     observacao.localization_id = localization_id
                 observacao.status = 'Aprovada'
+                observacao.species = form.cleaned_data['species']
                 observacao.save()
 
-                # ⚠️ Atualiza o habitat da espécie SE tiver sido alterado
                 habitat_input = form.cleaned_data.get('habitat')
                 if observacao.species and habitat_input and habitat_input != observacao.species.habitat:
                     observacao.species.habitat = habitat_input
                     observacao.species.save()
+
                 return JsonResponse({'success': True, 'status': 'aprovada'})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
@@ -581,6 +574,43 @@ def avaliar_observacao_modal(request, observacao_id):
             'observacao': observacao,
             'form': form
         })
+# def avaliar_observacao_modal(request, observacao_id):
+#     observacao = get_object_or_404(Observation, id=observacao_id)
+
+#     if request.method == 'POST':
+#         if 'aprovar' in request.POST:
+#             form = ObservationReviewForm(request.POST, instance=observacao)
+#             # if form.is_valid():
+#             #     observacao = form.save(commit=False)
+#             #     localization_id = request.POST.get('localization')
+#             #     if localization_id:
+#             #         observacao.localization_id = localization_id
+#             #     observacao.status = 'Aprovada'
+#             #     observacao.save()
+#             #     return JsonResponse({'success': True, 'status': 'aprovada'})
+#             if form.is_valid():
+#                 observacao = form.save(commit=False)
+#                 localization_id = request.POST.get('localization')
+#                 if localization_id:
+#                     observacao.localization_id = localization_id
+#                 observacao.status = 'Aprovada'
+#                 observacao.save()
+
+#                 # ⚠️ Atualiza o habitat da espécie SE tiver sido alterado
+#                 habitat_input = form.cleaned_data.get('habitat')
+#                 if observacao.species and habitat_input and habitat_input != observacao.species.habitat:
+#                     observacao.species.habitat = habitat_input
+#                     observacao.species.save()
+#                 return JsonResponse({'success': True, 'status': 'aprovada'})
+#             else:
+#                 return JsonResponse({'success': False, 'errors': form.errors})
+#         return JsonResponse({'success': False, 'error': 'Ação inválida'})
+#     else:
+#         form = ObservationReviewForm(instance=observacao)
+#         return render(request, 'canionsDoSul_app/partials/avaliar_observacao_modal.html', {
+#             'observacao': observacao,
+#             'form': form
+#         })
 
 @login_required
 @user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')
@@ -740,6 +770,21 @@ def get_specie_habitat(request, especie_id):
         return JsonResponse({'habitat': especie.habitat})
     except Species.DoesNotExist:
         return JsonResponse({'habitat': ''})
+
+@csrf_exempt
+def get_habitat(request):
+    term = request.GET.get('term', '')
+    genus_name = request.GET.get('genus', '')
+    family_name = request.GET.get('family', '')
+
+    try:
+        family = Family.objects.get(name__iexact=family_name)
+        genus = Genus.objects.get(name__iexact=genus_name, family=family)
+        species = Species.objects.get(scientific_name__iexact=term, genus=genus)
+    except (Family.DoesNotExist, Genus.DoesNotExist, Species.DoesNotExist):
+        return JsonResponse({'habitat': ''})
+
+    return JsonResponse({'habitat': species.habitat})
 
 @login_required
 @user_passes_test(is_specialist_or_scientist_admin, login_url='erro_permissao')

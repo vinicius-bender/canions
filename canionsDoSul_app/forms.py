@@ -234,9 +234,15 @@ ObservationCityForm.localization = LocalizationForm()
 #             raise forms.ValidationError("É necessário selecionar uma espécie.")
 #         return species
 class ObservationReviewForm(forms.ModelForm):
-    family = forms.ModelChoiceField(queryset=Family.objects.all(), required=False, label="Família")
-    genus = forms.ModelChoiceField(queryset=Genus.objects.none(), required=False, label="Gênero")
-    species = forms.ModelChoiceField(queryset=Species.objects.none(), required=False, label="Espécie")
+    # family = forms.ModelChoiceField(queryset=Family.objects.all(), required=False, label="Família")
+    # genus = forms.ModelChoiceField(queryset=Genus.objects.none(), required=False, label="Gênero")
+    # species = forms.ModelChoiceField(queryset=Species.objects.none(), required=False, label="Espécie")
+    # notes = forms.CharField(widget=forms.Textarea, required=False, label="Observações adicionais")
+    # habitat = forms.CharField(widget=forms.Textarea, required=False, label="Informações sobre a espécie")
+
+    family = forms.CharField(required=False, label="Família")
+    genus = forms.CharField(required=False, label="Gênero")
+    species = forms.CharField(required=False, label="Espécie")
     notes = forms.CharField(widget=forms.Textarea, required=False, label="Observações adicionais")
     habitat = forms.CharField(widget=forms.Textarea, required=False, label="Informações sobre a espécie")
 
@@ -256,47 +262,71 @@ class ObservationReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.fields['genus'].queryset = Genus.objects.none()
-        self.fields['species'].queryset = Species.objects.none()
-
         if self.instance and self.instance.species:
             species = self.instance.species
             genus = species.genus
-            family = genus.family if genus else None
-            self.fields['habitat'].initial = self.instance.species.habitat
-            # self.fields['habitat'].widget.attrs['readonly'] = True
+            family = genus.family
+            self.fields['family'].initial = family.name
+            self.fields['genus'].initial = genus.name
+            self.fields['species'].initial = species.scientific_name
+            self.fields['habitat'].initial = species.habitat
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
-            # Preenche os campos visuais
-            if family:
-                self.fields['family'].initial = family.pk
-                self.fields['genus'].queryset = Genus.objects.filter(family=family)
+        # self.fields['genus'].queryset = Genus.objects.none()
+        # self.fields['species'].queryset = Species.objects.none()
 
-            if genus:
-                self.fields['genus'].initial = genus.pk
-                self.fields['species'].queryset = Species.objects.filter(genus=genus)
+        # if self.instance and self.instance.species:
+        #     species = self.instance.species
+        #     genus = species.genus
+        #     family = genus.family if genus else None
+        #     self.fields['habitat'].initial = self.instance.species.habitat
+        #     # self.fields['habitat'].widget.attrs['readonly'] = True
 
-            self.fields['species'].initial = species.pk    
+        #     # Preenche os campos visuais
+        #     if family:
+        #         self.fields['family'].initial = family.pk
+        #         self.fields['genus'].queryset = Genus.objects.filter(family=family)
 
-        # Atualização dinâmica no POST
-        if 'family' in self.data:
-            try:
-                family_id = int(self.data.get('family'))
-                self.fields['genus'].queryset = Genus.objects.filter(family_id=family_id)
-            except (ValueError, TypeError):
-                pass
+        #     if genus:
+        #         self.fields['genus'].initial = genus.pk
+        #         self.fields['species'].queryset = Species.objects.filter(genus=genus)
 
-        if 'genus' in self.data:
-            try:
-                genus_id = int(self.data.get('genus'))
-                self.fields['species'].queryset = Species.objects.filter(genus_id=genus_id)
-            except (ValueError, TypeError):
-                pass
+        #     self.fields['species'].initial = species.pk    
+
+        # # Atualização dinâmica no POST
+        # if 'family' in self.data:
+        #     try:
+        #         family_id = int(self.data.get('family'))
+        #         self.fields['genus'].queryset = Genus.objects.filter(family_id=family_id)
+        #     except (ValueError, TypeError):
+        #         pass
+
+        # if 'genus' in self.data:
+        #     try:
+        #         genus_id = int(self.data.get('genus'))
+        #         self.fields['species'].queryset = Species.objects.filter(genus_id=genus_id)
+        #     except (ValueError, TypeError):
+        #         pass
+
+    # def clean_species(self):
+    #     species = self.cleaned_data.get('species')
+    #     if not species:
+    #         raise forms.ValidationError("É necessário selecionar uma espécie.")
+    #     return species
 
     def clean_species(self):
-        species = self.cleaned_data.get('species')
-        if not species:
-            raise forms.ValidationError("É necessário selecionar uma espécie.")
+        family_name = self.cleaned_data.get('family', '').strip()
+        genus_name = self.cleaned_data.get('genus', '').strip()
+        species_name = self.cleaned_data.get('species', '').strip()
+
+        try:
+            family = Family.objects.get(name__iexact=family_name)
+            genus = Genus.objects.get(name__iexact=genus_name, family=family)
+            species = Species.objects.get(scientific_name__iexact=species_name, genus=genus)
+        except (Family.DoesNotExist, Genus.DoesNotExist, Species.DoesNotExist):
+            raise forms.ValidationError("Espécie inválida ou não encontrada.")
+
         return species
 
 # Formulário para upload de múltiplas imagens

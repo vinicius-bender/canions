@@ -202,6 +202,35 @@ h1 {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+.animal-suggest {
+    position: relative;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.autocomplete-suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.autocomplete-suggestions div:hover {
+    background-color: #f1f1f1;
+}
+
 #id_notes{
   height: 100px;
 }

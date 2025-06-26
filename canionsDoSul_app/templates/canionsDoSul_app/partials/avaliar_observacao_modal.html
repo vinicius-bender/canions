@@ -9,28 +9,28 @@
 <div class="modal-body">
   <h4>Imagens:</h4>
   <div class="medias">
-  {% for media in observacao.medias.all %}
+    {% for media in observacao.medias.all %}
     <div class="media-wrapper media-item" data-id="{{ media.id }}">
       <button type="button" class="btn-delete-image" data-image-id="{{ media.id }}">×</button>
       {% if media.is_image %}
-        <img src="{{ media.files.url }}" alt="{{ media.name }}">
+      <img src="{{ media.files.url }}" alt="{{ media.name }}">
       {% elif media.is_video %}
-        <video controls>
-          <source src="{{ media.files.url }}" type="video/mp4">
-          Seu navegador não suporta vídeos.
-        </video>
+      <video controls>
+        <source src="{{ media.files.url }}" type="video/mp4">
+        Seu navegador não suporta vídeos.
+      </video>
       {% else %}
-        <p>Tipo de mídia não suportado.</p>
+      <p>Tipo de mídia não suportado.</p>
       {% endif %}
     </div>
-  {% empty %}
+    {% empty %}
     <p>Sem mídias.</p>
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
   <form id="avaliar-form" class="avaliar-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <p>
+    <!-- <p>
       <label for="id_family"><strong>Família:</strong></label>
       {{ form.family }}
     </p>
@@ -43,7 +43,24 @@
     <p>
       <label for="id_species"><strong>Espécie:</strong></label>
       {{ form.species }}
-    </p>
+    </p> -->
+    <div class="animal-suggest">
+      <label for="id_family"><strong>Família:</strong></label>
+      <input type="text" id="id_family" name="family" value="{{ form.family.value }}" autocomplete="off" />
+      <div class="autocomplete-suggestions" id="family-suggestions"></div>
+    </div>
+
+    <div class="animal-suggest">
+      <label for="id_genus"><strong>Gênero:</strong></label>
+      <input type="text" id="id_genus" name="genus" value="{{ form.genus.value }}" autocomplete="off" />
+      <div class="autocomplete-suggestions" id="genus-suggestions"></div>
+    </div>
+
+    <div class="animal-suggest">
+      <label for="id_species"><strong>Espécie:</strong></label>
+      <input type="text" id="id_species" name="species" value="{{ form.fields.species.initial }}" autocomplete="off" />
+      <div class="autocomplete-suggestions" id="species-suggestions"></div>
+    </div>
 
     <p>
       <label for="id_latitude"><strong>Latitude:</strong></label>
@@ -71,7 +88,8 @@
 
     <div class="buttons-div">
       <button type="submit" name="aprovar" class="aprove-btn" id="avaliar-form-btn">Aprovar</button>
-      <button type="button" name="rejeitar" class="btn-rejeitar reject-btn" data-id="{{ observacao.id }}">Rejeitar</button>
+      <button type="button" name="rejeitar" class="btn-rejeitar reject-btn"
+        data-id="{{ observacao.id }}">Rejeitar</button>
       <button type="button" class="fechar-button close-btn">Fechar</button>
     </div>
   </form>

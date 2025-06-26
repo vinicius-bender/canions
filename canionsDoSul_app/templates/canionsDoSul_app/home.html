@@ -12,12 +12,12 @@
 {% block content %}
 {% if user.is_authenticated and user.role == 'anonymous' %}
 <div class="anon-alert" id="anonAlert">
-  <button class="close-alert">&#x2715</button>
-  <p>
-    Você está usando uma conta temporária. <br>
-    <strong>Crie sua conta real</strong> para salvar suas observações permanentemente!
-  </p>
-  <a class="anon-btn" href="{% url 'criar_conta_real' %}">Criar Conta Real</a>
+    <button class="close-alert">&#x2715</button>
+    <p>
+        Você está usando uma conta temporária. <br>
+        <strong>Crie sua conta real</strong> para salvar suas observações permanentemente!
+    </p>
+    <a class="anon-btn" href="{% url 'criar_conta_real' %}">Criar Conta Real</a>
 </div>
 {% endif %}
 
@@ -90,6 +90,48 @@
     </div>
 </section>
 
+<section class="how-to-use">
+    <div class="section-header">
+        <h2>Como Usar a Plataforma</h2>
+        <p>Descubra como é simples participar da nossa comunidade científica e contribuir para a pesquisa da
+            biodiversidade</p>
+    </div>
+
+    <div class="flow-container">
+        <div class="flow-step" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-icon">🔍</div>
+            <h3 class="step-title">Explore o Mapa</h3>
+            <p class="step-description">Navegue pelo mapa interativo para visualizar todas as observações de
+                biodiversidade já registradas na região. Cada ponto representa uma descoberta científica!</p>
+        </div>
+
+        <div class="flow-step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-icon">📸</div>
+            <h3 class="step-title">Relate uma Observação</h3>
+            <p class="step-description">Encontrou algo interessante na natureza? Registre sua observação com fotos,
+                localização e descrição. Sua contribuição é valiosa para a ciência!</p>
+        </div>
+
+        <div class="flow-step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-icon">⏳</div>
+            <h3 class="step-title">Aguarde a Validação</h3>
+            <p class="step-description">Especialistas analisarão sua observação para garantir a qualidade científica dos
+                dados. Este processo garante a confiabilidade da plataforma.</p>
+        </div>
+
+        <div class="flow-step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-icon">✨</div>
+            <h3 class="step-title">Observação Publicada</h3>
+            <p class="step-description">Após aprovação, sua observação fica visível para toda a comunidade no mapa e na
+                lista geral. Parabéns, você contribuiu para a ciência!</p>
+        </div>
+    </div>
+</section>
+
 <section class="explore-section">
     <div class="container">
         <h2 class="explore-title">Explore a Plataforma</h2>
@@ -99,7 +141,8 @@
             <a href="{% url 'criar_observacao' %}" class="explore-card">
                 <i class="fa-solid fa-paw"></i>
                 <h3>Relatar observação</h3>
-                <p>Viu um animal interessante? Contribua com a ciência cidadã registrando uma observação da fauna local na plataforma.</p>
+                <p>Viu um animal interessante? Contribua com a ciência cidadã registrando uma observação da fauna local
+                    na plataforma.</p>
             </a>
             <a href="{% url 'observacoes' %}" class="explore-card">
                 <i class="fa-solid fa-binoculars"></i>
@@ -124,7 +167,8 @@
                 <h3>Crie sua Conta</h3>
                 <p>
                     Participe da plataforma e registre suas próprias observações.<br>
-                    <small><em>*Você pode registrar uma observação sem criar uma conta, mas recomendamos que se cadastre para acompanhar e gerenciar seus registros futuramente.</em></small>
+                    <small><em>*Você pode registrar uma observação sem criar uma conta, mas recomendamos que se cadastre
+                            para acompanhar e gerenciar seus registros futuramente.</em></small>
                 </p>
             </a>
 
@@ -137,17 +181,17 @@
     </div>
 </section>
 
-<section class="map-section">
+<section class="map-section" id="go-to-map">
     <div class="container">
         <h2 class="explore-title">Mapa das Observações Registradas</h2>
         <p class="explore-subtitle">Explore as observações da fauna registradas pela comunidade científica cidadã</p>
-        
+
         <!-- Loading state (opcional - pode ser controlado via JavaScript) -->
         <div class="map-loading" id="mapLoading" style="display: none;">
             <div class="spinner"></div>
             <span>Carregando observações...</span>
         </div>
-        
+
         <div id="map"></div>
     </div>
 </section>

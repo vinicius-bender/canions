@@ -59,6 +59,45 @@ function initMap() {
     });
 }
 
+// Animação de entrada ao scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, observerOptions);
+
+// Observar todos os steps
+document.querySelectorAll('.flow-step').forEach(step => {
+    observer.observe(step);
+});
+
+// Animação sequencial dos steps
+let delay = 0;
+document.querySelectorAll('.flow-step').forEach(step => {
+    step.style.transitionDelay = delay + 's';
+    delay += 0.2;
+});
+
+
+
+// Hover effect nos cards
+document.querySelectorAll('.flow-step').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px) scale(1.02)';
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+    });
+});
+
 window.addEventListener("DOMContentLoaded", function () {
     animateCount("count-species", parseInt(document.getElementById("count-species")?.dataset.value || 0));
     animateCount("count-records", parseInt(document.getElementById("count-records")?.dataset.value || 0));
