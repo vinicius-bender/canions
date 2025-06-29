@@ -1,0 +1,41 @@
+{% extends "canionsDoSul_app/base.html" %}
+{% load static %}
+{% load user_tags %}
+
+{% block title %}Contato{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'canionsDoSul_app/css/contact.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+  <h1>Contato</h1>
+  <p>Para mais informações sobre o sistema ou dúvidas relacionadas ao desenvolvimento e ao projeto, entre em contato:</p>
+
+  <p>
+    <i class="fas fa-user"></i>
+    <strong>Desenvolvedor:</strong><br>
+    Vinicius Rodolfo Bender Carlson<br>
+    <a href="mailto:viniciusbender01@outlook.com">viniciusbender01@outlook.com</a><br>
+    <a href="mailto:vinicius.bender@acad.ufsm.br">vinicius.bender@acad.ufsm.br</a>
+  </p>
+
+  <p>
+    <i class="fas fa-chalkboard-teacher"></i>
+    <strong>Orientador:</strong><br>
+    Prof. Dr. Cristiano Bertolini<br>
+    <a href="mailto:cristiano.bertolini@ufsm.br">cristiano.bertolini@ufsm.br</a>
+  </p>
+
+  <div class="logos">
+    <a href="https://www.ufsm.br" target="_blank">
+      <img src="{% static 'canionsDoSul_app/assets/logo-ufsm.png' %}" alt="Logo UFSM">
+    </a>
+    <a href="https://www.ufsm.br/cursos/graduacao/frederico-westphalen/sistemas-de-informacao/" target="_blank">
+      <img src="{% static 'canionsDoSul_app/assets/logo-si.png' %}" alt="Logo Curso de Sistemas de Informação">
+    </a>
+  </div>
+</div>
+{% endblock %}

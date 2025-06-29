@@ -8,6 +8,8 @@ from .views import CustomLoginView
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path("sobre/", views.about, name="sobre"),
+    path("contato/", views.contact, name="contato"),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('registrar/', views.register, name='registrar'),

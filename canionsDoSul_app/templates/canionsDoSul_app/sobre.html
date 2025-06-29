@@ -1,0 +1,38 @@
+{% extends "canionsDoSul_app/base.html" %}
+{% load static %}
+{% load user_tags %}
+
+{% block title %}Sobre{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'canionsDoSul_app/css/about.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+  <h1>Sobre o Sistema</h1>
+
+  <p>
+    Esta plataforma foi desenvolvida por <strong>Vinicius Rodolfo Bender Carlson</strong> como parte do Trabalho de Graduação em Sistemas de Informação (TGSI), no curso de Bacharelado em Sistemas de Informação da 
+    <a href="https://www.ufsm.br" target="_blank" rel="noopener noreferrer">Universidade Federal de Santa Maria (UFSM)</a>, campus Frederico Westphalen.
+  </p>
+
+  <p>
+    O sistema tem como objetivo promover a ciência cidadã por meio da coleta e análise colaborativa de dados da fauna no território do <a href="https://canionsdosul.org/" target="_blank" rel="noopener noreferrer">Geoparque Caminhos dos Cânions do Sul</a>. A plataforma permite que qualquer pessoa possa cadastrar observações de espécies animais, contribuindo para o conhecimento e conservação da biodiversidade local.
+  </p>
+
+  <p>
+    A ideia foi inspirada em plataformas como WikiAves, eBird e iNaturalist, mas com foco regional, permitindo a integração de dados e a valorização do patrimônio natural do Geoparque.
+  </p>
+
+  <div class="logos">
+    <a href="https://www.ufsm.br" target="_blank" rel="noopener noreferrer">
+      <img src="{% static 'canionsDoSul_app/assets/logo-ufsm.png' %}" alt="Logo UFSM">
+    </a>
+    <a href="https://www.ufsm.br/cursos/graduacao/frederico-westphalen/sistemas-de-informacao/" target="_blank" rel="noopener noreferrer">
+      <img src="{% static 'canionsDoSul_app/assets/logo-si.png' %}" alt="Logo Curso de Sistemas de Informação">
+    </a>
+  </div>
+</div>
+{% endblock %}
