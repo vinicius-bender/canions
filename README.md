@@ -46,8 +46,6 @@ Você pode utilizar as seguintes credenciais para acessar a plataforma com difer
 | Cientista             | usuariocientista@example.com   | 123    |
 | Admin (staff)         | admin@example.com              | admin  |
 
-> ⚠️ As permissões dos usuários especialistas e cientistas ainda serão expandidas para permitir o cadastro de cadeias taxonômicas futuramente.
-
 ---
 
 ## 🧩 Painel Administrativo Personalizado
