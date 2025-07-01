@@ -35,14 +35,14 @@ A aplicação está disponível publicamente no seguinte endereço:
 
 ---
 
-## 👤 Contas de Teste
+## 👤 Contas de Teste 
 
-Você pode utilizar as seguintes credenciais para acessar a plataforma com diferentes perfis de usuário:
+Você pode utilizar as seguintes credenciais para acessar a plataforma com diferentes perfis de usuário (não é necessário criar um usuário para relatar uma observação na plataforma):
 
 | Tipo de Usuário       | Email                          | Senha  |
 |-----------------------|--------------------------------|--------|
 | Usuário Comum         | usuarioteste@example.com       | 123    |
-| Especialista          | usuarioespecialista@example.com | 123   |
+| Especialista          | usuarioespecialista@example.com| 123    |
 | Cientista             | usuariocientista@example.com   | 123    |
 | Admin (staff)         | admin@example.com              | admin  |
 
