@@ -13,10 +13,10 @@
 <h1>Painel de administrador</h1>
 <div class="admin-options-div">
     {% if user.is_authenticated and user.role == "admin" %}
-    <div><a href="{% url 'cadastrar' %}" class="admin-options-item">Cadastrar taxonomia</a></div>
     <div><a href="{% url 'promover_usuario' %}" class="admin-options-item">Promover Usuário</a></div>
     {% endif %}
     {% if user.is_authenticated and user.role|not_in:"default" %}
+    <div><a href="{% url 'cadastrar' %}" class="admin-options-item">Cadastrar taxonomia</a></div>
     <div><a href="{% url 'lista_observacoes_pendentes' %}" class="admin-options-item">Observações pendentes</a></div>
     <div><a href="{% url 'listar_especies' %}" class="admin-options-item">Espécies cadastradas</a></div>
     {% endif %}

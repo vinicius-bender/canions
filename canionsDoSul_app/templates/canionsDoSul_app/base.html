@@ -36,16 +36,17 @@
                         <a href="{% url 'contato' %}" class="nav-link">Contato</a>
                     </li>
 
-                    {% if user.is_authenticated and user.role == "admin" %}
-                    <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
-                    </li>
+                    {% is_specialist_or_scientist_admin user as show_admin_panel %}
+                    {% if user.is_authenticated and show_admin_panel %}
+                        <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
+                        </li>
                     {% endif %}
 
-                    {% if user.is_authenticated and is_specialist or is_scientist %}
+                    <!-- {% if user.is_authenticated and is_specialist or is_scientist %}
                     <li class="nav-item"><a href="{% url 'lista_observacoes_pendentes' %}" class="nav-link">Observações
                             Pendentes</a></li>
                     <li class="nav-item"><a href="{% url 'cadastrar' %}" class="nav-link">Cadastrar taxonômia</a></li>
-                    {% endif %}
+                    {% endif %} -->
                     <li class="nav-group-mobile"><a href="{% url 'criar_observacao' %}" class="nav-link">Relatar
                             observação</a></li>
                     {% if user.is_authenticated %}
@@ -126,13 +127,19 @@
                     <li><a href="{% url 'login' %}">Login</a></li> -->
                     <li><a href="https://canionsdosul.org/" target="_blank" rel="noopener noreferrer">Geoparque
                             Oficial</a></li>
+                    <li><a href="https://www.ufsm.br/unidades-universitarias/frederico-westphalen" target="_blank"
+                            rel="noopener noreferrer">UFSM - FW</a></li>
                 </ul>
             </div>
 
             <div class="footer-contact">
                 <h4>Contato</h4>
-                <p><a href="https://canionsdosul.org/contato/" target="_blank" rel="noopener noreferrer">Nos envie um
+                <p><a href="{% url 'contato' %}">Nos envie um
                         Email</a></p>
+                <p><a href="https://www.linkedin.com/in/vinicius-bender/" target="_blank"
+                        rel="noopener noreferrer">LinkedIn Desenvolvedor</a></p>
+                <p><a href="https://www.linkedin.com/in/cbertolini/" target="_blank"
+                        rel="noopener noreferrer">LinkedIn Orientador</a></p>
                 <p>Instagram: <a href="https://www.instagram.com/geoparquecanionsdosul/" target="_blank"
                         rel="noopener noreferrer">@geoparquecanionsdosul</a></p>
             </div>
