@@ -1,5 +1,4 @@
-# 🌿 Plataforma de Ciência Cidadã – Geoparque Caminhos dos Cânions do Sul
-
+# 🌿 Plataforma de Ciência Cidadã – FaunaSul
 Este projeto é uma plataforma web colaborativa desenvolvida como parte do Trabalho de Conclusão de Curso (TCC) do curso de Sistemas de Informação da UFSM. Seu objetivo é permitir que cidadãos contribuam com registros da fauna observada no território do Geoparque Caminhos dos Cânions do Sul.
 
 ## 📌 Objetivo
