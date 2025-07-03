@@ -112,12 +112,15 @@ class Localization(models.Model):
     city_name = models.CharField(max_length=255)
     state_name = models.CharField(max_length=255)
     country_name = models.CharField(max_length=255, default='Brasil')
+    latitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         db_table = 'localization'
+        # unique_together = ('city_name', 'state_name', 'country_name')
 
     def __str__(self):
         return f"{self.city_name}, {self.state_name}"

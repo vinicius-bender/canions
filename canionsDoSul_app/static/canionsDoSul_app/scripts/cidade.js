@@ -168,7 +168,7 @@
 //      setupAutocomplete("id_family", "family-suggestions", "/autocomplete-family/");
 //     setupAutocomplete("id_genus", "genus-suggestions", "/autocomplete-genus/");
 //     setupAutocomplete("id_species", "species-suggestions", "/autocomplete-species/");
-    
+
 // });
 
 function fetchGeolocation() {

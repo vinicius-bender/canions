@@ -17,6 +17,7 @@ from django.contrib.auth import login
 import uuid
 from django.http import Http404, HttpResponseNotFound
 from django.db.models import F
+import random
 
 #views
 def is_specialist_or_scientist(user):
@@ -176,65 +177,163 @@ def create_species(request):
 def create_observation(request):
     return render(request, 'canionsDoSul_app/criar_observacao.html')
 
+# def observation_by_latlng(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationLatLngForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         city = request.POST.get('city_name')
+#         state = request.POST.get('state_name')
+#         country = request.POST.get('country_name', 'Brasil')
+
+#         # if country.lower() != 'brasil':
+#         #     messages.error(request, 'Somente observações no Brasil são permitidas.')
+#         # elif observation_form.is_valid():
+#         #     # Criação/Busca de localização
+#         #     localization, _ = Localization.objects.get_or_create(
+#         #         city_name=city,
+#         #         state_name=state,
+#         #         country_name=country,
+#         #         defaults={'user': request.user if request.user.is_authenticated else None}
+#         #     )
+#     
+#             # Pega os dados do form
+#             family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
+#             genus_name = observation_form.cleaned_data['genus_name'] or "Desconhecida"
+#             species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
+#             species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
+#             notes = observation_form.cleaned_data['notes'] or None
+#             # habitat = observation_form.cleaned_data['habitat']
+#             status=observation_form.cleaned_data.get('status', 'Pendente')
+
+#             # Criação ou obtenção da família
+#             family, _ = Family.objects.get_or_create(name=family_name)
+
+#             # Criação ou obtenção do gênero vinculado à família
+#             genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
+
+#             # Criação da espécie vinculada ao gênero
+#             species, _ = Species.objects.get_or_create(
+#                 popular_name=species_popular_name,
+#                 scientific_name=species_scientific_name,
+#                 genus=genus,
+#                 defaults={
+#                     # 'habitat': habitat
+#                     'user': request.user if request.user.is_authenticated else None
+#                 }
+#             )
+
+#             # Criação da observação
+#             observation = Observation(
+#                 latitude=observation_form.cleaned_data['latitude'],
+#                 longitude=observation_form.cleaned_data['longitude'],
+#                 species=species,
+#                 localization=localization,
+#                 user=get_or_create_anonymous_user(request),
+#                 notes=notes,
+#                 status="Pendente",
+#             )
+#             observation.save()
+
+#             # Upload de mídia
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255],
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+
+#             return redirect('home')
+#         else:
+#             print(observation_form.errors)
+
+#     else:
+#         observation_form = ObservationLatLngForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/latlng.html', {
+#         'observation_form': observation_form,
+#         'media_form': media_form,
+#     })
+def coordenadas_ja_existem(lat, lon):
+    return Localization.objects.filter(latitude=lat, longitude=lon).exists()
+
+def gerar_coordenadas_aleatorias_proximas(lat, lon, delta=0.0005):
+    nova_lat = lat + random.uniform(-delta, delta)
+    nova_lon = lon + random.uniform(-delta, delta)
+    return nova_lat, nova_lon
+
 def observation_by_latlng(request):
     if request.method == 'POST':
         observation_form = ObservationLatLngForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
 
-        city = request.POST.get('city_name')
-        state = request.POST.get('state_name')
-        country = request.POST.get('country_name', 'Brasil')
+        city = request.POST.get('city_name', '').strip()
+        state = request.POST.get('state_name', '').strip()
+        country = request.POST.get('country_name', 'Brasil').strip()
+
+        GEOPARQUE_CITIES = {
+            ("Praia Grande", "Santa Catarina"),
+            ("Jacinto Machado", "Santa Catarina"),
+            ("Timbé do Sul", "Santa Catarina"),
+            ("Morro Grande", "Santa Catarina"),
+            ("Torres", "Rio Grande do Sul"),
+            ("Mampituba", "Rio Grande do Sul"),
+            ("Cambará do Sul", "Rio Grande do Sul"),
+        }
 
         if country.lower() != 'brasil':
             messages.error(request, 'Somente observações no Brasil são permitidas.')
+        elif (city, state) not in GEOPARQUE_CITIES:
+            messages.error(request, 'Somente observações em cidades relacionadas ao Geoparque Caminhos dos Cânions do Sul são permitidas.')
         elif observation_form.is_valid():
-            # Criação/Busca de localização
-            localization, _ = Localization.objects.get_or_create(
+            lat = float(observation_form.cleaned_data['latitude'])
+            lon = float(observation_form.cleaned_data['longitude'])
+
+            # Gera novas coordenadas se já existirem
+            while coordenadas_ja_existem(lat, lon):
+                lat, lon = gerar_coordenadas_aleatorias_proximas(lat, lon)
+
+            localization = Localization.objects.create(
                 city_name=city,
                 state_name=state,
                 country_name=country,
-                defaults={'user': request.user if request.user.is_authenticated else None}
+                latitude=lat,
+                longitude=lon,
+                user=get_or_create_anonymous_user(request)
             )
 
-            # Pega os dados do form
             family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
             genus_name = observation_form.cleaned_data['genus_name'] or "Desconhecida"
             species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
             species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
             notes = observation_form.cleaned_data['notes'] or None
-            # habitat = observation_form.cleaned_data['habitat']
-            status=observation_form.cleaned_data.get('status', 'Pendente')
+            status = observation_form.cleaned_data.get('status', 'Pendente')
 
-            # Criação ou obtenção da família
             family, _ = Family.objects.get_or_create(name=family_name)
-
-            # Criação ou obtenção do gênero vinculado à família
             genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
-
-            # Criação da espécie vinculada ao gênero
             species, _ = Species.objects.get_or_create(
                 popular_name=species_popular_name,
                 scientific_name=species_scientific_name,
                 genus=genus,
-                defaults={
-                    # 'habitat': habitat
-                    'user': request.user if request.user.is_authenticated else None
-                }
+                defaults={'user': request.user if request.user.is_authenticated else None}
             )
 
-            # Criação da observação
             observation = Observation(
-                latitude=observation_form.cleaned_data['latitude'],
-                longitude=observation_form.cleaned_data['longitude'],
+                latitude=lat,
+                longitude=lon,
                 species=species,
                 localization=localization,
                 user=get_or_create_anonymous_user(request),
                 notes=notes,
-                status="Pendente",
+                status=status,
             )
             observation.save()
 
-            # Upload de mídia
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(
@@ -249,7 +348,6 @@ def observation_by_latlng(request):
             return redirect('home')
         else:
             print(observation_form.errors)
-
     else:
         observation_form = ObservationLatLngForm()
         media_form = MediaForm()
@@ -259,25 +357,120 @@ def observation_by_latlng(request):
         'media_form': media_form,
     })
 
+# def observation_by_city(request):
+#     if request.method == 'POST':
+#         observation_form = ObservationCityForm(request.POST)
+#         localization_form = LocalizationForm(request.POST)
+#         media_form = MediaForm(request.POST, request.FILES)
+
+#         country = request.POST.get('country_name', '').strip().lower()
+
+#         if not country or country != 'brasil':
+#             messages.error(request, 'Somente observações no Brasil são permitidas.')
+#             return render(request, 'canionsDoSul_app/cidade.html', {
+#                 'observation_form': observation_form,
+#                 'localization_form': localization_form,
+#                 'media_form': media_form
+#             })
+
+#         if observation_form.is_valid() and localization_form.is_valid():
+#             localization = localization_form.save(commit=False)
+#             localization.user = get_or_create_anonymous_user(request)
+#             localization.save()
+
+#             family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
+#             genus_name = observation_form.cleaned_data['genus_name'] or "Desconhecida"
+#             species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
+#             species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
+#             notes = observation_form.cleaned_data['notes'] or None
+#             status=observation_form.cleaned_data.get('status', 'Pendente')
+
+#             # Criação ou obtenção da família
+#             family, _ = Family.objects.get_or_create(name=family_name)
+
+#             # Criação ou obtenção do gênero vinculado à família
+#             genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
+
+#             # Criação da espécie vinculada ao gênero
+#             species, _ = Species.objects.get_or_create(
+#                 popular_name=species_popular_name,
+#                 scientific_name=species_scientific_name,
+#                 genus=genus,
+#                 defaults={
+#                     # 'habitat': habitat,
+#                     'user': request.user if request.user.is_authenticated else None
+#                 }
+#             )
+
+#             # Criação da observação
+#             observation = observation_form.save(commit=False)
+#             observation.localization = localization
+#             observation.user = get_or_create_anonymous_user(request)
+#             observation.status = "Pendente"
+#             observation.species = species
+#             observation.notes= notes
+#             observation.save()
+
+#             # Upload da mídia
+#             if 'files' in request.FILES:
+#                 for file in request.FILES.getlist('files'):
+#                     media = Media.objects.create(
+#                         files=file,
+#                         name=file.name[:255]
+#                     )
+#                     ObservationMedia.objects.create(
+#                         observation=observation,
+#                         media=media
+#                     )
+#             return redirect('home')
+
+#     else:
+#         observation_form = ObservationCityForm()
+#         localization_form = LocalizationForm()
+#         media_form = MediaForm()
+
+#     return render(request, 'canionsDoSul_app/cidade.html', {
+#         'observation_form': observation_form,
+#         'localization_form': localization_form,
+#         'media_form': media_form
+#     })
+
 def observation_by_city(request):
     if request.method == 'POST':
         observation_form = ObservationCityForm(request.POST)
         localization_form = LocalizationForm(request.POST)
         media_form = MediaForm(request.POST, request.FILES)
 
-        country = request.POST.get('country_name', '').strip().lower()
+        city = request.POST.get('city_name', '').strip()
+        state = request.POST.get('state_name', '').strip()
+        country = request.POST.get('country_name', 'Brasil').strip()
 
-        if not country or country != 'brasil':
+        GEOPARQUE_CITIES = {
+            ("Praia Grande", "Santa Catarina"),
+            ("Jacinto Machado", "Santa Catarina"),
+            ("Timbé do Sul", "Santa Catarina"),
+            ("Morro Grande", "Santa Catarina"),
+            ("Torres", "Rio Grande do Sul"),
+            ("Mampituba", "Rio Grande do Sul"),
+            ("Cambará do Sul", "Rio Grande do Sul"),
+        }
+
+        if country.lower() != 'brasil':
             messages.error(request, 'Somente observações no Brasil são permitidas.')
-            return render(request, 'canionsDoSul_app/cidade.html', {
-                'observation_form': observation_form,
-                'localization_form': localization_form,
-                'media_form': media_form
-            })
-
-        if observation_form.is_valid() and localization_form.is_valid():
+        elif (city, state) not in GEOPARQUE_CITIES:
+            messages.error(request, 'Somente observações em cidades relacionadas ao Geoparque Caminhos dos Cânions do Sul são permitidas.')
+        elif observation_form.is_valid() and localization_form.is_valid():
             localization = localization_form.save(commit=False)
             localization.user = get_or_create_anonymous_user(request)
+
+            lat = float(localization.latitude)
+            lon = float(localization.longitude)
+
+            while coordenadas_ja_existem(lat, lon):
+                lat, lon = gerar_coordenadas_aleatorias_proximas(lat, lon)
+
+            localization.latitude = lat
+            localization.longitude = lon
             localization.save()
 
             family_name = observation_form.cleaned_data['family_name'] or "Desconhecida"
@@ -285,35 +478,26 @@ def observation_by_city(request):
             species_scientific_name = observation_form.cleaned_data['species_scientific_name'] or "Desconhecida"
             species_popular_name = observation_form.cleaned_data['species_popular_name'] or "Desconhecida"
             notes = observation_form.cleaned_data['notes'] or None
-            status=observation_form.cleaned_data.get('status', 'Pendente')
 
-            # Criação ou obtenção da família
             family, _ = Family.objects.get_or_create(name=family_name)
-
-            # Criação ou obtenção do gênero vinculado à família
             genus, _ = Genus.objects.get_or_create(name=genus_name, family=family)
-
-            # Criação da espécie vinculada ao gênero
             species, _ = Species.objects.get_or_create(
                 popular_name=species_popular_name,
                 scientific_name=species_scientific_name,
                 genus=genus,
-                defaults={
-                    # 'habitat': habitat,
-                    'user': request.user if request.user.is_authenticated else None
-                }
+                defaults={'user': request.user if request.user.is_authenticated else None}
             )
 
-            # Criação da observação
             observation = observation_form.save(commit=False)
             observation.localization = localization
             observation.user = get_or_create_anonymous_user(request)
             observation.status = "Pendente"
             observation.species = species
-            observation.notes= notes
+            observation.notes = notes
+            observation.latitude = lat
+            observation.longitude = lon
             observation.save()
 
-            # Upload da mídia
             if 'files' in request.FILES:
                 for file in request.FILES.getlist('files'):
                     media = Media.objects.create(

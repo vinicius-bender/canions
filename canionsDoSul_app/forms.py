@@ -96,22 +96,35 @@ class SpeciesForm(forms.ModelForm):
         model = Species
         fields = ['scientific_name', 'popular_name', 'habitat', 'genus', 'user']
 
+
 class LocalizationForm(forms.ModelForm):
     class Meta:
         model = Localization
-        fields = ['city_name', 'state_name', 'country_name']
+        fields = ['city_name', 'state_name', 'country_name', 'latitude', 'longitude']  # adiciona aqui
         widgets = {
-            'city_name': forms.TextInput(attrs={'class': 'form-control',
-            'id': 'id_city_name',
-            }),
-            'state_name': forms.TextInput(attrs={'class': 'form-control',
-            'id': 'id_state_name',
-            }),
-            'country_name': forms.HiddenInput(attrs={'class': 'form-control', 
-            'id': 'id_country_name',
-            }),
-            # 'country_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'city_name': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_city_name'}),
+            'state_name': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_state_name'}),
+            'country_name': forms.HiddenInput(attrs={'class': 'form-control', 'id': 'id_country_name'}),
+            'latitude': forms.HiddenInput(attrs={'id': 'id_latitude'}),
+            'longitude': forms.HiddenInput(attrs={'id': 'id_longitude'}),
         }
+#Atual
+# class LocalizationForm(forms.ModelForm):
+#     class Meta:
+#         model = Localization
+#         fields = ['city_name', 'state_name', 'country_name']
+#         widgets = {
+#             'city_name': forms.TextInput(attrs={'class': 'form-control',
+#             'id': 'id_city_name',
+#             }),
+#             'state_name': forms.TextInput(attrs={'class': 'form-control',
+#             'id': 'id_state_name',
+#             }),
+#             'country_name': forms.HiddenInput(attrs={'class': 'form-control', 
+#             'id': 'id_country_name',
+#             }),
+#             # 'country_name': forms.TextInput(attrs={'class': 'form-control'}),
+#         }
 
 # class ObservationLatLngForm(forms.ModelForm):
 #     class Meta:
