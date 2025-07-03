@@ -120,7 +120,6 @@ class Localization(models.Model):
 
     class Meta:
         db_table = 'localization'
-        # unique_together = ('city_name', 'state_name', 'country_name')
 
     def __str__(self):
         return f"{self.city_name}, {self.state_name}"
