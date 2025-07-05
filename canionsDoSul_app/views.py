@@ -630,10 +630,10 @@ def avaliar_observacao_modal(request, observacao_id):
                 observacao.species = form.cleaned_data['species']
                 observacao.save()
 
-                habitat_input = form.cleaned_data.get('habitat')
-                if observacao.species and habitat_input and habitat_input != observacao.species.habitat:
-                    observacao.species.habitat = habitat_input
-                    observacao.species.save()
+                # habitat_input = form.cleaned_data.get('habitat')
+                # if observacao.species and habitat_input and habitat_input != observacao.species.habitat:
+                #     observacao.species.habitat = habitat_input
+                #     observacao.species.save()
 
                 return JsonResponse({'success': True, 'status': 'aprovada'})
             else:

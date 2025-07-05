@@ -584,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
         family.addEventListener('input', () => {
           genus.value = '';
           species.value = '';
+          document.getElementById('id_popular_name').value = '';
           habitatInput.value = '';
         });
 
@@ -621,6 +622,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
         setupStyledAutocomplete(species, 'species-suggestions', '/autocomplete-species/', (selected, popName) => {
           species.value = selected;
+          if (popName) {
+            document.getElementById('id_popular_name').value = popName;
+          }
           if (updateHabitatVisibility()) {
             const params = new URLSearchParams({
               family: family.value.trim(),

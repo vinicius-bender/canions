@@ -29,21 +29,6 @@
   </div>
   <form id="avaliar-form" class="avaliar-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <!-- <p>
-      <label for="id_family"><strong>Família:</strong></label>
-      {{ form.family }}
-    </p>
-
-    <p>
-      <label for="id_genus"><strong>Gênero:</strong></label>
-      {{ form.genus }}
-    </p>
-
-    <p>
-      <label for="id_species"><strong>Espécie:</strong></label>
-      {{ form.species }}
-    </p> -->
     <div class="animal-suggest">
       <label for="id_family"><strong>Família:</strong></label>
       <input type="text" id="id_family" name="family" value="{{ form.family.value }}" autocomplete="off" />
@@ -60,6 +45,12 @@
       <label for="id_species"><strong>Espécie:</strong></label>
       <input type="text" id="id_species" name="species" value="{{ form.fields.species.initial }}" autocomplete="off" />
       <div class="autocomplete-suggestions" id="species-suggestions"></div>
+    </div>
+
+    <div class="animal-suggest">
+      <label for="id_popular_name"><strong>Nome popular:</strong></label>
+      <input type="text" id="id_popular_name" name="popular_name" value="{{ form.popular_name.value }}"
+        autocomplete="off" />
     </div>
 
     <p>
