@@ -24,9 +24,15 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="{% url 'home' %}" class="logo">
-                    <img class="nav-branding" src="{% static 'canionsDoSul_app/assets/logo.png' %}" alt="Logo" />
-                </a>
+                <div class="logos-div">
+                    <a href="{% url 'home' %}" class="logo">
+                        <img class="nav-branding" src="{% static 'canionsDoSul_app/assets/whiteBgColor (1).png' %}"
+                            alt="Logo" />
+                    </a>
+                    <a href="{% url 'home' %}" class="logo">
+                        <img class="nav-branding" src="{% static 'canionsDoSul_app/assets/logo.png' %}" alt="Logo" />
+                    </a>
+                </div>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
                     <li class="nav-item">
@@ -38,8 +44,8 @@
 
                     {% is_specialist_or_scientist_admin user as show_admin_panel %}
                     {% if user.is_authenticated and show_admin_panel %}
-                        <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
-                        </li>
+                    <li class="nav-item"><a href="{% url 'admin_panel' %}" class="nav-link">Painel administrador</a>
+                    </li>
                     {% endif %}
 
                     <!-- {% if user.is_authenticated and is_specialist or is_scientist %}
@@ -115,7 +121,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
-                <h3>Geoparque Caminhos dos Cânions do Sul</h3>
+                <h3>FaunaSul</h3>
                 <p>Plataforma de Ciência Cidadã<br>para observações da fauna local.</p>
             </div>
 
@@ -138,15 +144,15 @@
                         Email</a></p>
                 <p><a href="https://www.linkedin.com/in/vinicius-bender/" target="_blank"
                         rel="noopener noreferrer">LinkedIn Desenvolvedor</a></p>
-                <p><a href="https://www.linkedin.com/in/cbertolini/" target="_blank"
-                        rel="noopener noreferrer">LinkedIn Orientador</a></p>
+                <p><a href="https://www.linkedin.com/in/cbertolini/" target="_blank" rel="noopener noreferrer">LinkedIn
+                        Orientador</a></p>
                 <p>Instagram: <a href="https://www.instagram.com/geoparquecanionsdosul/" target="_blank"
                         rel="noopener noreferrer">@geoparquecanionsdosul</a></p>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2025 Geoparque Caminhos dos Cânions do Sul. Todos os direitos reservados.</p>
+            <p>&copy; 2025 FaunaSul. Todos os direitos reservados.</p>
         </div>
     </footer>
 

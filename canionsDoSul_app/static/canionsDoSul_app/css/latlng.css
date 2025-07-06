@@ -25,6 +25,16 @@ body {
     margin: 0 auto;
 }
 
+.logos-div{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logo {
+  width: fit-content;
+}
+
 .navbar {
   min-height: 70px;
   display: flex;
