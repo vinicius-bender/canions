@@ -18,7 +18,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 DEBUG = os.getenv('DEBUG') == 'True'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-ALLOWED_HOSTS = ['31.220.102.180', 'localhost']
+ALLOWED_HOSTS = ['faunasul.com.br', 'www.faunasul.com.br', 'localhost', '127.0.0.1']
 
 
 # Application definition
