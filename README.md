@@ -2,7 +2,7 @@
 
 A aplicação está disponível publicamente no seguinte endereço:
 
-🔗 **[http://31.220.102.180](http://31.220.102.180)**
+🔗 **[https://faunasul.com.br/](https://faunasul.com.br/)**
 
 ---
 
@@ -51,7 +51,7 @@ Você pode utilizar as seguintes credenciais para acessar a plataforma com difer
 
 Também está disponível um painel administrativo integrado à própria aplicação:
 
-🔗 **[http://31.220.102.180/painel_administrador](http://31.220.102.180/painel_administrador)**
+🔗 **[https://faunasul.com.br/painel_administrador](https://faunasul.com.br/painel_administrador)**
 
 Neste painel é possível:
 - Cadastrar cadeias taxonômicas (família, gênero, espécie);
