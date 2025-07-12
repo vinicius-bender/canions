@@ -2,7 +2,7 @@
 
 A aplicação está disponível publicamente no seguinte endereço:
 
-🔗 **[http://31.220.102.180](http://31.220.102.180)**
+🔗 **[https://faunasul.com.br/](https://faunasul.com.br/)**
 
 ---
 
