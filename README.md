@@ -1,74 +1,89 @@
-## 🌐 Acesso à Plataforma em Produção
+## 🌐 Access to Production Platform  
 
-A aplicação está disponível publicamente no seguinte endereço:
+The application is publicly available at the following address:  
 
-🔗 **[https://faunasul.com.br/](https://faunasul.com.br/)**
-
----
-
-# 🌿 Plataforma de Ciência Cidadã – FaunaSul
-Este projeto é uma plataforma web colaborativa desenvolvida como parte do Trabalho de Conclusão de Curso (TCC) do curso de Sistemas de Informação da UFSM. Seu objetivo é permitir que cidadãos contribuam com registros da fauna observada no território do Geoparque Caminhos dos Cânions do Sul.
-
-## 📌 Objetivo
-
-Facilitar a coleta, armazenamento e análise de dados sobre fauna local por meio da ciência cidadã, promovendo o engajamento da comunidade e subsidiando ações de conservação ambiental.
-
-## 🔍 Funcionalidades
-
-- Cadastro de observações com fotos, vídeos e localização geográfica
-- Avaliação e validação por especialistas
-- Registro de informações taxonômicas (família, gênero, espécie)
-- Listagem de espécies e histórico de observações
-- Painel administrativo com controle de usuários e dados
-- Mecanismo de promoção de usuários para o papel de especialista
-
-## 🧰 Tecnologias Utilizadas
-
-- **Backend**: Python, Django
-- **Frontend**: HTML, CSS, JavaScript
-- **Banco de Dados**: PostgreSQL
-- **Mapas**: OpenStreetMap + Leaflet.js
-- **Hospedagem**: Ubuntu VPS com Docker e Nginx (produção)
-
-## 🗺️ Público-Alvo
-
-Cidadãos, turistas, pesquisadores, ambientalistas e gestores do Geoparque Caminhos dos Cânions do Sul.
-
-## 👤 Contas de Teste 
-
-Você pode utilizar as seguintes credenciais para acessar a plataforma com diferentes perfis de usuário (não é necessário criar um usuário para relatar uma observação na plataforma):
-
-| Tipo de Usuário       | Email                          | Senha  |
-|-----------------------|--------------------------------|--------|
-| Usuário Comum         | usuarioteste@example.com       | 123    |
-| Especialista          | usuarioespecialista@example.com| 123    |
-| Cientista             | usuariocientista@example.com   | 123    |
-| Admin (staff)         | admin@example.com              | admin  |
+🔗 **[https://faunasul.com.br/](https://faunasul.com.br/)**  
 
 ---
 
-## 🧩 Painel Administrativo Personalizado
+# 🌿 Citizen Science Platform – FaunaSul  
+This project is a collaborative web platform developed as part of the Final Undergraduate Project (TCC) of the Information Systems program at UFSM. Its goal is to enable citizens to contribute records of fauna observed within the territory of the *Caminhos dos Cânions do Sul* Geopark.  
 
-Também está disponível um painel administrativo integrado à própria aplicação:
+## 📌 Objective  
 
-🔗 **[https://faunasul.com.br/painel_administrador](https://faunasul.com.br/painel_administrador)**
+To facilitate the collection, storage, and analysis of local fauna data through citizen science, promoting community engagement and supporting environmental conservation actions.  
 
-Neste painel é possível:
-- Cadastrar cadeias taxonômicas (família, gênero, espécie);
-- Visualizar e avaliar observações pendentes;
-- Promover usuários a papéis como especialista ou cientista.
+## 🔍 Features  
+
+- Submission of observations with photos, videos, and geolocation  
+- Review and validation by specialists  
+- Recording of taxonomic information (family, genus, species)  
+- Species listing and observation history  
+- Admin dashboard with user and data management  
+- Mechanism for promoting users to the specialist role  
+
+## 🧰 Technologies Used  
+
+- **Backend**: Python, Django  
+- **Frontend**: HTML, CSS, JavaScript  
+- **Database**: PostgreSQL  
+- **Maps**: OpenStreetMap + Leaflet.js  
+- **Hosting**: Ubuntu VPS with Docker and Nginx (production)  
+
+## 🗺️ Target Audience  
+
+Citizens, tourists, researchers, environmentalists, and managers of the *Caminhos dos Cânions do Sul* Geopark.  
+
+## 👤 Test Accounts  
+
+You can use the following credentials to access the platform with different user profiles (creating an account is not required to report an observation on the platform):  
+
+| User Type            | Email                          | Password |
+|----------------------|--------------------------------|----------|
+| Regular User         | usuarioteste@example.com       | 123      |
+| Specialist           | usuarioespecialista@example.com| 123      |
+| Scientist            | usuariocientista@example.com   | 123      |
+| Admin (staff)        | admin@example.com              | admin    |  
 
 ---
 
-## 🐾 Fluxo da Aplicação
+## 🧩 Custom Admin Dashboard  
 
-1. O **administrador cadastra as cadeias taxonômicas** no painel.
-2. Os **usuários realizam observações**, incluindo arquivos de mídia, localização e descrição.
-3. As observações ficam com status **"Pendente"**.
-4. O **admin, especialista ou cientista** avalia a observação (aprovando ou rejeitando).
-5. Se aprovada, a observação será exibida em:
-   - **"Todas Observações"**
-   - **"Minhas Observações"** (somente para o autor)
-   - **Mapa interativo** na página inicial
+An integrated admin dashboard is also available within the application:  
 
-Desenvolvido por Vinicius Rodolfo Bender Carlson como parte do TCC do curso de Sistemas de Informação da UFSM (Universidade Federal de Santa Maria).
+🔗 **[https://faunasul.com.br/painel_administrador](https://faunasul.com.br/painel_administrador)**  
+
+In this dashboard it is possible to:  
+- Register taxonomic hierarchies (family, genus, species);  
+- View and evaluate pending observations;  
+- Promote users to roles such as specialist or scientist.  
+
+---
+
+## 🐾 Application Flow  
+
+1. The **administrator registers taxonomic hierarchies** in the dashboard.  
+2. **Users submit observations**, including media files, location, and description.  
+3. Observations are assigned the **"Pending"** status.  
+4. The **admin, specialist, or scientist** reviews the observation (approving or rejecting it).  
+5. If approved, the observation will appear in:  
+   - **"All Observations"**  
+   - **"My Observations"** (visible only to the author)  
+   - **Interactive map** on the homepage  
+
+---
+
+## 🔮 Future Implementations  
+
+Some planned and potential improvements for the platform include:  
+
+- **AI-Powered Validation**: Implementing machine learning models to automatically classify and validate species in submitted photos and videos, assisting specialists in the review process.   
+- **Gamification**: Adding achievements, ranking, and reward systems to encourage community engagement and continuous participation.  
+- **Data Visualization Dashboards**: Advanced charts and heatmaps for researchers and managers to analyze temporal and spatial trends of fauna observations.  
+- **Open Data API**: Providing an API for researchers and institutions to access and integrate observation data into their own studies or conservation projects.   
+- **Multilingual Support**: Expanding language options. 
+- **Citizen Feedback System**: Allowing observers to receive updates on the status of their contributions and recognition when their records are used in research or reports.  
+
+---
+
+Developed by Vinicius Rodolfo Bender Carlson as part of the Final Undergraduate Project of the Information Systems program at UFSM (*Universidade Federal de Santa Maria*).  
